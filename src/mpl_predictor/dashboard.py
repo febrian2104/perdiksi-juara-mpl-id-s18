@@ -169,13 +169,58 @@ def _render_overview(data: dict[str, pd.DataFrame], snapshot_id: str) -> None:
 
 def _render_matches(data: dict[str, pd.DataFrame], snapshot_id: str) -> None:
     matches = data["matches"]
-    current = matches.loc[
-        matches["snapshot_id"].eq(snapshot_id) & matches["status"].eq("scheduled")
-    ].sort_values(["scheduled_at", "official_match_id"])
-    st.subheader("Probabilitas pertandingan tersisa")
+    snapshot_matches = matches.loc[matches["snapshot_id"].eq(snapshot_id)].sort_values(
+        ["scheduled_at", "official_match_id"]
+    )
+    evaluated = snapshot_matches.loc[
+        snapshot_matches["status"].eq("completed")
+        & snapshot_matches["prediction_correct"].notna()
+    ]
+    correct_count = int(evaluated["prediction_correct"].sum())
+    accuracy = correct_count / len(evaluated) if len(evaluated) else None
+
+    st.subheader("Prediksi dan akurasi pertandingan")
+    first, second, third, fourth = st.columns(4)
+    first.metric("Prediksi dievaluasi", len(evaluated))
+    second.metric("Prediksi benar", correct_count)
+    third.metric("Akurasi", _percent(accuracy) if accuracy is not None else "-")
+    fourth.metric("Hasil masuk state", len(evaluated))
+    st.caption(
+        "Status akurasi membandingkan favorit pre-match dengan hasil aktual. Setelah hasil "
+        "tersedia, Elo dan form diperbarui untuk pertandingan berikutnya; koefisien model "
+        "final tidak dilatih ulang setiap week."
+    )
+
+    filter_options = ["Semua", "Selesai", "Akan datang"]
+    selected_filter = st.radio(
+        "Tampilkan pertandingan",
+        options=filter_options,
+        index=1 if len(evaluated) else 2,
+        horizontal=True,
+        key=f"match_filter_{snapshot_id}",
+    )
+    if selected_filter == "Selesai":
+        current = snapshot_matches.loc[snapshot_matches["status"].eq("completed")].copy()
+    elif selected_filter == "Akan datang":
+        current = snapshot_matches.loc[snapshot_matches["status"].eq("scheduled")].copy()
+    else:
+        current = snapshot_matches.copy()
     if current.empty:
-        st.success("Tidak ada pertandingan regular season tersisa pada snapshot ini.")
+        st.info("Tidak ada pertandingan untuk filter ini pada snapshot yang dipilih.")
         return
+    current["accuracy_label"] = current["accuracy_status"].map(
+        {
+            "correct": "✅ Benar",
+            "incorrect": "❌ Salah",
+            "pending_result": "⏳ Belum dimainkan",
+        }
+    )
+    current["learning_label"] = current["result_update_status"].map(
+        {
+            "incorporated_after_pre_match_prediction": "✅ Masuk Elo/form",
+            "awaiting_result": "⏳ Menunggu hasil",
+        }
+    )
     table = current[
         [
             "week",
@@ -184,6 +229,9 @@ def _render_matches(data: dict[str, pd.DataFrame], snapshot_id: str) -> None:
             "team_b_id",
             "team_a_win_probability",
             "predicted_winner_team_id",
+            "winner_team_id",
+            "accuracy_label",
+            "learning_label",
         ]
     ].rename(
         columns={
@@ -192,7 +240,10 @@ def _render_matches(data: dict[str, pd.DataFrame], snapshot_id: str) -> None:
             "team_a_id": "Team A",
             "team_b_id": "Team B",
             "team_a_win_probability": "P(Team A menang)",
-            "predicted_winner_team_id": "Favorit",
+            "predicted_winner_team_id": "Prediksi model",
+            "winner_team_id": "Hasil aktual",
+            "accuracy_label": "Status akurasi",
+            "learning_label": "Pembaruan state",
         }
     )
     st.dataframe(
@@ -338,6 +389,8 @@ def main() -> None:
             "- Pramusim memakai hasil historis sampai S17 dan **0 hasil S18**.\n"
             "- Snapshot mingguan hanya membuka hasil sampai week terkait.\n"
             "- Snapshot as-of dapat berhenti di tengah week pada akhir hari WIB.\n"
+            "- Hasil selesai dievaluasi dari prediksi pre-match, lalu memperbarui state "
+            "Elo/form untuk match berikutnya.\n"
             "- Bracket playoff mengikuti struktur S15-S17.\n"
             "- Probabilitas match dibekukan pada setiap snapshot simulasi."
         )

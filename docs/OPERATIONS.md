@@ -118,7 +118,7 @@ deployment lama tidak gagal ketika belum mengganti konfigurasi main file.
 - `data/processed/predictions/season18_snapshot_predictions.parquet`: riwayat pramusim dan
   mingguan.
 - `data/processed/predictions/season18_snapshot_match_probabilities.parquet`: probabilitas
-  match per snapshot.
+  match per snapshot, hasil aktual, status akurasi pre-match, dan status pembaruan state.
 - `data/processed/predictions/season18_*explanations.parquet`: explainability dashboard.
 - `reports/season18_prediction_updates.json`: cutoff dan leakage guard tiap snapshot.
 - `reports/explainability_report.json`: metode serta batas interpretasi explainability.

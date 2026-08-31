@@ -209,6 +209,24 @@ def build_season18_match_probabilities(
         probabilities["team_a_id"],
         probabilities["team_b_id"],
     )
+    evaluated = probabilities["status"].eq("completed") & probabilities[
+        "winner_team_id"
+    ].notna()
+    prediction_correct = pd.Series(pd.NA, index=probabilities.index, dtype="boolean")
+    prediction_correct.loc[evaluated] = probabilities.loc[
+        evaluated, "predicted_winner_team_id"
+    ].eq(probabilities.loc[evaluated, "winner_team_id"])
+    probabilities["prediction_correct"] = prediction_correct
+    probabilities["accuracy_status"] = "pending_result"
+    probabilities.loc[evaluated & prediction_correct.fillna(False), "accuracy_status"] = "correct"
+    probabilities.loc[evaluated & ~prediction_correct.fillna(False), "accuracy_status"] = (
+        "incorrect"
+    )
+    probabilities["result_update_status"] = np.where(
+        evaluated,
+        "incorporated_after_pre_match_prediction",
+        "awaiting_result",
+    )
     return probabilities.reset_index(drop=True), tracker, history
 
 

@@ -2,6 +2,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import pandas as pd
 
 from mpl_predictor.analysis.common import write_json
@@ -128,6 +129,40 @@ def schedule_as_of_window(schedule: pd.DataFrame, window: pd.Series) -> pd.DataF
     return result
 
 
+def build_match_accuracy_metrics(probabilities: pd.DataFrame) -> dict[str, Any]:
+    """Evaluate only completed matches using their leakage-safe pre-match probabilities."""
+    evaluated = probabilities.loc[
+        probabilities["status"].eq("completed")
+        & probabilities["winner_team_id"].notna()
+        & probabilities["prediction_correct"].notna()
+    ].copy()
+    if evaluated.empty:
+        return {
+            "evaluated_match_count": 0,
+            "correct_prediction_count": 0,
+            "incorrect_prediction_count": 0,
+            "match_accuracy": None,
+            "brier_score": None,
+            "log_loss": None,
+        }
+    actual_team_a_win = evaluated["winner_team_id"].eq(evaluated["team_a_id"]).astype(float)
+    probability = evaluated["team_a_win_probability"].astype(float).clip(1e-12, 1.0 - 1e-12)
+    correct_count = int(evaluated["prediction_correct"].sum())
+    return {
+        "evaluated_match_count": len(evaluated),
+        "correct_prediction_count": correct_count,
+        "incorrect_prediction_count": len(evaluated) - correct_count,
+        "match_accuracy": correct_count / len(evaluated),
+        "brier_score": float(np.mean((probability - actual_team_a_win) ** 2)),
+        "log_loss": float(
+            -np.mean(
+                actual_team_a_win * np.log(probability)
+                + (1.0 - actual_team_a_win) * np.log(1.0 - probability)
+            )
+        ),
+    }
+
+
 def build_live_prediction_history(
     tables: dict[str, pd.DataFrame],
     teams: pd.DataFrame,
@@ -162,6 +197,7 @@ def build_live_prediction_history(
             artifact,
             simulation_config,
         )
+        accuracy_metrics = build_match_accuracy_metrics(probabilities)
         cutoff = pd.Timestamp(window["feature_cutoff_date"])
         roster_available = rosters.loc[
             rosters["member_type"].eq("player")
@@ -199,6 +235,7 @@ def build_live_prediction_history(
                 "leader_team_id": str(leader["team_id"]),
                 "leader_champion_probability": float(leader["champion_probability"]),
                 "probability_sum": float(predictions["champion_probability"].sum()),
+                "match_accuracy": accuracy_metrics,
             }
         )
         latest_report = simulation_report
@@ -237,6 +274,23 @@ def build_live_prediction_history(
                 "Daftar peserta dan jadwal berasal dari snapshot resmi yang dikumpulkan "
                 f"setelah musim dimulai; seluruh outcome S{season} tetap disembunyikan "
                 "sesuai cutoff."
+            ),
+        },
+        "weekly_learning_policy": {
+            "accuracy_basis": (
+                "Favorit dari probabilitas pre-match dibandingkan dengan pemenang aktual."
+            ),
+            "completed_results_update": [
+                "elo_rating",
+                "current_match_and_game_record",
+                "recent_form",
+                "strength_of_schedule_state",
+            ],
+            "update_timing": "Hasil dimasukkan hanya setelah probabilitas pre-match dihitung.",
+            "model_coefficients_retrained_each_week": False,
+            "full_retraining_policy": (
+                "Dijalankan terpisah setelah data target dinyatakan cukup/final dan tetap "
+                "divalidasi secara walk-forward."
             ),
         },
         "validation": {

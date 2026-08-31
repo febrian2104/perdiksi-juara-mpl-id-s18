@@ -16,6 +16,18 @@
     "roster_model_usage": "Tidak digunakan model match final v1 karena training historis tidak memiliki roster bertanggal yang sebanding.",
     "reconstruction_note": "Daftar peserta dan jadwal berasal dari snapshot resmi yang dikumpulkan setelah musim dimulai; seluruh outcome S18 tetap disembunyikan sesuai cutoff."
   },
+  "weekly_learning_policy": {
+    "accuracy_basis": "Favorit dari probabilitas pre-match dibandingkan dengan pemenang aktual.",
+    "completed_results_update": [
+      "elo_rating",
+      "current_match_and_game_record",
+      "recent_form",
+      "strength_of_schedule_state"
+    ],
+    "update_timing": "Hasil dimasukkan hanya setelah probabilitas pre-match dihitung.",
+    "model_coefficients_retrained_each_week": false,
+    "full_retraining_policy": "Dijalankan terpisah setelah data target dinyatakan cukup/final dan tetap divalidasi secara walk-forward."
+  },
   "validation": {
     "invalid_probability_sum_count": 0,
     "preseason_available_result_count": 0
@@ -34,7 +46,15 @@
       "simulated_regular_match_count": 72,
       "leader_team_id": "ONIC",
       "leader_champion_probability": 0.57275,
-      "probability_sum": 1.0
+      "probability_sum": 1.0,
+      "match_accuracy": {
+        "evaluated_match_count": 0,
+        "correct_prediction_count": 0,
+        "incorrect_prediction_count": 0,
+        "match_accuracy": null,
+        "brier_score": null,
+        "log_loss": null
+      }
     },
     {
       "snapshot_id": "S18_W01",
@@ -49,7 +69,15 @@
       "simulated_regular_match_count": 64,
       "leader_team_id": "ONIC",
       "leader_champion_probability": 0.633,
-      "probability_sum": 1.0
+      "probability_sum": 1.0,
+      "match_accuracy": {
+        "evaluated_match_count": 8,
+        "correct_prediction_count": 6,
+        "incorrect_prediction_count": 2,
+        "match_accuracy": 0.75,
+        "brier_score": 0.2437335386223214,
+        "log_loss": 0.6814882037201374
+      }
     },
     {
       "snapshot_id": "S18_W02",
@@ -64,7 +92,15 @@
       "simulated_regular_match_count": 56,
       "leader_team_id": "ONIC",
       "leader_champion_probability": 0.51505,
-      "probability_sum": 0.9999999999999999
+      "probability_sum": 0.9999999999999999,
+      "match_accuracy": {
+        "evaluated_match_count": 16,
+        "correct_prediction_count": 12,
+        "incorrect_prediction_count": 4,
+        "match_accuracy": 0.75,
+        "brier_score": 0.23864797159627457,
+        "log_loss": 0.6683197818726465
+      }
     },
     {
       "snapshot_id": "S18_W03",
@@ -79,7 +115,15 @@
       "simulated_regular_match_count": 48,
       "leader_team_id": "ONIC",
       "leader_champion_probability": 0.3795,
-      "probability_sum": 0.9999999999999999
+      "probability_sum": 0.9999999999999999,
+      "match_accuracy": {
+        "evaluated_match_count": 24,
+        "correct_prediction_count": 15,
+        "incorrect_prediction_count": 9,
+        "match_accuracy": 0.625,
+        "brier_score": 0.2492792561822613,
+        "log_loss": 0.6898444420625044
+      }
     }
   ]
 }

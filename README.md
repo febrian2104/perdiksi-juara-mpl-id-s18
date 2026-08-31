@@ -270,6 +270,11 @@ global menggunakan besaran koefisien logistic terstandardisasi. Explainability m
 menampilkan kontribusi terhadap raw forward logit sebelum side-symmetry, kalibrasi Platt,
 dan Monte Carlo; kontribusi tersebut tidak boleh dibaca sebagai hubungan sebab-akibat.
 
+Tab Pertandingan mengevaluasi favorit pre-match terhadap pemenang aktual dengan status
+`Benar`, `Salah`, atau `Belum dimainkan`. Hasil yang sudah selesai dimasukkan setelah
+prediksi pre-match untuk memperbarui Elo dan form pertandingan berikutnya. Koefisien model
+final tidak dilatih ulang setiap week; training ulang penuh tetap menjadi proses terpisah.
+
 Dashboard dijalankan dengan `make dashboard`. Panduan update, training ulang, verifikasi,
 dan contoh penjadwalan lokal tersedia di `docs/OPERATIONS.md`.
 

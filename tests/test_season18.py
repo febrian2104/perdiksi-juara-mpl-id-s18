@@ -21,6 +21,7 @@ from mpl_predictor.models.explainability import (
 )
 from mpl_predictor.models.final import predict_match_probability, train_final_match_model
 from mpl_predictor.models.season18_predictions import (
+    build_match_accuracy_metrics,
     build_season18_prediction_windows,
     schedule_as_of_window,
 )
@@ -204,6 +205,29 @@ def test_final_model_is_symmetric_and_s18_results_are_fixed(final_simulation_inp
         .eq("current_as_of_state")
         .all()
     )
+    completed = probabilities.loc[probabilities["status"].eq("completed")]
+    scheduled = probabilities.loc[probabilities["status"].eq("scheduled")]
+    expected_correct = completed["predicted_winner_team_id"].eq(completed["winner_team_id"])
+    pd.testing.assert_series_equal(
+        completed["prediction_correct"].astype(bool),
+        expected_correct,
+        check_names=False,
+    )
+    assert set(completed["accuracy_status"]) == {"correct", "incorrect"}
+    assert completed["result_update_status"].eq(
+        "incorporated_after_pre_match_prediction"
+    ).all()
+    assert scheduled["prediction_correct"].isna().all()
+    assert scheduled["accuracy_status"].eq("pending_result").all()
+    assert scheduled["result_update_status"].eq("awaiting_result").all()
+
+    accuracy = build_match_accuracy_metrics(probabilities)
+    assert accuracy["evaluated_match_count"] == 24
+    assert accuracy["correct_prediction_count"] == int(expected_correct.sum())
+    assert accuracy["incorrect_prediction_count"] == int((~expected_correct).sum())
+    assert accuracy["match_accuracy"] == pytest.approx(expected_correct.mean())
+    assert 0 <= accuracy["brier_score"] <= 1
+    assert accuracy["log_loss"] > 0
 
 
 def test_season18_simulation_is_reproducible_and_normalized(final_simulation_inputs) -> None:
@@ -239,6 +263,11 @@ def test_explainability_and_dashboard_outputs_are_loadable(final_simulation_inpu
     assert local["match_id"].nunique() == 48
     assert local.groupby("match_id")["contribution_rank"].min().eq(1).all()
     assert missing == []
+    assert {
+        "prediction_correct",
+        "accuracy_status",
+        "result_update_status",
+    }.issubset(dashboard_data["matches"].columns)
     assert set(dashboard_data["predictions"]["snapshot_id"]) == {
         "S18_PRE",
         "S18_W01",
