@@ -11,6 +11,7 @@ class ProjectPaths:
     interim: Path
     processed: Path
     artifacts: Path
+    reports: Path
     figures: Path
 
 
@@ -23,5 +24,6 @@ def get_project_paths(root: Path | None = None) -> ProjectPaths:
         interim=project_root / "data" / "interim",
         processed=project_root / "data" / "processed",
         artifacts=project_root / "artifacts",
+        reports=project_root / "reports",
         figures=project_root / "reports" / "figures",
     )

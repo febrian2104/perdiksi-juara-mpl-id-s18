@@ -27,6 +27,9 @@ jobs:
       - name: Audit historical data
         run: mpl-predictor audit
 
+      - name: Audit historical semantics
+        run: mpl-predictor semantic-audit --output /tmp/semantic-audit.json
+
       - name: Lint
         run: ruff check .
 

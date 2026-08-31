@@ -1,0 +1,307 @@
+{
+  "row_counts": {
+    "teams": 150,
+    "matches": 1182,
+    "games": 3013,
+    "players": 1079,
+    "championships": 150,
+    "drafts": 35212,
+    "player_season_stats": 95
+  },
+  "summary": {
+    "error_count": 0,
+    "warning_count": 4,
+    "info_count": 1,
+    "passed_check_count": 13
+  },
+  "checks": [
+    {
+      "status": "pass",
+      "code": "team_identity_unique",
+      "count": 0,
+      "message": "Team IDs and team names must be unique within each season.",
+      "examples": []
+    },
+    {
+      "status": "pass",
+      "code": "match_id_unique",
+      "count": 0,
+      "message": "Match IDs must be globally unique.",
+      "examples": []
+    },
+    {
+      "status": "pass",
+      "code": "match_team_references",
+      "count": 0,
+      "message": "Every match team must exist in the same season's team table.",
+      "examples": []
+    },
+    {
+      "status": "pass",
+      "code": "match_dates_valid",
+      "count": 0,
+      "message": "Every match date must be parseable.",
+      "examples": []
+    },
+    {
+      "status": "pass",
+      "code": "match_winner_matches_score",
+      "count": 0,
+      "message": "Raw match winners must agree with the normalized winner derived from scores.",
+      "examples": []
+    },
+    {
+      "status": "pass",
+      "code": "game_key_unique",
+      "count": 0,
+      "message": "The match ID and game number pair must be unique.",
+      "examples": []
+    },
+    {
+      "status": "pass",
+      "code": "game_match_references",
+      "count": 0,
+      "message": "Every game must reference an existing match.",
+      "examples": []
+    },
+    {
+      "status": "pass",
+      "code": "game_teams_match_series",
+      "count": 0,
+      "message": "Game teams must match the teams in the referenced match.",
+      "examples": []
+    },
+    {
+      "status": "info",
+      "code": "split_date_matches",
+      "count": 1,
+      "message": "Some series span multiple dates; game dates are preserved instead of overwritten.",
+      "examples": [
+        {
+          "match_id": "S11-RS-054",
+          "game_number": 1,
+          "game_date": "2023-03-18T00:00:00",
+          "match_date": "2023-03-26T00:00:00"
+        }
+      ]
+    },
+    {
+      "status": "pass",
+      "code": "game_rows_match_series_score",
+      "count": 0,
+      "message": "The number of game rows must equal the sum of each match score.",
+      "examples": []
+    },
+    {
+      "status": "pass",
+      "code": "known_game_winners_match_score",
+      "count": 0,
+      "message": "When every game winner is known, their totals must equal the match score.",
+      "examples": []
+    },
+    {
+      "status": "pass",
+      "code": "championship_labels_consistent",
+      "count": 0,
+      "message": "Champion and runner-up flags must agree with final ranks one and two.",
+      "examples": []
+    },
+    {
+      "status": "pass",
+      "code": "player_roster_identity",
+      "count": 0,
+      "message": "Roster rows must have unique player/team pairs and valid team references.",
+      "examples": []
+    },
+    {
+      "status": "pass",
+      "code": "draft_game_references",
+      "count": 0,
+      "message": "Every non-aggregate draft row must reference an existing game.",
+      "examples": []
+    },
+    {
+      "status": "warning",
+      "code": "game_winner_partial",
+      "count": 1377,
+      "message": "Missing game winners remain null and are not inferred from match-level scores.",
+      "examples": []
+    },
+    {
+      "status": "warning",
+      "code": "game_duration_partial",
+      "count": 2583,
+      "message": "Game duration has partial season coverage and remains null when unavailable.",
+      "examples": []
+    },
+    {
+      "status": "warning",
+      "code": "draft_coverage_partial",
+      "count": 6,
+      "message": "Draft coverage is incomplete in some seasons; aggregate rows stay separate.",
+      "examples": []
+    },
+    {
+      "status": "warning",
+      "code": "player_stats_partial",
+      "count": 95,
+      "message": "Player statistics contain selected snapshots in 14 seasons, not full rosters.",
+      "examples": []
+    }
+  ],
+  "coverage_by_season": {
+    "1": {
+      "matches": 59,
+      "games": 124,
+      "games_with_winner": 88,
+      "games_with_duration": 0,
+      "games_with_draft": 124,
+      "roster_rows": 60,
+      "player_stat_rows": 0
+    },
+    "2": {
+      "matches": 55,
+      "games": 132,
+      "games_with_winner": 84,
+      "games_with_duration": 0,
+      "games_with_draft": 128,
+      "roster_rows": 57,
+      "player_stat_rows": 0
+    },
+    "3": {
+      "matches": 76,
+      "games": 181,
+      "games_with_winner": 121,
+      "games_with_duration": 0,
+      "games_with_draft": 181,
+      "roster_rows": 70,
+      "player_stat_rows": 0
+    },
+    "4": {
+      "matches": 64,
+      "games": 156,
+      "games_with_winner": 74,
+      "games_with_duration": 0,
+      "games_with_draft": 154,
+      "roster_rows": 67,
+      "player_stat_rows": 4
+    },
+    "5": {
+      "matches": 64,
+      "games": 156,
+      "games_with_winner": 76,
+      "games_with_duration": 0,
+      "games_with_draft": 156,
+      "roster_rows": 67,
+      "player_stat_rows": 5
+    },
+    "6": {
+      "matches": 64,
+      "games": 157,
+      "games_with_winner": 74,
+      "games_with_duration": 0,
+      "games_with_draft": 157,
+      "roster_rows": 59,
+      "player_stat_rows": 4
+    },
+    "7": {
+      "matches": 64,
+      "games": 158,
+      "games_with_winner": 74,
+      "games_with_duration": 0,
+      "games_with_draft": 158,
+      "roster_rows": 62,
+      "player_stat_rows": 6
+    },
+    "8": {
+      "matches": 64,
+      "games": 171,
+      "games_with_winner": 72,
+      "games_with_duration": 0,
+      "games_with_draft": 171,
+      "roster_rows": 59,
+      "player_stat_rows": 6
+    },
+    "9": {
+      "matches": 64,
+      "games": 167,
+      "games_with_winner": 78,
+      "games_with_duration": 0,
+      "games_with_draft": 167,
+      "roster_rows": 62,
+      "player_stat_rows": 7
+    },
+    "10": {
+      "matches": 64,
+      "games": 172,
+      "games_with_winner": 65,
+      "games_with_duration": 0,
+      "games_with_draft": 172,
+      "roster_rows": 61,
+      "player_stat_rows": 10
+    },
+    "11": {
+      "matches": 64,
+      "games": 174,
+      "games_with_winner": 69,
+      "games_with_duration": 0,
+      "games_with_draft": 174,
+      "roster_rows": 58,
+      "player_stat_rows": 9
+    },
+    "12": {
+      "matches": 80,
+      "games": 208,
+      "games_with_winner": 208,
+      "games_with_duration": 208,
+      "games_with_draft": 208,
+      "roster_rows": 64,
+      "player_stat_rows": 9
+    },
+    "13": {
+      "matches": 80,
+      "games": 216,
+      "games_with_winner": 80,
+      "games_with_duration": 10,
+      "games_with_draft": 10,
+      "roster_rows": 74,
+      "player_stat_rows": 19
+    },
+    "14": {
+      "matches": 80,
+      "games": 212,
+      "games_with_winner": 212,
+      "games_with_duration": 212,
+      "games_with_draft": 212,
+      "roster_rows": 68,
+      "player_stat_rows": 4
+    },
+    "15": {
+      "matches": 80,
+      "games": 217,
+      "games_with_winner": 73,
+      "games_with_duration": 0,
+      "games_with_draft": 0,
+      "roster_rows": 64,
+      "player_stat_rows": 4
+    },
+    "16": {
+      "matches": 80,
+      "games": 207,
+      "games_with_winner": 95,
+      "games_with_duration": 0,
+      "games_with_draft": 0,
+      "roster_rows": 64,
+      "player_stat_rows": 4
+    },
+    "17": {
+      "matches": 80,
+      "games": 205,
+      "games_with_winner": 93,
+      "games_with_duration": 0,
+      "games_with_draft": 0,
+      "roster_rows": 63,
+      "player_stat_rows": 4
+    }
+  }
+}

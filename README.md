@@ -10,9 +10,9 @@ dashboard agar hasil eksperimen dapat direproduksi.
   source yang tidak diubah oleh pipeline.
 - Season 1-3 tidak diwajibkan mempunyai `player_season_stats` karena merupakan era
   non-franchise.
-- CLI audit data, struktur package, dashboard awal, test, lint, dan CI telah disiapkan.
-- Pipeline cleaning, feature engineering, model, dan prediksi Season 18 merupakan tahap
-  pengembangan berikutnya.
+- Structural audit, semantic audit, dan pipeline normalisasi telah disiapkan.
+- Feature engineering, model, dan prediksi Season 18 merupakan tahap pengembangan
+  berikutnya.
 
 ## Menjalankan project
 
@@ -30,6 +30,8 @@ Sesudah environment terpasang dan aktif:
 
 ```bash
 mpl-predictor audit
+mpl-predictor semantic-audit
+mpl-predictor normalize
 python -m pytest
 ruff check .
 streamlit run src/mpl_predictor/dashboard.py
@@ -39,6 +41,8 @@ Perintah yang sama tersedia melalui `Makefile`:
 
 ```bash
 make audit
+make semantic-audit
+make normalize
 make test
 make lint
 make dashboard
@@ -50,10 +54,12 @@ make dashboard
 .
 ├── data/
 │   ├── mpl-season1/ ... mpl-season17/  # CSV historis asli
-│   ├── interim/                         # hasil normalisasi sementara
+│   ├── interim/normalized/              # tujuh tabel Parquet hasil normalisasi
 │   └── processed/                       # feature table siap model
 ├── artifacts/                           # model, encoder, dan metadata training
-├── reports/figures/                     # visualisasi hasil analisis
+├── reports/
+│   ├── semantic_audit.json              # temuan audit dan coverage per musim
+│   └── figures/                         # visualisasi hasil analisis
 ├── src/mpl_predictor/
 │   ├── data/                            # discovery, contract, dan audit data
 │   ├── cli.py
@@ -80,9 +86,9 @@ oleh pipeline dan tidak disimpan di Git, kecuali file `.gitkeep`.
 
 ## Urutan pengembangan
 
-1. Audit dan data contract.
-2. Normalisasi nilai dan identitas tim/pemain.
-3. Pembuatan canonical dataset.
+1. Structural dan semantic data audit. **Selesai.**
+2. Normalisasi nilai dan referensi tim dalam musim. **Selesai.**
+3. Pemetaan identitas organisasi/franchise dan pemain lintas musim.
 4. EDA dan laporan kualitas data.
 5. Pembuatan snapshot berdasarkan prediction cutoff.
 6. Feature engineering performa tim dan roster.
