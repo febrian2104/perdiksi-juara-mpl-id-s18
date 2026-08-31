@@ -1,0 +1,36 @@
+source_team_id,start_season,end_season,organization_id,organization_name,franchise_slot_id,mapping_basis,evidence_url
+NXL,1,1,NXL,Team NXL,,non_franchise,
+EVOS,1,3,EVOS,EVOS Esports,,non_franchise,
+EVOS,4,17,EVOS,EVOS,MPLID_SLOT_EVOS,stable_membership,
+RRQ,1,3,RRQ,RRQ,,non_franchise,
+RRQ,4,17,RRQ,RRQ,MPLID_SLOT_RRQ,stable_membership,
+BTR,1,3,BTR,Bigetron Esports,,non_franchise,
+BTR,4,17,BTR,Bigetron Esports,MPLID_SLOT_BIGETRON,stable_membership,
+REV,1,1,REV,Team Rev Indo,,non_franchise,
+E8,1,1,E8,Elite 8 Critical Reborn,,non_franchise,
+LVR,1,3,LVR,Louvre Esports,,non_franchise,
+STJ,1,1,STJ,Saints Indo 2,,non_franchise,
+PES,1,1,PES,Pandora Esports,,non_franchise,
+DH,1,1,DH,Domino's Hunters,,non_franchise,
+ONIC,2,3,ONIC,ONIC Esports,,non_franchise,
+ONIC,4,17,ONIC,ONIC Esports,MPLID_SLOT_ONIC,stable_membership,
+AWR,2,3,AEROWOLF,Aerowolf,,non_franchise,
+STID,2,3,STID,Saints Indo,,non_franchise,
+SFI,2,3,SFI,SFI Esports,,non_franchise,
+BOOM,2,2,BOOM,Boom JR,,non_franchise,
+CAP,2,2,CAP,Team Capcorn,,non_franchise,
+AE,3,3,AE,Alter Ego Esports,,non_franchise,
+AE,4,17,AE,Alter Ego Esports,MPLID_SLOT_ALTER_EGO,stable_membership,
+AURA,3,3,AURA,AURA Esports,,non_franchise,
+AURA,4,12,AURA,AURA Esports,MPLID_SLOT_AURA_LIQUID,stable_membership,
+PRIME,3,3,PRIME,The Prime,,non_franchise,
+STAR8,3,3,STAR8,Star8 Esports,,non_franchise,
+GFLX,4,7,AEROWOLF,Aerowolf,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,stable_membership,
+GEEK,4,17,GEEK,Geek Fam,MPLID_SLOT_GEEK,stable_membership,
+RBG,8,8,RBL,Rebellion Esports,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,verified_slot_rebrand,https://www.oneesports.id/mobile-legends/moonton-rebellion-genflix/
+RBL,9,14,RBL,Rebellion Esports,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,stable_membership,
+DEWA,12,17,DEWA,Dewa United Esports,MPLID_SLOT_DEWA,stable_membership,
+FNOC,13,14,ONIC,ONIC Esports,MPLID_SLOT_ONIC,verified_partnership,https://fnatic.com/community/4427-fnatic-partners-with-onic-esports
+TLID,13,17,TLID,Team Liquid ID,MPLID_SLOT_AURA_LIQUID,verified_acquisition,https://teamliquid.com/id/articles/the-5-steps-of-recovering-from-mobile-esports-denial
+NAVI,15,17,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,verified_acquisition,https://navi.gg/en/publications/navi-enters-mlbb
+

@@ -1,0 +1,14 @@
+{
+  "team_season_rows": 150,
+  "mapped_team_season_rows": 150,
+  "organization_count": 25,
+  "franchise_slot_count": 9,
+  "franchise_rows_without_slot": 0,
+  "pre_franchise_rows_with_slot": 0,
+  "player_identity_count": 375,
+  "player_alias_group_count": 84,
+  "player_review_required_count": 6,
+  "ambiguous_same_season_player_count": 0,
+  "unmapped_roster_player_count": 0,
+  "unmapped_player_stat_count": 0
+}

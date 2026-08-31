@@ -1,4 +1,4 @@
-.PHONY: setup audit semantic-audit normalize test lint format dashboard
+.PHONY: setup audit semantic-audit normalize canonicalize test lint format dashboard
 
 setup:
 	python3 -m venv .venv
@@ -14,6 +14,9 @@ semantic-audit:
 
 normalize:
 	.venv/bin/mpl-predictor normalize
+
+canonicalize:
+	.venv/bin/mpl-predictor canonicalize
 
 test:
 	.venv/bin/python -m pytest

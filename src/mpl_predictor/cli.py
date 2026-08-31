@@ -5,6 +5,14 @@ from pathlib import Path
 
 from mpl_predictor.config import get_project_paths
 from mpl_predictor.data.audit import AuditReport, audit_data
+from mpl_predictor.data.identity import (
+    build_canonical_tables,
+    identity_summary,
+    load_player_alias_overrides,
+    load_team_identity_rules,
+    write_canonical_tables,
+    write_identity_summary,
+)
 from mpl_predictor.data.normalization import normalize_tables, write_normalized_tables
 from mpl_predictor.data.semantic_audit import (
     SemanticAuditReport,
@@ -48,6 +56,15 @@ def _build_parser() -> argparse.ArgumentParser:
     normalize_parser.add_argument("--data-dir", type=Path, default=None)
     normalize_parser.add_argument("--output-dir", type=Path, default=None)
     normalize_parser.add_argument("--report", type=Path, default=None)
+
+    canonical_parser = subparsers.add_parser(
+        "canonicalize", help="Build canonical team, player, and historical tables."
+    )
+    canonical_parser.add_argument("--data-dir", type=Path, default=None)
+    canonical_parser.add_argument("--rules", type=Path, default=None)
+    canonical_parser.add_argument("--player-aliases", type=Path, default=None)
+    canonical_parser.add_argument("--output-dir", type=Path, default=None)
+    canonical_parser.add_argument("--report", type=Path, default=None)
     return parser
 
 
@@ -118,6 +135,48 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Semantic errors: {len(report.errors)}")
         print(f"Semantic warnings: {len(report.warnings)}")
         return int(bool(report.errors))
+
+    if args.command == "canonicalize":
+        paths = get_project_paths()
+        data_dir = (args.data_dir or paths.data).resolve()
+        rules_path = (args.rules or paths.root / "config" / "team_identity_rules.csv").resolve()
+        player_alias_path = (
+            args.player_aliases or paths.root / "config" / "player_alias_overrides.csv"
+        ).resolve()
+        output_dir = (args.output_dir or paths.processed / "canonical").resolve()
+        report_path = (args.report or paths.reports / "identity_mapping_summary.json").resolve()
+
+        normalized_tables = normalize_tables(data_dir)
+        semantic_report = audit_semantics(normalized_tables)
+        if semantic_report.errors:
+            print("Canonicalization stopped because semantic audit errors were found.")
+            return 1
+
+        rules = load_team_identity_rules(rules_path)
+        player_aliases = load_player_alias_overrides(player_alias_path)
+        canonical_tables = build_canonical_tables(normalized_tables, rules, player_aliases)
+        summary = identity_summary(canonical_tables)
+        outputs = write_canonical_tables(canonical_tables, output_dir)
+        write_identity_summary(summary, report_path)
+
+        blocking_fields = (
+            "franchise_rows_without_slot",
+            "pre_franchise_rows_with_slot",
+            "ambiguous_same_season_player_count",
+            "unmapped_roster_player_count",
+            "unmapped_player_stat_count",
+        )
+        blocking_count = sum(int(summary[field]) for field in blocking_fields)
+        print(f"Canonical tables: {len(outputs)}")
+        print(f"Team-season identities: {summary['team_season_rows']}")
+        print(f"Organizations: {summary['organization_count']}")
+        print(f"Franchise slots: {summary['franchise_slot_count']}")
+        print(f"Player identities: {summary['player_identity_count']}")
+        print(f"Player aliases: {summary['player_alias_group_count']}")
+        print(f"Player identities requiring review: {summary['player_review_required_count']}")
+        print(f"Output directory: {output_dir}")
+        print(f"Identity report: {report_path}")
+        return int(blocking_count > 0)
 
     parser.error(f"Unknown command: {args.command}")
     return 2

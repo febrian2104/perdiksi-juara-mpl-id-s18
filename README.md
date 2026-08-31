@@ -10,9 +10,10 @@ dashboard agar hasil eksperimen dapat direproduksi.
   source yang tidak diubah oleh pipeline.
 - Season 1-3 tidak diwajibkan mempunyai `player_season_stats` karena merupakan era
   non-franchise.
-- Structural audit, semantic audit, dan pipeline normalisasi telah disiapkan.
-- Feature engineering, model, dan prediksi Season 18 merupakan tahap pengembangan
-  berikutnya.
+- Structural audit, semantic audit, normalisasi, pemetaan identitas, dan canonical dataset
+  telah disiapkan.
+- Laporan kualitas, EDA, feature engineering, model, dan prediksi Season 18 merupakan
+  tahap pengembangan berikutnya.
 
 ## Menjalankan project
 
@@ -32,6 +33,7 @@ Sesudah environment terpasang dan aktif:
 mpl-predictor audit
 mpl-predictor semantic-audit
 mpl-predictor normalize
+mpl-predictor canonicalize
 python -m pytest
 ruff check .
 streamlit run src/mpl_predictor/dashboard.py
@@ -43,6 +45,7 @@ Perintah yang sama tersedia melalui `Makefile`:
 make audit
 make semantic-audit
 make normalize
+make canonicalize
 make test
 make lint
 make dashboard
@@ -55,10 +58,11 @@ make dashboard
 ├── data/
 │   ├── mpl-season1/ ... mpl-season17/  # CSV historis asli
 │   ├── interim/normalized/              # tujuh tabel Parquet hasil normalisasi
-│   └── processed/                       # feature table siap model
+│   └── processed/canonical/             # tabel canonical tim, pemain, dan pertandingan
 ├── artifacts/                           # model, encoder, dan metadata training
 ├── reports/
 │   ├── semantic_audit.json              # temuan audit dan coverage per musim
+│   ├── identity_mapping_summary.json     # ringkasan mapping tim dan pemain
 │   └── figures/                         # visualisasi hasil analisis
 ├── src/mpl_predictor/
 │   ├── data/                            # discovery, contract, dan audit data
@@ -74,6 +78,18 @@ make dashboard
 Isi `data/interim`, `data/processed`, `artifacts`, dan `reports/figures` dihasilkan ulang
 oleh pipeline dan tidak disimpan di Git, kecuali file `.gitkeep`.
 
+## Kebijakan identitas
+
+- `team_id` mewakili nama tim pada satu musim.
+- `organization_id` menghubungkan organisasi atau brand lintas musim.
+- `franchise_slot_id` hanya digunakan mulai Season 4 dan tetap sama ketika slot berganti
+  brand atau pemilik.
+- Aturan tim tersimpan di `config/team_identity_rules.csv` beserta dasar dan sumbernya.
+- Alias pemain otomatis hanya mengabaikan kapitalisasi, spasi, dan tanda baca. Perubahan
+  ejaan lain harus tercatat eksplisit di `config/player_alias_overrides.csv`.
+- Nickname pendek atau ambigu ditandai `identity_review_required` dan dapat dikeluarkan
+  dari fitur pemain sampai diverifikasi.
+
 ## Prinsip pengembangan
 
 1. Raw CSV tidak diedit langsung.
@@ -88,14 +104,15 @@ oleh pipeline dan tidak disimpan di Git, kecuali file `.gitkeep`.
 
 1. Structural dan semantic data audit. **Selesai.**
 2. Normalisasi nilai dan referensi tim dalam musim. **Selesai.**
-3. Pemetaan identitas organisasi/franchise dan pemain lintas musim.
-4. EDA dan laporan kualitas data.
-5. Pembuatan snapshot berdasarkan prediction cutoff.
-6. Feature engineering performa tim dan roster.
-7. Baseline Elo dan model pertandingan.
-8. Walk-forward backtesting.
-9. Kalibrasi probabilitas dan pemilihan model.
-10. Simulasi regular season dan playoff.
-11. Integrasi tim serta roster Season 18.
-12. Dashboard prediksi pramusim dan mingguan.
-13. Otomatisasi test, training, dan pembaruan prediksi.
+3. Pemetaan identitas organisasi/franchise dan pemain lintas musim. **Selesai.**
+4. Pembuatan canonical dataset. **Selesai.**
+5. EDA dan laporan kualitas data.
+6. Pembuatan snapshot berdasarkan prediction cutoff.
+7. Feature engineering performa tim dan roster.
+8. Baseline Elo dan model pertandingan.
+9. Walk-forward backtesting.
+10. Kalibrasi probabilitas dan pemilihan model.
+11. Simulasi regular season dan playoff.
+12. Integrasi tim serta roster Season 18.
+13. Dashboard prediksi pramusim dan mingguan.
+14. Otomatisasi test, training, dan pembaruan prediksi.

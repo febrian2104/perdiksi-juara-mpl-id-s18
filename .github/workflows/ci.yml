@@ -30,6 +30,12 @@ jobs:
       - name: Audit historical semantics
         run: mpl-predictor semantic-audit --output /tmp/semantic-audit.json
 
+      - name: Validate canonical identities
+        run: |
+          mpl-predictor canonicalize \
+            --output-dir /tmp/mpl-canonical \
+            --report /tmp/identity-mapping-summary.json
+
       - name: Lint
         run: ruff check .
 
