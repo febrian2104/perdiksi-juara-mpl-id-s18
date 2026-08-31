@@ -258,6 +258,10 @@ dan Monte Carlo; kontribusi tersebut tidak boleh dibaca sebagai hubungan sebab-a
 Dashboard dijalankan dengan `make dashboard`. Panduan update, training ulang, verifikasi,
 dan contoh penjadwalan lokal tersedia di `docs/OPERATIONS.md`.
 
+Untuk Streamlit Community Cloud, gunakan main file path `streamlit_app.py`. Entry point ini
+menambahkan folder `src` ke import path sebelum memuat dashboard, sehingga package
+`mpl_predictor` dapat ditemukan tanpa instalasi editable.
+
 ## Prinsip pengembangan
 
 1. Raw CSV tidak diedit langsung.

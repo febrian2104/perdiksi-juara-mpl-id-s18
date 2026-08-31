@@ -63,6 +63,16 @@ Dashboard membaca output Parquet terbaru dan tidak melakukan training atau downl
 ketika halaman dibuka. Jika output belum lengkap, dashboard menampilkan command pembaruan
 yang perlu dijalankan.
 
+Untuk deployment Streamlit Community Cloud, isi **Main file path** dengan:
+
+```text
+streamlit_app.py
+```
+
+Jangan gunakan `src/mpl_predictor/dashboard.py` sebagai entry point cloud karena repository
+memakai layout `src` dan package belum berada pada import path saat file tersebut dijalankan
+langsung.
+
 ## Keluaran utama
 
 - `data/season18/`: tim, riwayat roster bertanggal, jadwal, dan hasil resmi.
