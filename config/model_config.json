@@ -1,0 +1,45 @@
+{
+  "model_version": "1.0",
+  "evaluation": {
+    "start_season": 8,
+    "ece_bins": 10,
+    "probability_tolerance": 1e-09
+  },
+  "logistic_regression": {
+    "C": 0.5,
+    "max_iter": 3000,
+    "solver": "lbfgs"
+  },
+  "calibration": {
+    "minimum_base_seasons": 2,
+    "temperature_min": 0.25,
+    "temperature_max": 4.0
+  },
+  "match_model": {
+    "symmetric_training_augmentation": true,
+    "feature_columns": [
+      "elo_rating_diff",
+      "current_matches_diff",
+      "current_match_win_rate_diff",
+      "current_game_win_rate_diff",
+      "current_game_diff_per_match_diff",
+      "current_form_3_diff",
+      "current_form_5_diff",
+      "current_sos_elo_avg_diff",
+      "prior_regular_match_win_rate_diff",
+      "prior_regular_game_win_rate_diff",
+      "prior_regular_game_diff_per_match_diff",
+      "prior_3_season_match_win_rate_diff",
+      "prior_3_season_game_win_rate_diff",
+      "prior_3_season_game_diff_per_match_diff",
+      "rest_days_diff"
+    ]
+  },
+  "champion_model": {
+    "separate_preseason_and_weekly_models": true,
+    "weekly_completed_week_feature": true,
+    "class_weight": "balanced",
+    "season_weighting": "equal_team_season_weight"
+  }
+}
+

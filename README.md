@@ -15,8 +15,10 @@ dashboard agar hasil eksperimen dapat direproduksi.
 - Definisi serta cutoff historis prediksi pramusim dan mingguan sudah ditetapkan.
 - Snapshot feature table, fitur performa tim, Elo, strength of schedule, roster lagged,
   dan baseline probabilitas sudah tersedia.
-- Model pertandingan, backtest model, simulasi, dan prediksi Season 18 merupakan tahap
-  pengembangan berikutnya.
+- Model probabilitas kemenangan match, walk-forward backtest pramusim/mingguan, dan
+  evaluasi kalibrasi sudah tersedia.
+- Pemilihan model final, simulasi, dan prediksi Season 18 merupakan tahap pengembangan
+  berikutnya.
 
 ## Menjalankan project
 
@@ -42,6 +44,8 @@ mpl-predictor eda
 mpl-predictor prediction-policy
 mpl-predictor build-features
 mpl-predictor baseline
+mpl-predictor build-match-features
+mpl-predictor backtest
 python -m pytest
 ruff check .
 streamlit run src/mpl_predictor/dashboard.py
@@ -56,6 +60,7 @@ make normalize
 make canonicalize
 make analysis
 make modeling
+make models
 make test
 make lint
 make dashboard
@@ -70,8 +75,8 @@ make dashboard
 │   ├── interim/normalized/              # tujuh tabel Parquet hasil normalisasi
 │   └── processed/
 │       ├── canonical/                   # tabel canonical tim, pemain, dan pertandingan
-│       ├── features/                    # snapshot feature table
-│       └── predictions/                 # keluaran baseline/model
+│       ├── features/                    # snapshot dan pre-match feature table
+│       └── predictions/                 # baseline dan prediksi walk-forward
 ├── artifacts/                           # model, encoder, dan metadata training
 ├── reports/
 │   ├── semantic_audit.json              # temuan audit dan coverage per musim
@@ -82,6 +87,8 @@ make dashboard
 │   ├── prediction_windows.csv            # snapshot historis pramusim/mingguan
 │   ├── feature_engineering_report.json   # validasi cutoff dan coverage fitur
 │   ├── baseline_report.json              # evaluasi baseline uniform dan Elo
+│   ├── match_feature_report.json         # kualitas fitur pre-match
+│   ├── model_evaluation_report.json      # ranking, probabilitas, dan kalibrasi
 │   └── figures/                         # visualisasi hasil analisis
 ├── src/mpl_predictor/
 │   ├── analysis/                        # kualitas data, EDA, dan timing prediksi
@@ -167,6 +174,29 @@ chronological Season 8-17 mencakup 93 snapshot. Dibanding uniform, Elo memperbai
 multiclass log loss sekitar 21,94% dan Brier score sekitar 15,15%. Nilai ini hanya baseline,
 bukan prediksi final Season 18.
 
+## Model dan walk-forward backtest
+
+Model match memakai logistic regression pada 15 fitur selisih team A–team B. Training
+ditambah dengan orientasi pertandingan terbalik agar prediksi hampir simetris dan tidak
+bergantung pada urutan nama tim. Feature table mencakup 992 match Season 4-17.
+
+Backtest menggunakan outer fold per musim. Untuk target Season S:
+
+- model hanya dilatih dari Season `< S`;
+- kalibrasi hanya memakai prediksi out-of-fold dari musim sebelum S;
+- model champion pramusim dan mingguan dipisah;
+- model mingguan menerima `completed_week`, tetapi tidak menerima hasil setelah cutoff;
+- probabilitas champion dinormalisasi agar berjumlah 1 pada setiap snapshot.
+
+Pada 736 match evaluasi Season 8-17, model match terkalibrasi mencapai log loss 0,6325,
+Brier score 0,2205, ROC-AUC 0,7007, accuracy 66,17%, dan ECE 0,0416. Kalibrasi Platt
+memperbaiki log loss model match sekitar 0,61%.
+
+Temperature calibration memperbaiki log loss snapshot logistic dari 2,2610 menjadi
+1,7323 atau sekitar 23,39%. Namun Elo tetap lebih baik dengan log loss 1,6816, mean rank
+juara 2,01, top-1 49,46%, dan top-3 86,02%. Karena itu model logistic belum menggantikan
+Elo sebagai kandidat utama; keputusan final dilakukan bersama hasil simulasi berikutnya.
+
 ## Prinsip pengembangan
 
 1. Raw CSV tidak diedit langsung.
@@ -194,9 +224,9 @@ bukan prediksi final Season 18.
 13. Fitur roster lagged dan dukungan roster temporal. **Selesai; fitur current-roster
     menunggu data waktu efektif.**
 14. Baseline probabilitas uniform dan Elo. **Selesai.**
-15. Model probabilitas kemenangan pertandingan.
-16. Walk-forward backtesting pramusim dan per minggu.
-17. Evaluasi ranking, probabilitas, dan kalibrasi.
+15. Model probabilitas kemenangan pertandingan. **Selesai.**
+16. Walk-forward backtesting pramusim dan per minggu. **Selesai.**
+17. Evaluasi ranking, probabilitas, dan kalibrasi. **Selesai.**
 18. Pemilihan serta training model final.
 19. Simulasi regular season dan playoff untuk probabilitas juara.
 20. Integrasi tim, roster bertanggal, jadwal, dan hasil Season 18.

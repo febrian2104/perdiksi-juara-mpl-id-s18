@@ -1,0 +1,1354 @@
+{
+  "report_version": "1.0",
+  "model_version": "1.0",
+  "evaluation_scope": {
+    "start_season": 8,
+    "end_season": 17,
+    "match_count": 736,
+    "snapshot_count": 93,
+    "team_snapshot_count": 803
+  },
+  "leakage_policy": {
+    "outer_fold": "Target season S hanya dilatih dari season < S.",
+    "calibration": "Calibrator hanya memakai prediksi out-of-fold dari season sebelum target.",
+    "snapshot_alignment": "Model pramusim dan mingguan dipisah; model mingguan memakai completed_week."
+  },
+  "probability_validation": {
+    "snapshot_model_group_count": 372,
+    "invalid_probability_sum_count": 0,
+    "tolerance": 1e-09
+  },
+  "match_model": {
+    "features": [
+      "elo_rating_diff",
+      "current_matches_diff",
+      "current_match_win_rate_diff",
+      "current_game_win_rate_diff",
+      "current_game_diff_per_match_diff",
+      "current_form_3_diff",
+      "current_form_5_diff",
+      "current_sos_elo_avg_diff",
+      "prior_regular_match_win_rate_diff",
+      "prior_regular_game_win_rate_diff",
+      "prior_regular_game_diff_per_match_diff",
+      "prior_3_season_match_win_rate_diff",
+      "prior_3_season_game_win_rate_diff",
+      "prior_3_season_game_diff_per_match_diff",
+      "rest_days_diff"
+    ],
+    "overall_metrics": [
+      {
+        "model_name": "match_logistic_calibrated",
+        "match_count": 736,
+        "log_loss": 0.632517,
+        "brier_score": 0.220528,
+        "roc_auc": 0.700663,
+        "accuracy": 0.661685,
+        "ece": 0.041555,
+        "calibration_intercept": 0.140238,
+        "calibration_slope": 1.051391
+      },
+      {
+        "model_name": "match_logistic_raw",
+        "match_count": 736,
+        "log_loss": 0.636386,
+        "brier_score": 0.221109,
+        "roc_auc": 0.701606,
+        "accuracy": 0.661685,
+        "ece": 0.051025,
+        "calibration_intercept": 0.138921,
+        "calibration_slope": 0.750056
+      }
+    ],
+    "metrics_by_stage": [
+      {
+        "model_name": "match_logistic_calibrated",
+        "stage": "playoffs",
+        "match_count": 80,
+        "log_loss": 0.594088,
+        "brier_score": 0.203622,
+        "roc_auc": 0.734667,
+        "accuracy": 0.6625,
+        "ece": 0.123105
+      },
+      {
+        "model_name": "match_logistic_calibrated",
+        "stage": "regular_season",
+        "match_count": 656,
+        "log_loss": 0.637203,
+        "brier_score": 0.22259,
+        "roc_auc": 0.694842,
+        "accuracy": 0.661585,
+        "ece": 0.037448
+      },
+      {
+        "model_name": "match_logistic_raw",
+        "stage": "playoffs",
+        "match_count": 80,
+        "log_loss": 0.576287,
+        "brier_score": 0.198055,
+        "roc_auc": 0.728,
+        "accuracy": 0.6625,
+        "ece": 0.110414
+      },
+      {
+        "model_name": "match_logistic_raw",
+        "stage": "regular_season",
+        "match_count": 656,
+        "log_loss": 0.643715,
+        "brier_score": 0.223921,
+        "roc_auc": 0.696212,
+        "accuracy": 0.661585,
+        "ece": 0.060309
+      }
+    ],
+    "calibration_log_loss_improvement_pct": 0.608,
+    "folds": [
+      {
+        "target_season": 8,
+        "training_season_min": 4,
+        "training_season_max": 7,
+        "training_match_count": 256,
+        "test_match_count": 64,
+        "calibration_seasons": [
+          6,
+          7
+        ],
+        "calibration_observation_count": 256,
+        "mean_symmetry_error": 6.92624e-05,
+        "max_symmetry_error": 0.000556633
+      },
+      {
+        "target_season": 9,
+        "training_season_min": 4,
+        "training_season_max": 8,
+        "training_match_count": 320,
+        "test_match_count": 64,
+        "calibration_seasons": [
+          6,
+          7,
+          8
+        ],
+        "calibration_observation_count": 384,
+        "mean_symmetry_error": 4.84328e-05,
+        "max_symmetry_error": 0.0003140236
+      },
+      {
+        "target_season": 10,
+        "training_season_min": 4,
+        "training_season_max": 9,
+        "training_match_count": 384,
+        "test_match_count": 64,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "calibration_observation_count": 512,
+        "mean_symmetry_error": 5.2488e-06,
+        "max_symmetry_error": 5.63815e-05
+      },
+      {
+        "target_season": 11,
+        "training_season_min": 4,
+        "training_season_max": 10,
+        "training_match_count": 448,
+        "test_match_count": 64,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "calibration_observation_count": 640,
+        "mean_symmetry_error": 1.24936e-05,
+        "max_symmetry_error": 0.000160011
+      },
+      {
+        "target_season": 12,
+        "training_season_min": 4,
+        "training_season_max": 11,
+        "training_match_count": 512,
+        "test_match_count": 80,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "calibration_observation_count": 768,
+        "mean_symmetry_error": 6.21207e-05,
+        "max_symmetry_error": 0.0002261425
+      },
+      {
+        "target_season": 13,
+        "training_season_min": 4,
+        "training_season_max": 12,
+        "training_match_count": 592,
+        "test_match_count": 80,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "calibration_observation_count": 928,
+        "mean_symmetry_error": 5.70526e-05,
+        "max_symmetry_error": 0.0002165262
+      },
+      {
+        "target_season": 14,
+        "training_season_min": 4,
+        "training_season_max": 13,
+        "training_match_count": 672,
+        "test_match_count": 80,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "calibration_observation_count": 1088,
+        "mean_symmetry_error": 1.24882e-05,
+        "max_symmetry_error": 2.05592e-05
+      },
+      {
+        "target_season": 15,
+        "training_season_min": 4,
+        "training_season_max": 14,
+        "training_match_count": 752,
+        "test_match_count": 80,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "calibration_observation_count": 1248,
+        "mean_symmetry_error": 3.1614e-05,
+        "max_symmetry_error": 0.0003178775
+      },
+      {
+        "target_season": 16,
+        "training_season_min": 4,
+        "training_season_max": 15,
+        "training_match_count": 832,
+        "test_match_count": 80,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "calibration_observation_count": 1408,
+        "mean_symmetry_error": 3.5369e-06,
+        "max_symmetry_error": 2.92846e-05
+      },
+      {
+        "target_season": 17,
+        "training_season_min": 4,
+        "training_season_max": 16,
+        "training_match_count": 912,
+        "test_match_count": 80,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "calibration_observation_count": 1568,
+        "mean_symmetry_error": 2.11438e-05,
+        "max_symmetry_error": 0.0002079199
+      }
+    ]
+  },
+  "champion_snapshot_model": {
+    "overall_metrics": [
+      {
+        "model_name": "elo_strength",
+        "snapshot_count": 93,
+        "mean_champion_probability": 0.196317,
+        "multiclass_log_loss": 1.681593,
+        "multiclass_brier_score": 0.749912,
+        "mean_champion_rank": 2.010753,
+        "mean_reciprocal_rank": 0.692413,
+        "top_1_accuracy": 0.494624,
+        "top_3_accuracy": 0.860215
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "snapshot_count": 93,
+        "mean_champion_probability": 0.23148,
+        "multiclass_log_loss": 1.732281,
+        "multiclass_brier_score": 0.804225,
+        "mean_champion_rank": 2.354839,
+        "mean_reciprocal_rank": 0.576907,
+        "top_1_accuracy": 0.322581,
+        "top_3_accuracy": 0.83871
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "snapshot_count": 93,
+        "mean_champion_probability": 0.302066,
+        "multiclass_log_loss": 2.261034,
+        "multiclass_brier_score": 0.998058,
+        "mean_champion_rank": 2.354839,
+        "mean_reciprocal_rank": 0.576907,
+        "top_1_accuracy": 0.322581,
+        "top_3_accuracy": 0.83871
+      },
+      {
+        "model_name": "uniform",
+        "snapshot_count": 93,
+        "mean_champion_probability": 0.116189,
+        "multiclass_log_loss": 2.154164,
+        "multiclass_brier_score": 0.883811,
+        "mean_champion_rank": 4.817204,
+        "mean_reciprocal_rank": 0.208124,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      }
+    ],
+    "metrics_by_prediction_type": [
+      {
+        "model_name": "elo_strength",
+        "prediction_type": "preseason",
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.183317,
+        "multiclass_log_loss": 1.744754,
+        "multiclass_brier_score": 0.770563,
+        "mean_champion_rank": 2.2,
+        "mean_reciprocal_rank": 0.641667,
+        "top_1_accuracy": 0.4,
+        "top_3_accuracy": 0.8
+      },
+      {
+        "model_name": "elo_strength",
+        "prediction_type": "weekly",
+        "snapshot_count": 83,
+        "mean_champion_probability": 0.197884,
+        "multiclass_log_loss": 1.673984,
+        "multiclass_brier_score": 0.747424,
+        "mean_champion_rank": 1.987952,
+        "mean_reciprocal_rank": 0.698527,
+        "top_1_accuracy": 0.506024,
+        "top_3_accuracy": 0.86747
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "prediction_type": "preseason",
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.20722,
+        "multiclass_log_loss": 1.819024,
+        "multiclass_brier_score": 0.811469,
+        "mean_champion_rank": 3.0,
+        "mean_reciprocal_rank": 0.522619,
+        "top_1_accuracy": 0.3,
+        "top_3_accuracy": 0.7
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "prediction_type": "weekly",
+        "snapshot_count": 83,
+        "mean_champion_probability": 0.234402,
+        "multiclass_log_loss": 1.72183,
+        "multiclass_brier_score": 0.803353,
+        "mean_champion_rank": 2.277108,
+        "mean_reciprocal_rank": 0.583448,
+        "top_1_accuracy": 0.325301,
+        "top_3_accuracy": 0.855422
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "prediction_type": "preseason",
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.264755,
+        "multiclass_log_loss": 2.217099,
+        "multiclass_brier_score": 0.968784,
+        "mean_champion_rank": 3.0,
+        "mean_reciprocal_rank": 0.522619,
+        "top_1_accuracy": 0.3,
+        "top_3_accuracy": 0.7
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "prediction_type": "weekly",
+        "snapshot_count": 83,
+        "mean_champion_probability": 0.306561,
+        "multiclass_log_loss": 2.266328,
+        "multiclass_brier_score": 1.001585,
+        "mean_champion_rank": 2.277108,
+        "mean_reciprocal_rank": 0.583448,
+        "top_1_accuracy": 0.325301,
+        "top_3_accuracy": 0.855422
+      },
+      {
+        "model_name": "uniform",
+        "prediction_type": "preseason",
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.116667,
+        "multiclass_log_loss": 2.150111,
+        "multiclass_brier_score": 0.883333,
+        "mean_champion_rank": 4.8,
+        "mean_reciprocal_rank": 0.208889,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      },
+      {
+        "model_name": "uniform",
+        "prediction_type": "weekly",
+        "snapshot_count": 83,
+        "mean_champion_probability": 0.116131,
+        "multiclass_log_loss": 2.154652,
+        "multiclass_brier_score": 0.883869,
+        "mean_champion_rank": 4.819277,
+        "mean_reciprocal_rank": 0.208032,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      }
+    ],
+    "weekly_metrics_by_completed_week": [
+      {
+        "model_name": "elo_strength",
+        "completed_week": 1,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.184356,
+        "multiclass_log_loss": 1.749466,
+        "multiclass_brier_score": 0.771484,
+        "mean_champion_rank": 2.6,
+        "mean_reciprocal_rank": 0.619444,
+        "top_1_accuracy": 0.4,
+        "top_3_accuracy": 0.8
+      },
+      {
+        "model_name": "elo_strength",
+        "completed_week": 2,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.192136,
+        "multiclass_log_loss": 1.712147,
+        "multiclass_brier_score": 0.758994,
+        "mean_champion_rank": 2.0,
+        "mean_reciprocal_rank": 0.695,
+        "top_1_accuracy": 0.5,
+        "top_3_accuracy": 0.8
+      },
+      {
+        "model_name": "elo_strength",
+        "completed_week": 3,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.189789,
+        "multiclass_log_loss": 1.718345,
+        "multiclass_brier_score": 0.761929,
+        "mean_champion_rank": 1.9,
+        "mean_reciprocal_rank": 0.67,
+        "top_1_accuracy": 0.4,
+        "top_3_accuracy": 0.9
+      },
+      {
+        "model_name": "elo_strength",
+        "completed_week": 4,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.197081,
+        "multiclass_log_loss": 1.681755,
+        "multiclass_brier_score": 0.748764,
+        "mean_champion_rank": 2.1,
+        "mean_reciprocal_rank": 0.636667,
+        "top_1_accuracy": 0.4,
+        "top_3_accuracy": 0.9
+      },
+      {
+        "model_name": "elo_strength",
+        "completed_week": 5,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.201244,
+        "multiclass_log_loss": 1.654357,
+        "multiclass_brier_score": 0.740497,
+        "mean_champion_rank": 2.0,
+        "mean_reciprocal_rank": 0.728333,
+        "top_1_accuracy": 0.6,
+        "top_3_accuracy": 0.8
+      },
+      {
+        "model_name": "elo_strength",
+        "completed_week": 6,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.211387,
+        "multiclass_log_loss": 1.603129,
+        "multiclass_brier_score": 0.723534,
+        "mean_champion_rank": 1.8,
+        "mean_reciprocal_rank": 0.753333,
+        "top_1_accuracy": 0.6,
+        "top_3_accuracy": 0.9
+      },
+      {
+        "model_name": "elo_strength",
+        "completed_week": 7,
+        "snapshot_count": 9,
+        "mean_champion_probability": 0.205375,
+        "multiclass_log_loss": 1.629217,
+        "multiclass_brier_score": 0.733889,
+        "mean_champion_rank": 1.888889,
+        "mean_reciprocal_rank": 0.725926,
+        "top_1_accuracy": 0.555556,
+        "top_3_accuracy": 0.888889
+      },
+      {
+        "model_name": "elo_strength",
+        "completed_week": 8,
+        "snapshot_count": 9,
+        "mean_champion_probability": 0.21187,
+        "multiclass_log_loss": 1.597265,
+        "multiclass_brier_score": 0.723244,
+        "mean_champion_rank": 1.555556,
+        "mean_reciprocal_rank": 0.796296,
+        "top_1_accuracy": 0.666667,
+        "top_3_accuracy": 1.0
+      },
+      {
+        "model_name": "elo_strength",
+        "completed_week": 9,
+        "snapshot_count": 5,
+        "mean_champion_probability": 0.181841,
+        "multiclass_log_loss": 1.742063,
+        "multiclass_brier_score": 0.773999,
+        "mean_champion_rank": 2.0,
+        "mean_reciprocal_rank": 0.65,
+        "top_1_accuracy": 0.4,
+        "top_3_accuracy": 0.8
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "completed_week": 1,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.214384,
+        "multiclass_log_loss": 1.973552,
+        "multiclass_brier_score": 0.85411,
+        "mean_champion_rank": 2.7,
+        "mean_reciprocal_rank": 0.564286,
+        "top_1_accuracy": 0.3,
+        "top_3_accuracy": 0.8
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "completed_week": 2,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.224099,
+        "multiclass_log_loss": 1.83224,
+        "multiclass_brier_score": 0.828522,
+        "mean_champion_rank": 2.7,
+        "mean_reciprocal_rank": 0.486667,
+        "top_1_accuracy": 0.2,
+        "top_3_accuracy": 0.7
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "completed_week": 3,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.219735,
+        "multiclass_log_loss": 1.790303,
+        "multiclass_brier_score": 0.820052,
+        "mean_champion_rank": 2.2,
+        "mean_reciprocal_rank": 0.575,
+        "top_1_accuracy": 0.3,
+        "top_3_accuracy": 0.9
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "completed_week": 4,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.2363,
+        "multiclass_log_loss": 1.728123,
+        "multiclass_brier_score": 0.788716,
+        "mean_champion_rank": 2.3,
+        "mean_reciprocal_rank": 0.6,
+        "top_1_accuracy": 0.4,
+        "top_3_accuracy": 0.8
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "completed_week": 5,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.241165,
+        "multiclass_log_loss": 1.67175,
+        "multiclass_brier_score": 0.776178,
+        "mean_champion_rank": 2.2,
+        "mean_reciprocal_rank": 0.616667,
+        "top_1_accuracy": 0.4,
+        "top_3_accuracy": 0.8
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "completed_week": 6,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.258612,
+        "multiclass_log_loss": 1.558407,
+        "multiclass_brier_score": 0.750583,
+        "mean_champion_rank": 2.0,
+        "mean_reciprocal_rank": 0.641667,
+        "top_1_accuracy": 0.4,
+        "top_3_accuracy": 0.9
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "completed_week": 7,
+        "snapshot_count": 9,
+        "mean_champion_probability": 0.24298,
+        "multiclass_log_loss": 1.623221,
+        "multiclass_brier_score": 0.788854,
+        "mean_champion_rank": 2.0,
+        "mean_reciprocal_rank": 0.611111,
+        "top_1_accuracy": 0.333333,
+        "top_3_accuracy": 1.0
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "completed_week": 8,
+        "snapshot_count": 9,
+        "mean_champion_probability": 0.254008,
+        "multiclass_log_loss": 1.573617,
+        "multiclass_brier_score": 0.775243,
+        "mean_champion_rank": 2.111111,
+        "mean_reciprocal_rank": 0.601852,
+        "top_1_accuracy": 0.333333,
+        "top_3_accuracy": 0.888889
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "completed_week": 9,
+        "snapshot_count": 5,
+        "mean_champion_probability": 0.207909,
+        "multiclass_log_loss": 1.71932,
+        "multiclass_brier_score": 0.883958,
+        "mean_champion_rank": 2.2,
+        "mean_reciprocal_rank": 0.533333,
+        "top_1_accuracy": 0.2,
+        "top_3_accuracy": 1.0
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "completed_week": 1,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.248849,
+        "multiclass_log_loss": 2.844995,
+        "multiclass_brier_score": 1.167949,
+        "mean_champion_rank": 2.7,
+        "mean_reciprocal_rank": 0.564286,
+        "top_1_accuracy": 0.3,
+        "top_3_accuracy": 0.8
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "completed_week": 2,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.264472,
+        "multiclass_log_loss": 2.538868,
+        "multiclass_brier_score": 1.081823,
+        "mean_champion_rank": 2.7,
+        "mean_reciprocal_rank": 0.486667,
+        "top_1_accuracy": 0.2,
+        "top_3_accuracy": 0.7
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "completed_week": 3,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.272134,
+        "multiclass_log_loss": 2.353676,
+        "multiclass_brier_score": 1.03376,
+        "mean_champion_rank": 2.2,
+        "mean_reciprocal_rank": 0.575,
+        "top_1_accuracy": 0.3,
+        "top_3_accuracy": 0.9
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "completed_week": 4,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.316476,
+        "multiclass_log_loss": 2.22092,
+        "multiclass_brier_score": 0.944689,
+        "mean_champion_rank": 2.3,
+        "mean_reciprocal_rank": 0.6,
+        "top_1_accuracy": 0.4,
+        "top_3_accuracy": 0.8
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "completed_week": 5,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.339303,
+        "multiclass_log_loss": 2.06279,
+        "multiclass_brier_score": 0.898906,
+        "mean_champion_rank": 2.2,
+        "mean_reciprocal_rank": 0.616667,
+        "top_1_accuracy": 0.4,
+        "top_3_accuracy": 0.8
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "completed_week": 6,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.368431,
+        "multiclass_log_loss": 1.882196,
+        "multiclass_brier_score": 0.877989,
+        "mean_champion_rank": 2.0,
+        "mean_reciprocal_rank": 0.641667,
+        "top_1_accuracy": 0.4,
+        "top_3_accuracy": 0.9
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "completed_week": 7,
+        "snapshot_count": 9,
+        "mean_champion_probability": 0.35511,
+        "multiclass_log_loss": 2.083928,
+        "multiclass_brier_score": 0.932631,
+        "mean_champion_rank": 2.0,
+        "mean_reciprocal_rank": 0.611111,
+        "top_1_accuracy": 0.333333,
+        "top_3_accuracy": 1.0
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "completed_week": 8,
+        "snapshot_count": 9,
+        "mean_champion_probability": 0.343597,
+        "multiclass_log_loss": 2.042845,
+        "multiclass_brier_score": 0.963805,
+        "mean_champion_rank": 2.111111,
+        "mean_reciprocal_rank": 0.601852,
+        "top_1_accuracy": 0.333333,
+        "top_3_accuracy": 0.888889
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "completed_week": 9,
+        "snapshot_count": 5,
+        "mean_champion_probability": 0.211918,
+        "multiclass_log_loss": 2.385962,
+        "multiclass_brier_score": 1.202487,
+        "mean_champion_rank": 2.2,
+        "mean_reciprocal_rank": 0.533333,
+        "top_1_accuracy": 0.2,
+        "top_3_accuracy": 1.0
+      },
+      {
+        "model_name": "uniform",
+        "completed_week": 1,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.116667,
+        "multiclass_log_loss": 2.150111,
+        "multiclass_brier_score": 0.883333,
+        "mean_champion_rank": 4.8,
+        "mean_reciprocal_rank": 0.208889,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      },
+      {
+        "model_name": "uniform",
+        "completed_week": 2,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.116667,
+        "multiclass_log_loss": 2.150111,
+        "multiclass_brier_score": 0.883333,
+        "mean_champion_rank": 4.8,
+        "mean_reciprocal_rank": 0.208889,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      },
+      {
+        "model_name": "uniform",
+        "completed_week": 3,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.116667,
+        "multiclass_log_loss": 2.150111,
+        "multiclass_brier_score": 0.883333,
+        "mean_champion_rank": 4.8,
+        "mean_reciprocal_rank": 0.208889,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      },
+      {
+        "model_name": "uniform",
+        "completed_week": 4,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.116667,
+        "multiclass_log_loss": 2.150111,
+        "multiclass_brier_score": 0.883333,
+        "mean_champion_rank": 4.8,
+        "mean_reciprocal_rank": 0.208889,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      },
+      {
+        "model_name": "uniform",
+        "completed_week": 5,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.116667,
+        "multiclass_log_loss": 2.150111,
+        "multiclass_brier_score": 0.883333,
+        "mean_champion_rank": 4.8,
+        "mean_reciprocal_rank": 0.208889,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      },
+      {
+        "model_name": "uniform",
+        "completed_week": 6,
+        "snapshot_count": 10,
+        "mean_champion_probability": 0.116667,
+        "multiclass_log_loss": 2.150111,
+        "multiclass_brier_score": 0.883333,
+        "mean_champion_rank": 4.8,
+        "mean_reciprocal_rank": 0.208889,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      },
+      {
+        "model_name": "uniform",
+        "completed_week": 7,
+        "snapshot_count": 9,
+        "mean_champion_probability": 0.115741,
+        "multiclass_log_loss": 2.157964,
+        "multiclass_brier_score": 0.884259,
+        "mean_champion_rank": 4.833333,
+        "mean_reciprocal_rank": 0.207407,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      },
+      {
+        "model_name": "uniform",
+        "completed_week": 8,
+        "snapshot_count": 9,
+        "mean_champion_probability": 0.115741,
+        "multiclass_log_loss": 2.157964,
+        "multiclass_brier_score": 0.884259,
+        "mean_champion_rank": 4.833333,
+        "mean_reciprocal_rank": 0.207407,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      },
+      {
+        "model_name": "uniform",
+        "completed_week": 9,
+        "snapshot_count": 5,
+        "mean_champion_probability": 0.111111,
+        "multiclass_log_loss": 2.197225,
+        "multiclass_brier_score": 0.888889,
+        "mean_champion_rank": 5.0,
+        "mean_reciprocal_rank": 0.2,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      }
+    ],
+    "calibration_metrics": [
+      {
+        "model_name": "elo_strength",
+        "prediction_type": "preseason",
+        "team_snapshot_count": 86,
+        "ece": 0.045951,
+        "calibration_intercept": 4.693915,
+        "calibration_slope": 3.623041
+      },
+      {
+        "model_name": "elo_strength",
+        "prediction_type": "weekly",
+        "team_snapshot_count": 717,
+        "ece": 0.06363,
+        "calibration_intercept": 4.383673,
+        "calibration_slope": 3.515821
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "prediction_type": "preseason",
+        "team_snapshot_count": 86,
+        "ece": 0.032577,
+        "calibration_intercept": -0.203298,
+        "calibration_slope": 0.879541
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "prediction_type": "weekly",
+        "team_snapshot_count": 717,
+        "ece": 0.052334,
+        "calibration_intercept": -0.252883,
+        "calibration_slope": 0.842305
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "prediction_type": "preseason",
+        "team_snapshot_count": 86,
+        "ece": 0.107191,
+        "calibration_intercept": -0.895286,
+        "calibration_slope": 0.374821
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "prediction_type": "weekly",
+        "team_snapshot_count": 717,
+        "ece": 0.101182,
+        "calibration_intercept": -0.884051,
+        "calibration_slope": 0.330858
+      },
+      {
+        "model_name": "uniform",
+        "prediction_type": "preseason",
+        "team_snapshot_count": 86,
+        "ece": 0.0,
+        "calibration_intercept": -0.396074,
+        "calibration_slope": 0.80498
+      },
+      {
+        "model_name": "uniform",
+        "prediction_type": "weekly",
+        "team_snapshot_count": 717,
+        "ece": 0.0,
+        "calibration_intercept": -0.395504,
+        "calibration_slope": 0.805744
+      }
+    ],
+    "calibration_log_loss_improvement_pct": 23.3855,
+    "folds": [
+      {
+        "target_season": 8,
+        "prediction_type": "preseason",
+        "training_season_min": 4,
+        "training_season_max": 7,
+        "training_row_count": 32,
+        "test_snapshot_count": 1,
+        "test_row_count": 8,
+        "feature_count": 29,
+        "calibration_seasons": [
+          6,
+          7
+        ],
+        "calibration_snapshot_count": 2,
+        "temperature": 2.703296
+      },
+      {
+        "target_season": 8,
+        "prediction_type": "weekly",
+        "training_season_min": 4,
+        "training_season_max": 7,
+        "training_row_count": 256,
+        "test_snapshot_count": 8,
+        "test_row_count": 64,
+        "feature_count": 38,
+        "calibration_seasons": [
+          6,
+          7
+        ],
+        "calibration_snapshot_count": 16,
+        "temperature": 3.178622
+      },
+      {
+        "target_season": 9,
+        "prediction_type": "preseason",
+        "training_season_min": 4,
+        "training_season_max": 8,
+        "training_row_count": 40,
+        "test_snapshot_count": 1,
+        "test_row_count": 8,
+        "feature_count": 29,
+        "calibration_seasons": [
+          6,
+          7,
+          8
+        ],
+        "calibration_snapshot_count": 3,
+        "temperature": 3.183885
+      },
+      {
+        "target_season": 9,
+        "prediction_type": "weekly",
+        "training_season_min": 4,
+        "training_season_max": 8,
+        "training_row_count": 320,
+        "test_snapshot_count": 8,
+        "test_row_count": 64,
+        "feature_count": 38,
+        "calibration_seasons": [
+          6,
+          7,
+          8
+        ],
+        "calibration_snapshot_count": 24,
+        "temperature": 3.752353
+      },
+      {
+        "target_season": 10,
+        "prediction_type": "preseason",
+        "training_season_min": 4,
+        "training_season_max": 9,
+        "training_row_count": 48,
+        "test_snapshot_count": 1,
+        "test_row_count": 8,
+        "feature_count": 29,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "calibration_snapshot_count": 4,
+        "temperature": 3.494601
+      },
+      {
+        "target_season": 10,
+        "prediction_type": "weekly",
+        "training_season_min": 4,
+        "training_season_max": 9,
+        "training_row_count": 384,
+        "test_snapshot_count": 8,
+        "test_row_count": 64,
+        "feature_count": 38,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "calibration_snapshot_count": 32,
+        "temperature": 3.597998
+      },
+      {
+        "target_season": 11,
+        "prediction_type": "preseason",
+        "training_season_min": 4,
+        "training_season_max": 10,
+        "training_row_count": 56,
+        "test_snapshot_count": 1,
+        "test_row_count": 8,
+        "feature_count": 29,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "calibration_snapshot_count": 5,
+        "temperature": 2.79669
+      },
+      {
+        "target_season": 11,
+        "prediction_type": "weekly",
+        "training_season_min": 4,
+        "training_season_max": 10,
+        "training_row_count": 448,
+        "test_snapshot_count": 6,
+        "test_row_count": 48,
+        "feature_count": 38,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "calibration_snapshot_count": 40,
+        "temperature": 2.78066
+      },
+      {
+        "target_season": 12,
+        "prediction_type": "preseason",
+        "training_season_min": 4,
+        "training_season_max": 11,
+        "training_row_count": 64,
+        "test_snapshot_count": 1,
+        "test_row_count": 9,
+        "feature_count": 29,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "calibration_snapshot_count": 6,
+        "temperature": 2.615017
+      },
+      {
+        "target_season": 12,
+        "prediction_type": "weekly",
+        "training_season_min": 4,
+        "training_season_max": 11,
+        "training_row_count": 496,
+        "test_snapshot_count": 8,
+        "test_row_count": 72,
+        "feature_count": 38,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "calibration_snapshot_count": 46,
+        "temperature": 2.547855
+      },
+      {
+        "target_season": 13,
+        "prediction_type": "preseason",
+        "training_season_min": 4,
+        "training_season_max": 12,
+        "training_row_count": 73,
+        "test_snapshot_count": 1,
+        "test_row_count": 9,
+        "feature_count": 29,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "calibration_snapshot_count": 7,
+        "temperature": 2.140121
+      },
+      {
+        "target_season": 13,
+        "prediction_type": "weekly",
+        "training_season_min": 4,
+        "training_season_max": 12,
+        "training_row_count": 568,
+        "test_snapshot_count": 9,
+        "test_row_count": 81,
+        "feature_count": 38,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "calibration_snapshot_count": 54,
+        "temperature": 2.139711
+      },
+      {
+        "target_season": 14,
+        "prediction_type": "preseason",
+        "training_season_min": 4,
+        "training_season_max": 13,
+        "training_row_count": 82,
+        "test_snapshot_count": 1,
+        "test_row_count": 9,
+        "feature_count": 29,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "calibration_snapshot_count": 8,
+        "temperature": 1.857036
+      },
+      {
+        "target_season": 14,
+        "prediction_type": "weekly",
+        "training_season_min": 4,
+        "training_season_max": 13,
+        "training_row_count": 649,
+        "test_snapshot_count": 9,
+        "test_row_count": 81,
+        "feature_count": 38,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "calibration_snapshot_count": 63,
+        "temperature": 1.830031
+      },
+      {
+        "target_season": 15,
+        "prediction_type": "preseason",
+        "training_season_min": 4,
+        "training_season_max": 14,
+        "training_row_count": 91,
+        "test_snapshot_count": 1,
+        "test_row_count": 9,
+        "feature_count": 29,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "calibration_snapshot_count": 9,
+        "temperature": 2.328686
+      },
+      {
+        "target_season": 15,
+        "prediction_type": "weekly",
+        "training_season_min": 4,
+        "training_season_max": 14,
+        "training_row_count": 730,
+        "test_snapshot_count": 9,
+        "test_row_count": 81,
+        "feature_count": 38,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "calibration_snapshot_count": 72,
+        "temperature": 2.403914
+      },
+      {
+        "target_season": 16,
+        "prediction_type": "preseason",
+        "training_season_min": 4,
+        "training_season_max": 15,
+        "training_row_count": 100,
+        "test_snapshot_count": 1,
+        "test_row_count": 9,
+        "feature_count": 29,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "calibration_snapshot_count": 10,
+        "temperature": 2.341108
+      },
+      {
+        "target_season": 16,
+        "prediction_type": "weekly",
+        "training_season_min": 4,
+        "training_season_max": 15,
+        "training_row_count": 811,
+        "test_snapshot_count": 9,
+        "test_row_count": 81,
+        "feature_count": 38,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "calibration_snapshot_count": 81,
+        "temperature": 2.628777
+      },
+      {
+        "target_season": 17,
+        "prediction_type": "preseason",
+        "training_season_min": 4,
+        "training_season_max": 16,
+        "training_row_count": 109,
+        "test_snapshot_count": 1,
+        "test_row_count": 9,
+        "feature_count": 29,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "calibration_snapshot_count": 11,
+        "temperature": 2.589009
+      },
+      {
+        "target_season": 17,
+        "prediction_type": "weekly",
+        "training_season_min": 4,
+        "training_season_max": 16,
+        "training_row_count": 892,
+        "test_snapshot_count": 9,
+        "test_row_count": 81,
+        "feature_count": 38,
+        "calibration_seasons": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "calibration_snapshot_count": 90,
+        "temperature": 2.564211
+      }
+    ]
+  },
+  "selection_guard": "Hasil ini adalah backtest. Pemilihan model final dan simulasi playoff tetap dilakukan pada tahap berikutnya."
+}

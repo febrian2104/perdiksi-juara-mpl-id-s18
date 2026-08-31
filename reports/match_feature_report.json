@@ -1,0 +1,119 @@
+{
+  "report_version": "1.0",
+  "match_row_count": 992,
+  "season_min": 4,
+  "season_max": 17,
+  "team_a_win_rate": 0.537298,
+  "feature_columns": [
+    "elo_rating_diff",
+    "rest_days_diff",
+    "current_matches_diff",
+    "current_match_win_rate_diff",
+    "current_game_win_rate_diff",
+    "current_game_diff_per_match_diff",
+    "current_form_3_diff",
+    "current_form_5_diff",
+    "current_sos_elo_avg_diff",
+    "prior_regular_match_win_rate_diff",
+    "prior_regular_game_win_rate_diff",
+    "prior_regular_game_diff_per_match_diff",
+    "prior_3_season_match_win_rate_diff",
+    "prior_3_season_game_win_rate_diff",
+    "prior_3_season_game_diff_per_match_diff"
+  ],
+  "blocking_issue_count": 0,
+  "checks": [
+    {
+      "check_id": "unique_match_rows",
+      "status": "pass",
+      "count": 0
+    },
+    {
+      "check_id": "complete_binary_target",
+      "status": "pass",
+      "count": 0
+    },
+    {
+      "check_id": "history_not_after_match",
+      "status": "pass",
+      "count": 0
+    }
+  ],
+  "feature_missingness": [
+    {
+      "feature": "prior_3_season_game_diff_per_match_diff",
+      "missing_count": 81,
+      "missing_pct": 8.17
+    },
+    {
+      "feature": "prior_3_season_game_win_rate_diff",
+      "missing_count": 81,
+      "missing_pct": 8.17
+    },
+    {
+      "feature": "prior_3_season_match_win_rate_diff",
+      "missing_count": 81,
+      "missing_pct": 8.17
+    },
+    {
+      "feature": "prior_regular_game_diff_per_match_diff",
+      "missing_count": 81,
+      "missing_pct": 8.17
+    },
+    {
+      "feature": "prior_regular_game_win_rate_diff",
+      "missing_count": 81,
+      "missing_pct": 8.17
+    },
+    {
+      "feature": "prior_regular_match_win_rate_diff",
+      "missing_count": 81,
+      "missing_pct": 8.17
+    },
+    {
+      "feature": "current_form_3_diff",
+      "missing_count": 79,
+      "missing_pct": 7.96
+    },
+    {
+      "feature": "current_form_5_diff",
+      "missing_count": 79,
+      "missing_pct": 7.96
+    },
+    {
+      "feature": "current_game_diff_per_match_diff",
+      "missing_count": 79,
+      "missing_pct": 7.96
+    },
+    {
+      "feature": "current_game_win_rate_diff",
+      "missing_count": 79,
+      "missing_pct": 7.96
+    },
+    {
+      "feature": "current_match_win_rate_diff",
+      "missing_count": 79,
+      "missing_pct": 7.96
+    },
+    {
+      "feature": "current_sos_elo_avg_diff",
+      "missing_count": 79,
+      "missing_pct": 7.96
+    },
+    {
+      "feature": "rest_days_diff",
+      "missing_count": 5,
+      "missing_pct": 0.5
+    },
+    {
+      "feature": "current_matches_diff",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "elo_rating_diff",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    }
+  ]
+}

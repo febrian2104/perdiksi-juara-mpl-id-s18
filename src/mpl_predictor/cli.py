@@ -30,6 +30,11 @@ from mpl_predictor.data.semantic_audit import (
     audit_semantics,
     write_semantic_report,
 )
+from mpl_predictor.features.matches import (
+    build_match_feature_report,
+    build_match_features,
+    write_match_feature_outputs,
+)
 from mpl_predictor.features.snapshots import (
     build_feature_report,
     build_snapshot_features,
@@ -40,6 +45,16 @@ from mpl_predictor.models.baseline import (
     build_baseline_predictions,
     build_baseline_report,
     write_baseline_outputs,
+)
+from mpl_predictor.models.evaluation import (
+    build_model_evaluation_report,
+    write_evaluation_figures,
+    write_model_outputs,
+)
+from mpl_predictor.models.walk_forward import (
+    load_model_config,
+    walk_forward_champion_predictions,
+    walk_forward_match_predictions,
 )
 
 
@@ -128,6 +143,27 @@ def _build_parser() -> argparse.ArgumentParser:
     baseline_parser.add_argument("--config", type=Path, default=None)
     baseline_parser.add_argument("--output", type=Path, default=None)
     baseline_parser.add_argument("--report", type=Path, default=None)
+
+    match_feature_parser = subparsers.add_parser(
+        "build-match-features", help="Build pre-match features for the win-probability model."
+    )
+    match_feature_parser.add_argument("--canonical-dir", type=Path, default=None)
+    match_feature_parser.add_argument("--feature-config", type=Path, default=None)
+    match_feature_parser.add_argument("--output", type=Path, default=None)
+    match_feature_parser.add_argument("--report", type=Path, default=None)
+
+    backtest_parser = subparsers.add_parser(
+        "backtest", help="Run match and champion walk-forward models with past-only calibration."
+    )
+    backtest_parser.add_argument("--match-features", type=Path, default=None)
+    backtest_parser.add_argument("--snapshot-features", type=Path, default=None)
+    backtest_parser.add_argument("--baselines", type=Path, default=None)
+    backtest_parser.add_argument("--config", type=Path, default=None)
+    backtest_parser.add_argument("--match-output", type=Path, default=None)
+    backtest_parser.add_argument("--champion-output", type=Path, default=None)
+    backtest_parser.add_argument("--report", type=Path, default=None)
+    backtest_parser.add_argument("--figures-dir", type=Path, default=None)
+    backtest_parser.add_argument("--no-figures", action="store_true")
     return parser
 
 
@@ -354,6 +390,92 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Predictions: {output_path}")
         print(f"Report: {report_path}")
         return int(report["probability_validation"]["invalid_sum_group_count"] > 0)
+
+    if args.command == "build-match-features":
+        paths = get_project_paths()
+        canonical_dir = (args.canonical_dir or paths.processed / "canonical").resolve()
+        feature_config_path = (
+            args.feature_config or paths.root / "config" / "feature_config.json"
+        ).resolve()
+        output_path = (
+            args.output or paths.processed / "features" / "match_features.parquet"
+        ).resolve()
+        report_path = (args.report or paths.reports / "match_feature_report.json").resolve()
+        tables = load_canonical_tables(canonical_dir)
+        feature_config = load_feature_config(feature_config_path)
+        features = build_match_features(tables, feature_config)
+        report = build_match_feature_report(features)
+        write_match_feature_outputs(features, report, output_path, report_path)
+        print("MPL pre-match feature engineering")
+        print(f"Match rows: {report['match_row_count']}")
+        print(f"Feature columns: {len(report['feature_columns'])}")
+        print(f"Blocking issues: {report['blocking_issue_count']}")
+        print(f"Features: {output_path}")
+        print(f"Report: {report_path}")
+        return int(report["blocking_issue_count"] > 0)
+
+    if args.command == "backtest":
+        paths = get_project_paths()
+        match_feature_path = (
+            args.match_features or paths.processed / "features" / "match_features.parquet"
+        ).resolve()
+        snapshot_feature_path = (
+            args.snapshot_features
+            or paths.processed / "features" / "team_snapshot_features.parquet"
+        ).resolve()
+        baseline_path = (
+            args.baselines or paths.processed / "predictions" / "baseline_predictions.parquet"
+        ).resolve()
+        config_path = (args.config or paths.root / "config" / "model_config.json").resolve()
+        match_output_path = (
+            args.match_output
+            or paths.processed / "predictions" / "match_walk_forward_predictions.parquet"
+        ).resolve()
+        champion_output_path = (
+            args.champion_output
+            or paths.processed / "predictions" / "champion_walk_forward_predictions.parquet"
+        ).resolve()
+        report_path = (args.report or paths.reports / "model_evaluation_report.json").resolve()
+        figures_dir = (args.figures_dir or paths.figures).resolve()
+
+        match_features = pd.read_parquet(match_feature_path)
+        snapshot_features = pd.read_parquet(snapshot_feature_path)
+        baseline_predictions = pd.read_parquet(baseline_path)
+        model_config = load_model_config(config_path)
+        match_predictions, match_folds = walk_forward_match_predictions(
+            match_features, model_config
+        )
+        champion_predictions, champion_folds = walk_forward_champion_predictions(
+            snapshot_features, baseline_predictions, model_config
+        )
+        report, frames = build_model_evaluation_report(
+            match_predictions,
+            champion_predictions,
+            match_folds,
+            champion_folds,
+            model_config,
+        )
+        write_model_outputs(
+            match_predictions,
+            champion_predictions,
+            report,
+            match_output_path,
+            champion_output_path,
+            report_path,
+        )
+        figure_outputs = [] if args.no_figures else write_evaluation_figures(frames, figures_dir)
+        print("MPL walk-forward model evaluation")
+        print(f"Evaluated matches: {report['evaluation_scope']['match_count']}")
+        print(f"Evaluated snapshots: {report['evaluation_scope']['snapshot_count']}")
+        print(
+            "Invalid champion probability sums: "
+            f"{report['probability_validation']['invalid_probability_sum_count']}"
+        )
+        print(f"Figures: {len(figure_outputs)}")
+        print(f"Match predictions: {match_output_path}")
+        print(f"Champion predictions: {champion_output_path}")
+        print(f"Report: {report_path}")
+        return int(report["probability_validation"]["invalid_probability_sum_count"] > 0)
 
     parser.error(f"Unknown command: {args.command}")
     return 2

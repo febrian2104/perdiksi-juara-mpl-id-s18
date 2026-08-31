@@ -1,4 +1,4 @@
-.PHONY: setup audit semantic-audit normalize canonicalize quality-report eda prediction-policy analysis build-features baseline modeling test lint format dashboard
+.PHONY: setup audit semantic-audit normalize canonicalize quality-report eda prediction-policy analysis build-features baseline modeling build-match-features backtest models test lint format dashboard
 
 setup:
 	python3 -m venv .venv
@@ -36,6 +36,14 @@ baseline:
 	.venv/bin/mpl-predictor baseline
 
 modeling: build-features baseline
+
+build-match-features:
+	.venv/bin/mpl-predictor build-match-features
+
+backtest:
+	.venv/bin/mpl-predictor backtest
+
+models: modeling build-match-features backtest
 
 test:
 	.venv/bin/python -m pytest
