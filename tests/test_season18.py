@@ -8,6 +8,7 @@ from mpl_predictor.analysis.common import load_canonical_tables
 from mpl_predictor.config import get_project_paths
 from mpl_predictor.dashboard import load_dashboard_data
 from mpl_predictor.data.season18 import (
+    build_season18_asof_snapshot,
     build_season18_report,
     merge_roster_history,
     parse_roster_html,
@@ -130,6 +131,26 @@ def test_preseason_and_weekly_windows_hide_future_results() -> None:
         assert snapshot.loc[snapshot["status"].eq("scheduled"), "winner_side"].isna().all()
 
 
+def test_august_21_snapshot_has_ten_results_and_no_backdated_roster() -> None:
+    teams, rosters, schedule = _load_season18()
+    cutoff = date(2026, 8, 21)
+    windows = build_season18_prediction_windows(schedule, as_of=cutoff)
+    _, snapshot_rosters, snapshot_schedule, report = build_season18_asof_snapshot(
+        teams, rosters, schedule, cutoff
+    )
+
+    assert windows["snapshot_id"].tolist() == ["S18_PRE", "S18_W01", "S18_D20260821"]
+    assert windows["available_result_count"].tolist() == [0, 8, 10]
+    assert windows.iloc[-1]["partial_week"] == 2
+    assert snapshot_schedule["status"].eq("completed").sum() == 10
+    assert snapshot_schedule["status"].eq("scheduled").sum() == 62
+    assert snapshot_rosters.empty
+    assert report["scope"]["completed_weeks"] == [1]
+    assert report["scope"]["partial_weeks"] == [2]
+    results = snapshot_schedule.loc[snapshot_schedule["status"].eq("completed")]
+    assert set(results.loc[results["week"].eq(2), "winner_team_id"]) == {"NAVI", "BTR"}
+
+
 @pytest.fixture(scope="module")
 def final_simulation_inputs():
     teams, _, schedule = _load_season18()
@@ -202,6 +223,10 @@ def test_explainability_and_dashboard_outputs_are_loadable(final_simulation_inpu
     assert local["match_id"].nunique() == 48
     assert local.groupby("match_id")["contribution_rank"].min().eq(1).all()
     assert missing == []
-    assert dashboard_data["predictions"]["snapshot_id"].nunique() == 4
+    assert set(dashboard_data["predictions"]["snapshot_id"]) == {
+        "S18_PRE",
+        "S18_W01",
+        "S18_D20260821",
+    }
     sums = dashboard_data["predictions"].groupby("snapshot_id")["champion_probability"].sum()
     assert sums.sub(1.0).abs().lt(1e-9).all()

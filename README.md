@@ -21,8 +21,8 @@ dashboard agar hasil eksperimen dapat direproduksi.
 - Tim, roster bertanggal, jadwal, dan hasil resmi Season 18 sudah diintegrasikan dengan
   snapshot 31 Agustus 2026.
 - Simulasi Monte Carlo regular season dan playoff Season 18 sudah tersedia.
-- Rekonstruksi pramusim dan snapshot mingguan Week 1-3 sudah tersedia dengan cutoff
-  leakage-safe.
+- Rekonstruksi pramusim, Week 1, dan snapshot parsial akhir 21 Agustus 2026 sudah tersedia
+  dengan cutoff leakage-safe untuk bundle deployment saat ini.
 - Explainability global/lokal, dashboard interaktif, dan otomasi pipeline lokal sudah
   tersedia tanpa GitHub Actions.
 
@@ -125,8 +125,9 @@ make dashboard
 └── requirements-dev.txt
 ```
 
-Isi `data/interim`, `data/processed`, `artifacts`, dan `reports/figures` dihasilkan ulang
-oleh pipeline dan tidak disimpan di Git, kecuali file `.gitkeep`.
+Isi `data/interim`, `data/processed`, `artifacts`, dan `reports/figures` umumnya dihasilkan
+ulang oleh pipeline dan tidak disimpan di Git. Lima file Parquet minimum yang dibaca
+dashboard dikecualikan agar deployment Streamlit mempunyai snapshot prediksi siap baca.
 
 ## Kebijakan identitas
 
@@ -247,8 +248,11 @@ Snapshot yang tersedia:
 
 - `S18_PRE`: 0 hasil tersedia, 72 regular-season match disimulasikan;
 - `S18_W01`: 8 hasil tersedia dan 64 match disimulasikan;
-- `S18_W02`: 16 hasil tersedia dan 56 match disimulasikan;
-- `S18_W03`: 24 hasil tersedia dan 48 match disimulasikan.
+- `S18_D20260821`: 10 hasil tersedia dan 62 match disimulasikan; Week 2 masih parsial.
+
+Snapshot data retrospektif disimpan di `data/season18/snapshots/2026-08-21`. Dua hasil
+tambahan pada 21 Agustus adalah TLID 0-2 NAVI dan BTR 2-0 DEWA. Roster tidak dimasukkan
+karena bukti temporal yang tersedia baru bertanggal 31 Agustus.
 
 Semua snapshot memakai 20.000 iterasi dan probabilitas juaranya berjumlah 1. Explainability
 global menggunakan besaran koefisien logistic terstandardisasi. Explainability match
@@ -293,13 +297,13 @@ menambahkan folder `src` ke import path sebelum memuat dashboard, sehingga packa
 16. Walk-forward backtesting pramusim dan per minggu. **Selesai.**
 17. Evaluasi ranking, probabilitas, dan kalibrasi. **Selesai.**
 18. Pemilihan serta training model final. **Selesai.**
-19. Integrasi tim, roster bertanggal, jadwal, dan hasil Season 18. **Selesai untuk snapshot
-    31 Agustus 2026.**
+19. Integrasi tim, roster bertanggal, jadwal, dan hasil Season 18. **Selesai; snapshot
+    deployment aktif menggunakan cutoff 21 Agustus 2026.**
 20. Simulasi regular season dan playoff untuk probabilitas juara. **Selesai.**
 21. Rekonstruksi prediksi pramusim Season 18. **Selesai dengan 0 hasil S18 dan tanpa roster
     yang belum tersedia pada cutoff.**
-22. Pembaruan prediksi mingguan Season 18. **Selesai sampai Week 3; command siap dijalankan
-    ulang setelah setiap week selesai.**
+22. Pembaruan prediksi mingguan Season 18. **Selesai untuk Week 1 dan as-of parsial 21
+    Agustus; command siap dijalankan ulang untuk cutoff berikutnya.**
 23. Explainability dan dashboard hasil prediksi. **Selesai.**
 24. Otomatisasi lokal untuk data, training, testing, dan dokumentasi. **Selesai tanpa
     GitHub Actions.**

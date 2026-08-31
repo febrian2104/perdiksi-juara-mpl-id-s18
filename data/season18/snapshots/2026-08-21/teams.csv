@@ -1,0 +1,10 @@
+season,team_id,team_name,organization_id,franchise_slot_id,source_url
+18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,https://id-mpl.com/en/team/ae
+18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,https://id-mpl.com/en/team/btr
+18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,https://id-mpl.com/en/team/dewa
+18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,https://id-mpl.com/en/team/evos
+18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,https://id-mpl.com/en/team/geek
+18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,https://id-mpl.com/en/team/navi
+18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,https://id-mpl.com/en/team/onic
+18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,https://id-mpl.com/en/team/rrq
+18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,https://id-mpl.com/en/team/tlid

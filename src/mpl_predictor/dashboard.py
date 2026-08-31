@@ -46,6 +46,8 @@ def load_dashboard_data(paths: ProjectPaths) -> tuple[dict[str, pd.DataFrame], l
 def _snapshot_label(row: pd.Series) -> str:
     if row["prediction_type"] == "preseason":
         return f"Pramusim · cutoff {row['feature_cutoff_date']}"
+    if row["prediction_type"] == "as_of":
+        return f"As-of {row['feature_cutoff_date']} · Week {int(row['partial_week'])} parsial"
     return f"Week {int(row['completed_week'])} · cutoff {row['feature_cutoff_date']}"
 
 
@@ -72,14 +74,27 @@ def _prediction_chart(frame: pd.DataFrame):
 
 def _history_chart(predictions: pd.DataFrame):
     labels = (
-        predictions[["snapshot_id", "snapshot_order", "prediction_type", "completed_week"]]
+        predictions[
+            [
+                "snapshot_id",
+                "snapshot_order",
+                "prediction_type",
+                "completed_week",
+                "partial_week",
+                "feature_cutoff_date",
+            ]
+        ]
         .drop_duplicates()
         .sort_values("snapshot_order")
     )
     label_lookup = {
         row.snapshot_id: "Pramusim"
         if row.prediction_type == "preseason"
-        else f"Week {int(row.completed_week)}"
+        else (
+            f"As-of {row.feature_cutoff_date}"
+            if row.prediction_type == "as_of"
+            else f"Week {int(row.completed_week)}"
+        )
         for row in labels.itertuples(index=False)
     }
     chart_data = predictions.copy()
@@ -290,6 +305,7 @@ def main() -> None:
                 "snapshot_order",
                 "prediction_type",
                 "completed_week",
+                "partial_week",
                 "feature_cutoff_date",
             ]
         ]
@@ -305,7 +321,7 @@ def main() -> None:
     )
     st.sidebar.info(
         "Roster S18 pertama terverifikasi 31 Agustus 2026 dan tidak digunakan pada "
-        "rekonstruksi pramusim atau Week 1-3."
+        "snapshot dengan cutoff sebelum tanggal tersebut."
     )
     overview_tab, matches_tab, explanation_tab, data_tab = st.tabs(
         ["Ringkasan", "Pertandingan", "Explainability", "Data & asumsi"]
@@ -325,6 +341,7 @@ def main() -> None:
         st.markdown(
             "- Pramusim memakai hasil historis sampai S17 dan **0 hasil S18**.\n"
             "- Snapshot mingguan hanya membuka hasil sampai week terkait.\n"
+            "- Snapshot as-of dapat berhenti di tengah week pada akhir hari WIB.\n"
             "- Bracket playoff mengikuti struktur S15-S17.\n"
             "- Probabilitas match dibekukan pada setiap snapshot simulasi."
         )

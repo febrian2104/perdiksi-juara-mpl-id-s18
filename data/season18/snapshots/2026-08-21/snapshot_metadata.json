@@ -1,0 +1,130 @@
+{
+  "report_version": "1.0",
+  "season": 18,
+  "snapshot_id": "S18_D20260821",
+  "cutoff_date": "2026-08-21",
+  "cutoff_interpretation": "End of day Asia/Jakarta (WIB).",
+  "source_data_observed_at": "2026-08-31",
+  "retrospective_reconstruction": true,
+  "scope": {
+    "team_count": 9,
+    "schedule_match_count": 72,
+    "completed_match_count": 10,
+    "scheduled_match_count": 62,
+    "completed_weeks": [
+      1
+    ],
+    "partial_weeks": [
+      2
+    ],
+    "roster_member_count_available_at_cutoff": 0
+  },
+  "temporal_guards": {
+    "future_results_hidden": true,
+    "roster_rule": "valid_from <= cutoff_date <= valid_to (when valid_to exists)",
+    "outcome_availability_assumption": "Skor final pada tanggal pertandingan dianggap tersedia pada akhir hari WIB.",
+    "source_limitation": "Snapshot direkonstruksi dari halaman resmi yang diamati setelah cutoff, bukan arsip halaman yang ditangkap tepat pada 21 Agustus."
+  },
+  "completed_results": [
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-14T08:00:00.000Z",
+      "match_id": "S18-RS-1036",
+      "team_a_id": "EVOS",
+      "team_b_id": "RRQ",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "EVOS"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-14T11:00:00.000Z",
+      "match_id": "S18-RS-1037",
+      "team_a_id": "NAVI",
+      "team_b_id": "AE",
+      "team_a_score": 0,
+      "team_b_score": 2,
+      "winner_team_id": "AE"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-15T07:00:00.000Z",
+      "match_id": "S18-RS-1038",
+      "team_a_id": "TLID",
+      "team_b_id": "GEEK",
+      "team_a_score": 2,
+      "team_b_score": 1,
+      "winner_team_id": "TLID"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-15T10:00:00.000Z",
+      "match_id": "S18-RS-1039",
+      "team_a_id": "DEWA",
+      "team_b_id": "RRQ",
+      "team_a_score": 1,
+      "team_b_score": 2,
+      "winner_team_id": "RRQ"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-15T13:00:00.000Z",
+      "match_id": "S18-RS-1040",
+      "team_a_id": "EVOS",
+      "team_b_id": "NAVI",
+      "team_a_score": 1,
+      "team_b_score": 2,
+      "winner_team_id": "NAVI"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-16T07:00:00.000Z",
+      "match_id": "S18-RS-1041",
+      "team_a_id": "TLID",
+      "team_b_id": "DEWA",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "TLID"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-16T10:00:00.000Z",
+      "match_id": "S18-RS-1042",
+      "team_a_id": "BTR",
+      "team_b_id": "GEEK",
+      "team_a_score": 2,
+      "team_b_score": 1,
+      "winner_team_id": "BTR"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-16T13:00:00.000Z",
+      "match_id": "S18-RS-1043",
+      "team_a_id": "AE",
+      "team_b_id": "ONIC",
+      "team_a_score": 0,
+      "team_b_score": 2,
+      "winner_team_id": "ONIC"
+    },
+    {
+      "week": 2,
+      "scheduled_at": "2026-08-21T08:00:00.000Z",
+      "match_id": "S18-RS-1044",
+      "team_a_id": "TLID",
+      "team_b_id": "NAVI",
+      "team_a_score": 0,
+      "team_b_score": 2,
+      "winner_team_id": "NAVI"
+    },
+    {
+      "week": 2,
+      "scheduled_at": "2026-08-21T11:00:00.000Z",
+      "match_id": "S18-RS-1045",
+      "team_a_id": "BTR",
+      "team_b_id": "DEWA",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "BTR"
+    }
+  ]
+}

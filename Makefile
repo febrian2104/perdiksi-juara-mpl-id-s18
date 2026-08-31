@@ -1,6 +1,7 @@
-.PHONY: setup audit semantic-audit normalize canonicalize quality-report eda prediction-policy analysis build-features baseline modeling build-match-features backtest models sync-season18 train-final simulate-season18 update-predictions explain-season18 update-season18 season18 verify docs-check local-train local-update local-pipeline test lint format dashboard
+.PHONY: setup audit semantic-audit normalize canonicalize quality-report eda prediction-policy analysis build-features baseline modeling build-match-features backtest models sync-season18 snapshot-season18 train-final simulate-season18 update-predictions explain-season18 update-season18 season18 verify docs-check local-train local-update local-pipeline test lint format dashboard
 
 OBSERVED_AT ?=
+AS_OF ?=
 
 setup:
 	python3 -m venv .venv
@@ -50,6 +51,9 @@ models: modeling build-match-features backtest
 sync-season18:
 	.venv/bin/mpl-predictor sync-season18 $(if $(OBSERVED_AT),--observed-at $(OBSERVED_AT),)
 
+snapshot-season18:
+	.venv/bin/mpl-predictor snapshot-season18 --as-of $(AS_OF)
+
 train-final:
 	.venv/bin/mpl-predictor train-final
 
@@ -57,7 +61,7 @@ simulate-season18:
 	.venv/bin/mpl-predictor simulate-season18
 
 update-predictions:
-	.venv/bin/mpl-predictor update-season18-predictions
+	.venv/bin/mpl-predictor update-season18-predictions $(if $(AS_OF),--as-of $(AS_OF),)
 
 explain-season18:
 	.venv/bin/mpl-predictor explain-season18

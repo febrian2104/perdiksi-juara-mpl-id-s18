@@ -1,3 +1,4 @@
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -25,7 +26,9 @@ def load_season18_tables(directory: Path) -> tuple[pd.DataFrame, pd.DataFrame, p
     return teams, rosters, schedule
 
 
-def build_season18_prediction_windows(schedule: pd.DataFrame) -> pd.DataFrame:
+def build_season18_prediction_windows(
+    schedule: pd.DataFrame, as_of: date | None = None
+) -> pd.DataFrame:
     """Build a leakage-safe preseason window and every fully completed weekly window."""
     first_match = schedule["scheduled_at"].min()
     records = [
@@ -35,11 +38,17 @@ def build_season18_prediction_windows(schedule: pd.DataFrame) -> pd.DataFrame:
             "completed_week": pd.NA,
             "feature_cutoff_date": (first_match - pd.Timedelta(days=1)).date(),
             "available_result_count": 0,
+            "partial_week": pd.NA,
         }
     ]
+    scheduled_dates = schedule["scheduled_at"].dt.date
+    available_as_of = schedule["status"].eq("completed")
+    if as_of is not None:
+        available_as_of &= scheduled_dates.le(as_of)
     for week in sorted(int(value) for value in schedule["week"].unique()):
         week_rows = schedule.loc[schedule["week"].eq(week)]
-        if week_rows.empty or not week_rows["status"].eq("completed").all():
+        week_available = available_as_of.loc[week_rows.index]
+        if week_rows.empty or not week_available.all():
             break
         records.append(
             {
@@ -47,11 +56,32 @@ def build_season18_prediction_windows(schedule: pd.DataFrame) -> pd.DataFrame:
                 "prediction_type": "weekly",
                 "completed_week": week,
                 "feature_cutoff_date": week_rows["scheduled_at"].max().date(),
-                "available_result_count": int(schedule["week"].le(week).sum()),
+                "available_result_count": int((available_as_of & schedule["week"].le(week)).sum()),
+                "partial_week": pd.NA,
             }
         )
+    if as_of is not None:
+        available_count = int(available_as_of.sum())
+        last_window_count = int(records[-1]["available_result_count"])
+        if available_count > last_window_count:
+            partial_week = int(schedule.loc[available_as_of, "week"].max())
+            records.append(
+                {
+                    "snapshot_id": f"S18_D{as_of.strftime('%Y%m%d')}",
+                    "prediction_type": "as_of",
+                    "completed_week": (
+                        int(records[-1]["completed_week"])
+                        if pd.notna(records[-1]["completed_week"])
+                        else pd.NA
+                    ),
+                    "feature_cutoff_date": as_of,
+                    "available_result_count": available_count,
+                    "partial_week": partial_week,
+                }
+            )
     result = pd.DataFrame.from_records(records)
     result["completed_week"] = result["completed_week"].astype("Int64")
+    result["partial_week"] = result["partial_week"].astype("Int64")
     result["available_result_count"] = result["available_result_count"].astype("Int64")
     return result
 
@@ -60,11 +90,14 @@ def schedule_as_of_window(schedule: pd.DataFrame, window: pd.Series) -> pd.DataF
     """Hide every result that was unavailable at the requested S18 snapshot."""
     result = schedule.copy()
     completed_week = window["completed_week"]
-    available = (
-        result["status"].eq("completed") & result["week"].le(int(completed_week))
-        if pd.notna(completed_week)
-        else pd.Series(False, index=result.index)
-    )
+    if window["prediction_type"] == "as_of":
+        available = result["status"].eq("completed") & result["scheduled_at"].dt.date.le(
+            window["feature_cutoff_date"]
+        )
+    elif pd.notna(completed_week):
+        available = result["status"].eq("completed") & result["week"].le(int(completed_week))
+    else:
+        available = pd.Series(False, index=result.index)
     hidden = ~available
     for column in ("team_a_score", "team_b_score", "winner_team_id", "winner_side"):
         result.loc[hidden, column] = pd.NA
@@ -84,9 +117,10 @@ def build_season18_prediction_history(
     feature_config: dict[str, Any],
     artifact: dict[str, Any],
     simulation_config: dict[str, Any],
+    as_of: date | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any], dict[str, Any]]:
     """Reconstruct preseason and create every currently available weekly prediction."""
-    windows = build_season18_prediction_windows(schedule)
+    windows = build_season18_prediction_windows(schedule, as_of=as_of)
     prediction_frames = []
     match_frames = []
     snapshot_summaries = []
@@ -118,9 +152,14 @@ def build_season18_prediction_history(
         metadata = {
             "snapshot_id": window["snapshot_id"],
             "prediction_type": window["prediction_type"],
-            "completed_week": window["completed_week"],
+            "completed_week": (
+                int(window["completed_week"]) if pd.notna(window["completed_week"]) else None
+            ),
             "feature_cutoff_date": str(window["feature_cutoff_date"]),
             "available_result_count": int(window["available_result_count"]),
+            "partial_week": (
+                int(window["partial_week"]) if pd.notna(window["partial_week"]) else None
+            ),
             "roster_player_rows_available_at_cutoff": len(roster_available),
             "roster_feature_rows_used": 0,
         }
@@ -156,9 +195,11 @@ def build_season18_prediction_history(
         "season": 18,
         "method": "retrospective_as_of_reconstruction_and_weekly_update",
         "source_data_observed_at": str(schedule["observed_at"].iloc[0]),
+        "requested_as_of": as_of.isoformat() if as_of is not None else None,
         "snapshot_count": len(windows),
         "preseason_snapshot_count": int(windows["prediction_type"].eq("preseason").sum()),
         "weekly_snapshot_count": int(windows["prediction_type"].eq("weekly").sum()),
+        "partial_as_of_snapshot_count": int(windows["prediction_type"].eq("as_of").sum()),
         "latest_completed_week": (
             int(windows["completed_week"].max())
             if windows["completed_week"].notna().any()

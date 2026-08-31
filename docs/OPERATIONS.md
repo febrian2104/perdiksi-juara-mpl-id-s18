@@ -24,6 +24,18 @@ memperbarui explainability:
 ./scripts/run_local_pipeline.sh update 2026-08-31
 ```
 
+Untuk membuat snapshot retrospektif pada akhir tanggal tertentu tanpa memundurkan tanggal
+roster, jalankan:
+
+```bash
+make snapshot-season18 AS_OF=2026-08-21
+make update-predictions AS_OF=2026-08-21
+make explain-season18
+```
+
+Snapshot 21 Agustus memakai cutoff akhir hari WIB: 8 hasil Week 1 dan 2 hasil pada hari
+pertama Week 2. Roster yang baru pertama diverifikasi 31 Agustus tidak dimasukkan.
+
 Menjalankan lint, seluruh test, dan pemeriksaan file dokumentasi:
 
 ```bash
@@ -85,5 +97,26 @@ deployment lama tidak gagal ketika belum mengganti konfigurasi main file.
 - `reports/season18_prediction_updates.json`: cutoff dan leakage guard tiap snapshot.
 - `reports/explainability_report.json`: metode serta batas interpretasi explainability.
 
-Folder `artifacts/` dan `data/processed/` adalah output yang dapat dibuat ulang dan tidak
-disimpan di Git.
+Folder `artifacts/` dan mayoritas `data/processed/` adalah output yang dapat dibuat ulang.
+Lima file `season18_*` yang digunakan langsung oleh dashboard dikecualikan dari
+`.gitignore`; file tersebut perlu di-commit setiap kali snapshot deployment diperbarui.
+
+## Checklist deployment Streamlit
+
+Sebelum push, pastikan lima file dashboard terlihat sebagai tracked/modified atau untracked:
+
+```bash
+git status --short data/processed/predictions
+```
+
+File yang wajib ikut ke repository:
+
+- `season18_snapshot_predictions.parquet`
+- `season18_snapshot_match_probabilities.parquet`
+- `season18_global_feature_importance.parquet`
+- `season18_match_explanations.parquet`
+- `season18_team_explanations.parquet`
+
+Setelah file, `.gitignore`, dan source code di-commit serta di-push, reboot aplikasi
+Streamlit Cloud. Dashboard tidak membutuhkan model artifact untuk menampilkan snapshot
+yang sudah dihitung.

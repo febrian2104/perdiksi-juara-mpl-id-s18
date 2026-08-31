@@ -28,12 +28,14 @@ from mpl_predictor.data.identity import (
 from mpl_predictor.data.normalization import normalize_tables, write_normalized_tables
 from mpl_predictor.data.season18 import (
     TEAM_METADATA,
+    build_season18_asof_snapshot,
     build_season18_report,
     build_season18_teams,
     fetch_official_html,
     merge_roster_history,
     parse_roster_html,
     parse_schedule_html,
+    write_season18_asof_snapshot,
     write_season18_outputs,
 )
 from mpl_predictor.data.semantic_audit import (
@@ -213,6 +215,13 @@ def _build_parser() -> argparse.ArgumentParser:
     season18_parser.add_argument("--output-dir", type=Path, default=None)
     season18_parser.add_argument("--report", type=Path, default=None)
 
+    snapshot18_parser = subparsers.add_parser(
+        "snapshot-season18", help="Write a leakage-safe retrospective S18 end-of-day snapshot."
+    )
+    snapshot18_parser.add_argument("--as-of", type=date.fromisoformat, required=True)
+    snapshot18_parser.add_argument("--season18-dir", type=Path, default=None)
+    snapshot18_parser.add_argument("--output-dir", type=Path, default=None)
+
     final_parser = subparsers.add_parser(
         "train-final", help="Select and train the final calibrated match model."
     )
@@ -245,6 +254,12 @@ def _build_parser() -> argparse.ArgumentParser:
     update_parser.add_argument("--model-artifact", type=Path, default=None)
     update_parser.add_argument("--config", type=Path, default=None)
     update_parser.add_argument("--iterations", type=int, default=None)
+    update_parser.add_argument(
+        "--as-of",
+        type=date.fromisoformat,
+        default=None,
+        help="Restrict outcomes to end-of-day YYYY-MM-DD and add a partial-week snapshot.",
+    )
     update_parser.add_argument("--prediction-dir", type=Path, default=None)
     update_parser.add_argument("--report", type=Path, default=None)
     update_parser.add_argument("--latest-report", type=Path, default=None)
@@ -609,6 +624,40 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Report: {report_path}")
         return int(report["blocking_issue_count"] > 0)
 
+    if args.command == "snapshot-season18":
+        paths = get_project_paths()
+        season18_dir = (args.season18_dir or paths.data / "season18").resolve()
+        output_dir = (
+            args.output_dir or season18_dir / "snapshots" / args.as_of.isoformat()
+        ).resolve()
+        teams, rosters, schedule = load_season18_tables(season18_dir)
+        snapshot_teams, snapshot_rosters, snapshot_schedule, report = build_season18_asof_snapshot(
+            teams,
+            rosters,
+            schedule,
+            args.as_of,
+        )
+        write_season18_asof_snapshot(
+            snapshot_teams,
+            snapshot_rosters,
+            snapshot_schedule,
+            report,
+            output_dir,
+        )
+        print("MPL Season 18 retrospective end-of-day snapshot")
+        print(f"Cutoff: {args.as_of.isoformat()} Asia/Jakarta")
+        print(
+            "Completed / scheduled matches: "
+            f"{report['scope']['completed_match_count']} / "
+            f"{report['scope']['scheduled_match_count']}"
+        )
+        print(
+            "Roster members available at cutoff: "
+            f"{report['scope']['roster_member_count_available_at_cutoff']}"
+        )
+        print(f"Output: {output_dir}")
+        return 0
+
     if args.command == "train-final":
         paths = get_project_paths()
         match_path = (
@@ -672,6 +721,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             feature_config,
             artifact,
             simulation_config,
+            as_of=args.as_of,
         )
         outputs = write_season18_prediction_history(
             predictions,
@@ -693,6 +743,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             f"weekly {report['weekly_snapshot_count']})"
         )
         print(f"Latest completed week: {report['latest_completed_week']}")
+        if report["requested_as_of"] is not None:
+            print(f"Requested as-of: {report['requested_as_of']} (end of day WIB)")
         print(f"Latest leader: {leader['team_name']} ({leader['champion_probability']:.2%})")
         print(f"Invalid probability sums: {report['validation']['invalid_probability_sum_count']}")
         print(f"Prediction history: {outputs['history']}")

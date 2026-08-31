@@ -17,6 +17,15 @@ data/interim/*
 !data/interim/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+
+# Minimal read-only bundle required by the deployed Streamlit dashboard.
+!data/processed/predictions/
+data/processed/predictions/*
+!data/processed/predictions/season18_snapshot_predictions.parquet
+!data/processed/predictions/season18_snapshot_match_probabilities.parquet
+!data/processed/predictions/season18_global_feature_importance.parquet
+!data/processed/predictions/season18_match_explanations.parquet
+!data/processed/predictions/season18_team_explanations.parquet
 artifacts/*
 !artifacts/.gitkeep
 reports/figures/*

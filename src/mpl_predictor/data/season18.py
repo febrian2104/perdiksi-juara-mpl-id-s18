@@ -314,6 +314,107 @@ def merge_roster_history(
     )
 
 
+def build_season18_asof_snapshot(
+    teams: pd.DataFrame,
+    rosters: pd.DataFrame,
+    schedule: pd.DataFrame,
+    cutoff_date: date,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, dict[str, Any]]:
+    """Reconstruct an end-of-day S18 snapshot without backdating unavailable roster data."""
+    cutoff_end = pd.Timestamp(cutoff_date, tz="Asia/Jakarta") + pd.Timedelta(days=1)
+    snapshot_schedule = schedule.copy()
+    scheduled_at = pd.to_datetime(snapshot_schedule["scheduled_at"], utc=True).dt.tz_convert(
+        "Asia/Jakarta"
+    )
+    available = snapshot_schedule["status"].eq("completed") & scheduled_at.lt(cutoff_end)
+    hidden = ~available
+    for column in ("team_a_score", "team_b_score", "winner_team_id", "winner_side"):
+        snapshot_schedule.loc[hidden, column] = pd.NA
+    snapshot_schedule.loc[hidden, "status"] = "scheduled"
+    snapshot_schedule["observed_at"] = cutoff_date.isoformat()
+    snapshot_schedule["snapshot_basis"] = "retrospective_end_of_day_wib"
+
+    snapshot_rosters = rosters.copy()
+    for column in ("valid_from", "valid_to"):
+        snapshot_rosters[column] = pd.to_datetime(snapshot_rosters[column], errors="coerce")
+    roster_cutoff = pd.Timestamp(cutoff_date)
+    snapshot_rosters = snapshot_rosters.loc[
+        snapshot_rosters["valid_from"].notna()
+        & snapshot_rosters["valid_from"].le(roster_cutoff)
+        & (snapshot_rosters["valid_to"].isna() | snapshot_rosters["valid_to"].ge(roster_cutoff))
+    ].copy()
+
+    completed_weeks = []
+    partial_weeks = []
+    for week in sorted(int(value) for value in snapshot_schedule["week"].unique()):
+        week_rows = snapshot_schedule.loc[snapshot_schedule["week"].eq(week)]
+        completed_count = int(week_rows["status"].eq("completed").sum())
+        if completed_count == len(week_rows):
+            completed_weeks.append(week)
+        elif completed_count:
+            partial_weeks.append(week)
+    source_observed_at = str(schedule["observed_at"].iloc[0])
+    report = {
+        "report_version": "1.0",
+        "season": 18,
+        "snapshot_id": f"S18_D{cutoff_date.strftime('%Y%m%d')}",
+        "cutoff_date": cutoff_date.isoformat(),
+        "cutoff_interpretation": "End of day Asia/Jakarta (WIB).",
+        "source_data_observed_at": source_observed_at,
+        "retrospective_reconstruction": True,
+        "scope": {
+            "team_count": len(teams),
+            "schedule_match_count": len(snapshot_schedule),
+            "completed_match_count": int(available.sum()),
+            "scheduled_match_count": int(hidden.sum()),
+            "completed_weeks": completed_weeks,
+            "partial_weeks": partial_weeks,
+            "roster_member_count_available_at_cutoff": len(snapshot_rosters),
+        },
+        "temporal_guards": {
+            "future_results_hidden": True,
+            "roster_rule": "valid_from <= cutoff_date <= valid_to (when valid_to exists)",
+            "outcome_availability_assumption": (
+                "Skor final pada tanggal pertandingan dianggap tersedia pada akhir hari WIB."
+            ),
+            "source_limitation": (
+                "Snapshot direkonstruksi dari halaman resmi yang diamati setelah cutoff, "
+                "bukan arsip halaman yang ditangkap tepat pada 21 Agustus."
+            ),
+        },
+        "completed_results": dataframe_records(
+            snapshot_schedule.loc[
+                available,
+                [
+                    "week",
+                    "scheduled_at",
+                    "match_id",
+                    "team_a_id",
+                    "team_b_id",
+                    "team_a_score",
+                    "team_b_score",
+                    "winner_team_id",
+                ],
+            ]
+        ),
+    }
+    return teams.copy(), snapshot_rosters, snapshot_schedule, report
+
+
+def write_season18_asof_snapshot(
+    teams: pd.DataFrame,
+    rosters: pd.DataFrame,
+    schedule: pd.DataFrame,
+    report: dict[str, Any],
+    output_dir: Path,
+) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    teams.to_csv(output_dir / "teams.csv", index=False)
+    rosters.to_csv(output_dir / "rosters.csv", index=False)
+    schedule.to_csv(output_dir / "schedule_results.csv", index=False)
+    write_json(report, output_dir / "snapshot_metadata.json")
+
+
 def validate_season18_data(
     teams: pd.DataFrame,
     rosters: pd.DataFrame,
