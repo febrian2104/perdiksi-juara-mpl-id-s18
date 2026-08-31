@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -5,7 +6,13 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from mpl_predictor.config import ProjectPaths, get_project_paths
+# Streamlit Cloud may execute this file directly instead of installing the src-layout
+# package. Add the src directory before importing mpl_predictor so both entry points work.
+SOURCE_ROOT = Path(__file__).resolve().parents[1]
+if str(SOURCE_ROOT) not in sys.path:
+    sys.path.insert(0, str(SOURCE_ROOT))
+
+from mpl_predictor.config import ProjectPaths, get_project_paths  # noqa: E402
 
 
 def dashboard_file_paths(paths: ProjectPaths) -> dict[str, Path]:

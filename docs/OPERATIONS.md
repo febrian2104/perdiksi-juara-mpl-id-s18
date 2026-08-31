@@ -69,9 +69,9 @@ Untuk deployment Streamlit Community Cloud, isi **Main file path** dengan:
 streamlit_app.py
 ```
 
-Jangan gunakan `src/mpl_predictor/dashboard.py` sebagai entry point cloud karena repository
-memakai layout `src` dan package belum berada pada import path saat file tersebut dijalankan
-langsung.
+`streamlit_app.py` tetap menjadi entry point yang direkomendasikan. Sebagai fallback,
+`src/mpl_predictor/dashboard.py` juga menambahkan folder `src` ke import path sehingga
+deployment lama tidak gagal ketika belum mengganti konfigurasi main file.
 
 ## Keluaran utama
 
