@@ -1,0 +1,1480 @@
+{
+  "report_version": "1.0",
+  "dataset_scope": {
+    "season_min": 1,
+    "season_max": 17,
+    "primary_modeling_seasons": [
+      4,
+      17
+    ],
+    "table_count": 8,
+    "total_rows": 41256,
+    "team_season_count": 150,
+    "franchise_team_season_count": 118,
+    "match_count": 1182,
+    "franchise_match_count": 992,
+    "champion_label_count": 17
+  },
+  "core_modeling_ready": true,
+  "blocking_issue_count": 0,
+  "core_checks": [
+    {
+      "check_id": "unique_match_id",
+      "status": "pass",
+      "count": 0,
+      "detail": "Setiap match_id harus unik."
+    },
+    {
+      "check_id": "complete_match_inputs",
+      "status": "pass",
+      "count": 0,
+      "detail": "Tanggal, peserta, skor, dan hasil pertandingan wajib lengkap."
+    },
+    {
+      "check_id": "complete_franchise_slots",
+      "status": "pass",
+      "count": 0,
+      "detail": "Semua tim Season 4+ harus mempunyai franchise_slot_id."
+    },
+    {
+      "check_id": "complete_team_identity",
+      "status": "pass",
+      "count": 0,
+      "detail": "Semua team-season harus terhubung ke organization_id."
+    },
+    {
+      "check_id": "one_champion_per_season",
+      "status": "pass",
+      "count": 0,
+      "detail": "Setiap musim harus memiliki tepat satu label juara."
+    },
+    {
+      "check_id": "complete_player_identity",
+      "status": "pass",
+      "count": 0,
+      "detail": "Semua baris roster harus terhubung ke player_id."
+    }
+  ],
+  "feature_groups": [
+    {
+      "feature_group": "team_match_history",
+      "source_tables": [
+        "matches"
+      ],
+      "status": "ready",
+      "coverage": "100% skor dan hasil match tersedia",
+      "decision": "Fitur inti untuk baseline, Elo, dan performa rolling.",
+      "leakage_control": "Hanya pertandingan dengan completion date <= cutoff snapshot."
+    },
+    {
+      "feature_group": "team_and_franchise_identity",
+      "source_tables": [
+        "teams"
+      ],
+      "status": "ready",
+      "coverage": "100% organization; 100% franchise slot pada Season 4+",
+      "decision": "Gunakan franchise_slot_id untuk kesinambungan lintas rebrand.",
+      "leakage_control": "Nama dan ID menjadi identifier, bukan sinyal target langsung."
+    },
+    {
+      "feature_group": "roster_identity_and_roles",
+      "source_tables": [
+        "players",
+        "player_identity"
+      ],
+      "status": "conditional",
+      "coverage": "Role Season 4+ terisi 93.05%; 6 identitas perlu review",
+      "decision": "Boleh untuk continuity/experience setelah ada tanggal efektif roster.",
+      "leakage_control": "Roster historis saat ini adalah daftar semusim dan belum memiliki valid_from/valid_to."
+    },
+    {
+      "feature_group": "game_outcomes",
+      "source_tables": [
+        "games"
+      ],
+      "status": "conditional",
+      "coverage": "Hasil game terisi 54.3% secara keseluruhan",
+      "decision": "Gunakan score game dari matches sebagai sumber utama; detail games hanya saat tersedia.",
+      "leakage_control": "Tambahkan indikator missing dan jangan menganggap missing sebagai kalah/menang."
+    },
+    {
+      "feature_group": "game_duration",
+      "source_tables": [
+        "games"
+      ],
+      "status": "experimental",
+      "coverage": "Durasi game terisi 14.27% secara keseluruhan",
+      "decision": "Tidak menjadi fitur baseline; hanya eksperimen pada musim dengan coverage memadai.",
+      "leakage_control": "Evaluasi terpisah per era agar pola missing tidak menjadi proxy musim."
+    },
+    {
+      "feature_group": "draft_and_hero",
+      "source_tables": [
+        "drafts"
+      ],
+      "status": "experimental",
+      "coverage": "Coverage sangat berbeda antar musim dan sangat tipis pada beberapa musim terbaru.",
+      "decision": "Tidak menjadi fitur baseline; gunakan hanya pada eksperimen coverage-terkontrol.",
+      "leakage_control": "Draft hanya boleh masuk setelah game terkait selesai pada cutoff."
+    },
+    {
+      "feature_group": "published_player_statistics",
+      "source_tables": [
+        "player_season_stats"
+      ],
+      "status": "excluded_as_of",
+      "coverage": "95 baris pada 59/118 team-season; merupakan pemain terpilih/snapshot yang tidak seragam",
+      "decision": "Jangan dipakai sebagai agregat roster atau fitur inti model as-of.",
+      "leakage_control": "Banyak snapshot dipublikasikan pada/selepas akhir musim dan dapat membocorkan target."
+    },
+    {
+      "feature_group": "champion_and_final_rank",
+      "source_tables": [
+        "championships"
+      ],
+      "status": "target_only",
+      "coverage": "Tepat satu juara pada setiap Season 1-17",
+      "decision": "champion adalah label; final_rank hanya untuk evaluasi/deskripsi.",
+      "leakage_control": "Seluruh kolom tabel ini dilarang menjadi fitur prediksi musim yang sama."
+    }
+  ],
+  "advisory_findings": [
+    {
+      "finding_id": "pre_franchise_scope",
+      "severity": "info",
+      "detail": "Season 1-3 tetap disimpan untuk konteks, bukan data utama model franchise."
+    },
+    {
+      "finding_id": "roster_temporal_fields_missing",
+      "severity": "warning",
+      "detail": "players belum mempunyai valid_from/valid_to atau tanggal pengumuman roster."
+    },
+    {
+      "finding_id": "player_stats_selection_bias",
+      "severity": "warning",
+      "detail": "player_season_stats berisi statistik terpilih dan definisi snapshot yang berbeda."
+    },
+    {
+      "finding_id": "partial_game_details",
+      "severity": "warning",
+      "detail": "Hasil dan durasi pada games parsial; skor series pada matches lebih konsisten."
+    },
+    {
+      "finding_id": "partial_draft_coverage",
+      "severity": "warning",
+      "detail": "Draft tidak mempunyai coverage yang konsisten antar musim."
+    },
+    {
+      "finding_id": "non_feature_columns",
+      "severity": "info",
+      "detail": "Index, source, source_file, URL, nama mentah, dan ID target tidak digunakan sebagai fitur numerik."
+    }
+  ],
+  "season_coverage": [
+    {
+      "season": 1,
+      "era": "pre_franchise",
+      "team_count": 10,
+      "match_count": 59,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 124,
+      "game_outcome_coverage_pct": 70.97,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 60,
+      "roster_role_coverage_pct": 0.0,
+      "draft_row_count": 1735,
+      "draft_game_coverage_pct": 100.0,
+      "player_stat_row_count": 0,
+      "champion_count": 1
+    },
+    {
+      "season": 2,
+      "era": "pre_franchise",
+      "team_count": 10,
+      "match_count": 55,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 132,
+      "game_outcome_coverage_pct": 63.64,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 57,
+      "roster_role_coverage_pct": 0.0,
+      "draft_row_count": 1788,
+      "draft_game_coverage_pct": 96.97,
+      "player_stat_row_count": 0,
+      "champion_count": 1
+    },
+    {
+      "season": 3,
+      "era": "pre_franchise",
+      "team_count": 12,
+      "match_count": 76,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 181,
+      "game_outcome_coverage_pct": 66.85,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 70,
+      "roster_role_coverage_pct": 0.0,
+      "draft_row_count": 2896,
+      "draft_game_coverage_pct": 100.0,
+      "player_stat_row_count": 0,
+      "champion_count": 1
+    },
+    {
+      "season": 4,
+      "era": "franchise",
+      "team_count": 8,
+      "match_count": 64,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 156,
+      "game_outcome_coverage_pct": 47.44,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 67,
+      "roster_role_coverage_pct": 91.04,
+      "draft_row_count": 2464,
+      "draft_game_coverage_pct": 98.72,
+      "player_stat_row_count": 4,
+      "champion_count": 1
+    },
+    {
+      "season": 5,
+      "era": "franchise",
+      "team_count": 8,
+      "match_count": 64,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 156,
+      "game_outcome_coverage_pct": 48.72,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 67,
+      "roster_role_coverage_pct": 82.09,
+      "draft_row_count": 2496,
+      "draft_game_coverage_pct": 100.0,
+      "player_stat_row_count": 5,
+      "champion_count": 1
+    },
+    {
+      "season": 6,
+      "era": "franchise",
+      "team_count": 8,
+      "match_count": 64,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 157,
+      "game_outcome_coverage_pct": 47.13,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 59,
+      "roster_role_coverage_pct": 86.44,
+      "draft_row_count": 2834,
+      "draft_game_coverage_pct": 100.0,
+      "player_stat_row_count": 4,
+      "champion_count": 1
+    },
+    {
+      "season": 7,
+      "era": "franchise",
+      "team_count": 8,
+      "match_count": 64,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 158,
+      "game_outcome_coverage_pct": 46.84,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 62,
+      "roster_role_coverage_pct": 91.94,
+      "draft_row_count": 1829,
+      "draft_game_coverage_pct": 100.0,
+      "player_stat_row_count": 6,
+      "champion_count": 1
+    },
+    {
+      "season": 8,
+      "era": "franchise",
+      "team_count": 8,
+      "match_count": 64,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 171,
+      "game_outcome_coverage_pct": 42.11,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 59,
+      "roster_role_coverage_pct": 71.19,
+      "draft_row_count": 2420,
+      "draft_game_coverage_pct": 100.0,
+      "player_stat_row_count": 6,
+      "champion_count": 1
+    },
+    {
+      "season": 9,
+      "era": "franchise",
+      "team_count": 8,
+      "match_count": 64,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 167,
+      "game_outcome_coverage_pct": 46.71,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 62,
+      "roster_role_coverage_pct": 88.71,
+      "draft_row_count": 3340,
+      "draft_game_coverage_pct": 100.0,
+      "player_stat_row_count": 7,
+      "champion_count": 1
+    },
+    {
+      "season": 10,
+      "era": "franchise",
+      "team_count": 8,
+      "match_count": 64,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 172,
+      "game_outcome_coverage_pct": 37.79,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 61,
+      "roster_role_coverage_pct": 100.0,
+      "draft_row_count": 3439,
+      "draft_game_coverage_pct": 100.0,
+      "player_stat_row_count": 10,
+      "champion_count": 1
+    },
+    {
+      "season": 11,
+      "era": "franchise",
+      "team_count": 8,
+      "match_count": 64,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 174,
+      "game_outcome_coverage_pct": 39.66,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 58,
+      "roster_role_coverage_pct": 100.0,
+      "draft_row_count": 3480,
+      "draft_game_coverage_pct": 100.0,
+      "player_stat_row_count": 9,
+      "champion_count": 1
+    },
+    {
+      "season": 12,
+      "era": "franchise",
+      "team_count": 9,
+      "match_count": 80,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 208,
+      "game_outcome_coverage_pct": 100.0,
+      "game_duration_coverage_pct": 100.0,
+      "roster_player_count": 64,
+      "roster_role_coverage_pct": 89.06,
+      "draft_row_count": 4160,
+      "draft_game_coverage_pct": 100.0,
+      "player_stat_row_count": 9,
+      "champion_count": 1
+    },
+    {
+      "season": 13,
+      "era": "franchise",
+      "team_count": 9,
+      "match_count": 80,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 216,
+      "game_outcome_coverage_pct": 37.04,
+      "game_duration_coverage_pct": 4.63,
+      "roster_player_count": 74,
+      "roster_role_coverage_pct": 100.0,
+      "draft_row_count": 200,
+      "draft_game_coverage_pct": 4.63,
+      "player_stat_row_count": 19,
+      "champion_count": 1
+    },
+    {
+      "season": 14,
+      "era": "franchise",
+      "team_count": 9,
+      "match_count": 80,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 212,
+      "game_outcome_coverage_pct": 100.0,
+      "game_duration_coverage_pct": 100.0,
+      "roster_player_count": 68,
+      "roster_role_coverage_pct": 100.0,
+      "draft_row_count": 2120,
+      "draft_game_coverage_pct": 100.0,
+      "player_stat_row_count": 4,
+      "champion_count": 1
+    },
+    {
+      "season": 15,
+      "era": "franchise",
+      "team_count": 9,
+      "match_count": 80,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 217,
+      "game_outcome_coverage_pct": 33.64,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 64,
+      "roster_role_coverage_pct": 100.0,
+      "draft_row_count": 3,
+      "draft_game_coverage_pct": 0.0,
+      "player_stat_row_count": 4,
+      "champion_count": 1
+    },
+    {
+      "season": 16,
+      "era": "franchise",
+      "team_count": 9,
+      "match_count": 80,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 207,
+      "game_outcome_coverage_pct": 45.89,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 64,
+      "roster_role_coverage_pct": 100.0,
+      "draft_row_count": 4,
+      "draft_game_coverage_pct": 0.0,
+      "player_stat_row_count": 4,
+      "champion_count": 1
+    },
+    {
+      "season": 17,
+      "era": "franchise",
+      "team_count": 9,
+      "match_count": 80,
+      "match_outcome_coverage_pct": 100.0,
+      "game_count": 205,
+      "game_outcome_coverage_pct": 45.37,
+      "game_duration_coverage_pct": 0.0,
+      "roster_player_count": 63,
+      "roster_role_coverage_pct": 100.0,
+      "draft_row_count": 4,
+      "draft_game_coverage_pct": 0.0,
+      "player_stat_row_count": 4,
+      "champion_count": 1
+    }
+  ],
+  "tables": {
+    "championships": {
+      "row_count": 150,
+      "column_count": 12,
+      "key_columns": [
+        "season",
+        "team_id"
+      ],
+      "key_rows_with_null": 0,
+      "duplicate_key_rows": 0,
+      "fully_duplicated_rows": 0,
+      "missing_cell_count": 32,
+      "missing_cell_pct": 1.78,
+      "columns": {
+        "season": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "team": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 46
+        },
+        "final_rank": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 11
+        },
+        "champion": {
+          "dtype": "boolean",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 2
+        },
+        "runner_up": {
+          "dtype": "boolean",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 2
+        },
+        "source": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "source_file": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "team_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 28
+        },
+        "final_rank_min": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 8
+        },
+        "final_rank_max": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 10
+        },
+        "organization_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 25
+        },
+        "franchise_slot_id": {
+          "dtype": "string",
+          "missing_count": 32,
+          "missing_pct": 21.33,
+          "unique_non_null": 9
+        }
+      }
+    },
+    "drafts": {
+      "row_count": 35212,
+      "column_count": 18,
+      "key_columns": [
+        "season",
+        "match_id",
+        "game_number",
+        "team_id",
+        "action",
+        "order"
+      ],
+      "key_rows_with_null": 2131,
+      "duplicate_key_rows": 0,
+      "fully_duplicated_rows": 0,
+      "missing_cell_count": 184614,
+      "missing_cell_pct": 29.13,
+      "columns": {
+        "season": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "match_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 868
+        },
+        "game_number": {
+          "dtype": "Int64",
+          "missing_count": 11,
+          "missing_pct": 0.03,
+          "unique_non_null": 7
+        },
+        "team": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 43
+        },
+        "action": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 9
+        },
+        "order": {
+          "dtype": "Int64",
+          "missing_count": 2131,
+          "missing_pct": 6.05,
+          "unique_non_null": 5
+        },
+        "hero": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 128
+        },
+        "source": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 29
+        },
+        "source_file": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "scope": {
+          "dtype": "string",
+          "missing_count": 35201,
+          "missing_pct": 99.97,
+          "unique_non_null": 1
+        },
+        "total_count": {
+          "dtype": "Int64",
+          "missing_count": 35201,
+          "missing_pct": 99.97,
+          "unique_non_null": 11
+        },
+        "wins": {
+          "dtype": "Int64",
+          "missing_count": 35206,
+          "missing_pct": 99.98,
+          "unique_non_null": 6
+        },
+        "losses": {
+          "dtype": "Int64",
+          "missing_count": 35206,
+          "missing_pct": 99.98,
+          "unique_non_null": 6
+        },
+        "win_rate_pct": {
+          "dtype": "Float64",
+          "missing_count": 35206,
+          "missing_pct": 99.98,
+          "unique_non_null": 6
+        },
+        "team_id": {
+          "dtype": "string",
+          "missing_count": 11,
+          "missing_pct": 0.03,
+          "unique_non_null": 27
+        },
+        "is_aggregate": {
+          "dtype": "boolean",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 2
+        },
+        "organization_id": {
+          "dtype": "string",
+          "missing_count": 11,
+          "missing_pct": 0.03,
+          "unique_non_null": 24
+        },
+        "franchise_slot_id": {
+          "dtype": "string",
+          "missing_count": 6430,
+          "missing_pct": 18.26,
+          "unique_non_null": 9
+        }
+      }
+    },
+    "games": {
+      "row_count": 3013,
+      "column_count": 20,
+      "key_columns": [
+        "match_id",
+        "game_number"
+      ],
+      "key_rows_with_null": 0,
+      "duplicate_key_rows": 0,
+      "fully_duplicated_rows": 0,
+      "missing_cell_count": 10635,
+      "missing_cell_pct": 17.65,
+      "columns": {
+        "season": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "match_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 1182
+        },
+        "game_number": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 7
+        },
+        "date": {
+          "dtype": "datetime64[us]",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 467
+        },
+        "team_a": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 46
+        },
+        "team_b": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 46
+        },
+        "winner_raw": {
+          "dtype": "string",
+          "missing_count": 1377,
+          "missing_pct": 45.7,
+          "unique_non_null": 43
+        },
+        "duration_minutes": {
+          "dtype": "Float64",
+          "missing_count": 2583,
+          "missing_pct": 85.73,
+          "unique_non_null": 207
+        },
+        "source": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 335
+        },
+        "source_file": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "team_a_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 28
+        },
+        "team_b_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 28
+        },
+        "winner_side": {
+          "dtype": "string",
+          "missing_count": 1377,
+          "missing_pct": 45.7,
+          "unique_non_null": 2
+        },
+        "winner_team_id": {
+          "dtype": "string",
+          "missing_count": 1377,
+          "missing_pct": 45.7,
+          "unique_non_null": 26
+        },
+        "team_a_organization_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 25
+        },
+        "team_a_franchise_slot_id": {
+          "dtype": "string",
+          "missing_count": 437,
+          "missing_pct": 14.5,
+          "unique_non_null": 9
+        },
+        "team_b_organization_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 25
+        },
+        "team_b_franchise_slot_id": {
+          "dtype": "string",
+          "missing_count": 437,
+          "missing_pct": 14.5,
+          "unique_non_null": 9
+        },
+        "winner_organization_id": {
+          "dtype": "string",
+          "missing_count": 1377,
+          "missing_pct": 45.7,
+          "unique_non_null": 24
+        },
+        "winner_franchise_slot_id": {
+          "dtype": "string",
+          "missing_count": 1670,
+          "missing_pct": 55.43,
+          "unique_non_null": 9
+        }
+      }
+    },
+    "matches": {
+      "row_count": 1182,
+      "column_count": 24,
+      "key_columns": [
+        "match_id"
+      ],
+      "key_rows_with_null": 0,
+      "duplicate_key_rows": 0,
+      "fully_duplicated_rows": 0,
+      "missing_cell_count": 1729,
+      "missing_cell_pct": 6.09,
+      "columns": {
+        "season": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "stage": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 2
+        },
+        "week": {
+          "dtype": "Int64",
+          "missing_count": 146,
+          "missing_pct": 12.35,
+          "unique_non_null": 9
+        },
+        "date": {
+          "dtype": "datetime64[us]",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 467
+        },
+        "match_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 1182
+        },
+        "team_a": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 46
+        },
+        "team_b": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 46
+        },
+        "team_a_score": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 5
+        },
+        "team_b_score": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 5
+        },
+        "winner_raw": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 11
+        },
+        "best_of": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 4
+        },
+        "round": {
+          "dtype": "string",
+          "missing_count": 985,
+          "missing_pct": 83.33,
+          "unique_non_null": 17
+        },
+        "source": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 334
+        },
+        "source_file": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "team_a_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 28
+        },
+        "team_b_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 28
+        },
+        "winner_side": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 3
+        },
+        "winner_team_id": {
+          "dtype": "string",
+          "missing_count": 14,
+          "missing_pct": 1.18,
+          "unique_non_null": 27
+        },
+        "team_a_organization_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 25
+        },
+        "team_a_franchise_slot_id": {
+          "dtype": "string",
+          "missing_count": 190,
+          "missing_pct": 16.07,
+          "unique_non_null": 9
+        },
+        "team_b_organization_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 25
+        },
+        "team_b_franchise_slot_id": {
+          "dtype": "string",
+          "missing_count": 190,
+          "missing_pct": 16.07,
+          "unique_non_null": 9
+        },
+        "winner_organization_id": {
+          "dtype": "string",
+          "missing_count": 14,
+          "missing_pct": 1.18,
+          "unique_non_null": 24
+        },
+        "winner_franchise_slot_id": {
+          "dtype": "string",
+          "missing_count": 190,
+          "missing_pct": 16.07,
+          "unique_non_null": 9
+        }
+      }
+    },
+    "player_identity": {
+      "row_count": 375,
+      "column_count": 12,
+      "key_columns": [
+        "player_id"
+      ],
+      "key_rows_with_null": 0,
+      "duplicate_key_rows": 0,
+      "fully_duplicated_rows": 0,
+      "missing_cell_count": 0,
+      "missing_cell_pct": 0.0,
+      "columns": {
+        "player_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 375
+        },
+        "player_key": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 375
+        },
+        "canonical_nickname": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 375
+        },
+        "aliases": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 375
+        },
+        "first_season": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "last_season": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "team_ids": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 106
+        },
+        "organization_ids": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 101
+        },
+        "observation_count": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "identity_confidence": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 3
+        },
+        "identity_review_required": {
+          "dtype": "boolean",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 2
+        },
+        "ambiguous_same_season": {
+          "dtype": "boolean",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 1
+        }
+      }
+    },
+    "player_season_stats": {
+      "row_count": 95,
+      "column_count": 36,
+      "key_columns": [
+        "season",
+        "team_id",
+        "player_id",
+        "snapshot_label"
+      ],
+      "key_rows_with_null": 0,
+      "duplicate_key_rows": 0,
+      "fully_duplicated_rows": 0,
+      "missing_cell_count": 1330,
+      "missing_cell_pct": 38.89,
+      "columns": {
+        "season": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 14
+        },
+        "team": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 18
+        },
+        "player": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 49
+        },
+        "role": {
+          "dtype": "string",
+          "missing_count": 5,
+          "missing_pct": 5.26,
+          "unique_non_null": 11
+        },
+        "stat_scope": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 8
+        },
+        "snapshot_label": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 12
+        },
+        "snapshot_date": {
+          "dtype": "datetime64[us]",
+          "missing_count": 22,
+          "missing_pct": 23.16,
+          "unique_non_null": 8
+        },
+        "ranking": {
+          "dtype": "Int64",
+          "missing_count": 62,
+          "missing_pct": 65.26,
+          "unique_non_null": 10
+        },
+        "games_played": {
+          "dtype": "Int64",
+          "missing_count": 53,
+          "missing_pct": 55.79,
+          "unique_non_null": 31
+        },
+        "win_rate_pct": {
+          "dtype": "Float64",
+          "missing_count": 63,
+          "missing_pct": 66.32,
+          "unique_non_null": 20
+        },
+        "total_kills": {
+          "dtype": "Int64",
+          "missing_count": 47,
+          "missing_pct": 49.47,
+          "unique_non_null": 43
+        },
+        "avg_kills": {
+          "dtype": "Float64",
+          "missing_count": 85,
+          "missing_pct": 89.47,
+          "unique_non_null": 10
+        },
+        "total_deaths": {
+          "dtype": "Int64",
+          "missing_count": 85,
+          "missing_pct": 89.47,
+          "unique_non_null": 8
+        },
+        "avg_deaths": {
+          "dtype": "Float64",
+          "missing_count": 85,
+          "missing_pct": 89.47,
+          "unique_non_null": 10
+        },
+        "total_assists": {
+          "dtype": "Int64",
+          "missing_count": 53,
+          "missing_pct": 55.79,
+          "unique_non_null": 40
+        },
+        "avg_assists": {
+          "dtype": "Float64",
+          "missing_count": 85,
+          "missing_pct": 89.47,
+          "unique_non_null": 9
+        },
+        "avg_kda": {
+          "dtype": "Float64",
+          "missing_count": 47,
+          "missing_pct": 49.47,
+          "unique_non_null": 41
+        },
+        "kill_participation_pct": {
+          "dtype": "Float64",
+          "missing_count": 85,
+          "missing_pct": 89.47,
+          "unique_non_null": 6
+        },
+        "mvp_points": {
+          "dtype": "Int64",
+          "missing_count": 87,
+          "missing_pct": 91.58,
+          "unique_non_null": 5
+        },
+        "signature_hero": {
+          "dtype": "string",
+          "missing_count": 94,
+          "missing_pct": 98.95,
+          "unique_non_null": 1
+        },
+        "signature_hero_games": {
+          "dtype": "Int64",
+          "missing_count": 94,
+          "missing_pct": 98.95,
+          "unique_non_null": 1
+        },
+        "signature_hero_win_rate_pct": {
+          "dtype": "Float64",
+          "missing_count": 94,
+          "missing_pct": 98.95,
+          "unique_non_null": 1
+        },
+        "damage_taken_per_game": {
+          "dtype": "Float64",
+          "missing_count": 90,
+          "missing_pct": 94.74,
+          "unique_non_null": 5
+        },
+        "damage_taken_per_minute": {
+          "dtype": "Float64",
+          "missing_count": 94,
+          "missing_pct": 98.95,
+          "unique_non_null": 1
+        },
+        "coverage_status": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 7
+        },
+        "source": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 13
+        },
+        "source_file": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 14
+        },
+        "team_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 12
+        },
+        "organization_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 11
+        },
+        "franchise_slot_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 9
+        },
+        "player_key_raw": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 47
+        },
+        "player_key": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 45
+        },
+        "player_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 45
+        },
+        "canonical_nickname": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 45
+        },
+        "player_identity_confidence": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 2
+        },
+        "player_identity_review_required": {
+          "dtype": "boolean",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 2
+        }
+      }
+    },
+    "players": {
+      "row_count": 1079,
+      "column_count": 16,
+      "key_columns": [
+        "season",
+        "team_id",
+        "player_id"
+      ],
+      "key_rows_with_null": 0,
+      "duplicate_key_rows": 0,
+      "fully_duplicated_rows": 0,
+      "missing_cell_count": 623,
+      "missing_cell_pct": 3.61,
+      "columns": {
+        "season": {
+          "dtype": "Int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "team": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 46
+        },
+        "player": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 474
+        },
+        "role": {
+          "dtype": "string",
+          "missing_count": 249,
+          "missing_pct": 23.08,
+          "unique_non_null": 69
+        },
+        "status": {
+          "dtype": "string",
+          "missing_count": 187,
+          "missing_pct": 17.33,
+          "unique_non_null": 6
+        },
+        "source": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 116
+        },
+        "source_file": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "team_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 28
+        },
+        "organization_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 25
+        },
+        "franchise_slot_id": {
+          "dtype": "string",
+          "missing_count": 187,
+          "missing_pct": 17.33,
+          "unique_non_null": 9
+        },
+        "player_key_raw": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 393
+        },
+        "player_key": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 375
+        },
+        "player_id": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 375
+        },
+        "canonical_nickname": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 375
+        },
+        "player_identity_confidence": {
+          "dtype": "string",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 3
+        },
+        "player_identity_review_required": {
+          "dtype": "boolean",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 2
+        }
+      }
+    },
+    "teams": {
+      "row_count": 150,
+      "column_count": 13,
+      "key_columns": [
+        "season",
+        "team_id"
+      ],
+      "key_rows_with_null": 0,
+      "duplicate_key_rows": 0,
+      "fully_duplicated_rows": 0,
+      "missing_cell_count": 171,
+      "missing_cell_pct": 8.77,
+      "columns": {
+        "Index": {
+          "dtype": "int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 150
+        },
+        "season": {
+          "dtype": "int64",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "team_id": {
+          "dtype": "str",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 28
+        },
+        "team_name": {
+          "dtype": "str",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 46
+        },
+        "source": {
+          "dtype": "str",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "source_file": {
+          "dtype": "str",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 17
+        },
+        "season_team_id": {
+          "dtype": "str",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 150
+        },
+        "organization_id": {
+          "dtype": "str",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 25
+        },
+        "organization_name": {
+          "dtype": "str",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 26
+        },
+        "franchise_slot_id": {
+          "dtype": "str",
+          "missing_count": 32,
+          "missing_pct": 21.33,
+          "unique_non_null": 9
+        },
+        "mapping_basis": {
+          "dtype": "str",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 5
+        },
+        "mapping_evidence_url": {
+          "dtype": "str",
+          "missing_count": 139,
+          "missing_pct": 92.67,
+          "unique_non_null": 4
+        },
+        "identity_review_required": {
+          "dtype": "boolean",
+          "missing_count": 0,
+          "missing_pct": 0.0,
+          "unique_non_null": 1
+        }
+      }
+    }
+  }
+}

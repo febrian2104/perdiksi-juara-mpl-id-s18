@@ -3,6 +3,15 @@ import json
 from collections.abc import Sequence
 from pathlib import Path
 
+from mpl_predictor.analysis.common import load_canonical_tables
+from mpl_predictor.analysis.eda import build_eda_report, write_eda_figures, write_eda_report
+from mpl_predictor.analysis.prediction_policy import (
+    build_prediction_policy_report,
+    build_prediction_windows,
+    load_prediction_policy,
+    write_prediction_outputs,
+)
+from mpl_predictor.analysis.quality import build_quality_report, write_quality_report
 from mpl_predictor.config import get_project_paths
 from mpl_predictor.data.audit import AuditReport, audit_data
 from mpl_predictor.data.identity import (
@@ -65,6 +74,30 @@ def _build_parser() -> argparse.ArgumentParser:
     canonical_parser.add_argument("--player-aliases", type=Path, default=None)
     canonical_parser.add_argument("--output-dir", type=Path, default=None)
     canonical_parser.add_argument("--report", type=Path, default=None)
+
+    quality_parser = subparsers.add_parser(
+        "quality-report", help="Profile canonical datasets and assess feature readiness."
+    )
+    quality_parser.add_argument("--canonical-dir", type=Path, default=None)
+    quality_parser.add_argument("--output", type=Path, default=None)
+
+    eda_parser = subparsers.add_parser(
+        "eda", help="Generate modeling-oriented EDA summaries and figures."
+    )
+    eda_parser.add_argument("--canonical-dir", type=Path, default=None)
+    eda_parser.add_argument("--output", type=Path, default=None)
+    eda_parser.add_argument("--figures-dir", type=Path, default=None)
+    eda_parser.add_argument(
+        "--no-figures", action="store_true", help="Only write the JSON EDA report."
+    )
+
+    prediction_parser = subparsers.add_parser(
+        "prediction-policy", help="Generate preseason and weekly historical cutoff windows."
+    )
+    prediction_parser.add_argument("--canonical-dir", type=Path, default=None)
+    prediction_parser.add_argument("--policy", type=Path, default=None)
+    prediction_parser.add_argument("--output", type=Path, default=None)
+    prediction_parser.add_argument("--windows-output", type=Path, default=None)
     return parser
 
 
@@ -177,6 +210,63 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Output directory: {output_dir}")
         print(f"Identity report: {report_path}")
         return int(blocking_count > 0)
+
+    if args.command == "quality-report":
+        paths = get_project_paths()
+        canonical_dir = (args.canonical_dir or paths.processed / "canonical").resolve()
+        report_path = (args.output or paths.reports / "dataset_quality_report.json").resolve()
+        tables = load_canonical_tables(canonical_dir)
+        report = build_quality_report(tables)
+        write_quality_report(report, report_path)
+        print("MPL canonical dataset and feature quality")
+        print(f"Tables: {report['dataset_scope']['table_count']}")
+        print(f"Rows: {report['dataset_scope']['total_rows']}")
+        print(f"Core modeling ready: {report['core_modeling_ready']}")
+        print(f"Blocking issues: {report['blocking_issue_count']}")
+        print(f"Report: {report_path}")
+        return int(report["blocking_issue_count"] > 0)
+
+    if args.command == "eda":
+        paths = get_project_paths()
+        canonical_dir = (args.canonical_dir or paths.processed / "canonical").resolve()
+        report_path = (args.output or paths.reports / "eda_summary.json").resolve()
+        figures_dir = (args.figures_dir or paths.figures).resolve()
+        tables = load_canonical_tables(canonical_dir)
+        report, frames = build_eda_report(tables)
+        write_eda_report(report, report_path)
+        figure_outputs = [] if args.no_figures else write_eda_figures(frames, figures_dir)
+        print("MPL exploratory data analysis")
+        print(f"Team-season observations: {report['scope']['team_season_observations']}")
+        print(
+            f"Franchise champion observations: {report['scope']['franchise_champion_observations']}"
+        )
+        print(f"Figures: {len(figure_outputs)}")
+        print(f"Report: {report_path}")
+        if figure_outputs:
+            print(f"Figures directory: {figures_dir}")
+        return 0
+
+    if args.command == "prediction-policy":
+        paths = get_project_paths()
+        canonical_dir = (args.canonical_dir or paths.processed / "canonical").resolve()
+        policy_path = (args.policy or paths.root / "config" / "prediction_policy.json").resolve()
+        report_path = (args.output or paths.reports / "prediction_policy_summary.json").resolve()
+        windows_path = (args.windows_output or paths.reports / "prediction_windows.csv").resolve()
+        tables = load_canonical_tables(canonical_dir)
+        policy = load_prediction_policy(policy_path)
+        windows = build_prediction_windows(tables, policy)
+        report = build_prediction_policy_report(policy, windows)
+        write_prediction_outputs(report, windows, report_path, windows_path)
+        print("MPL prediction timing policy")
+        print(f"Historical snapshots: {report['historical_windows']['snapshot_count']}")
+        print(
+            "Preseason / weekly: "
+            f"{report['historical_windows']['preseason_snapshot_count']} / "
+            f"{report['historical_windows']['weekly_snapshot_count']}"
+        )
+        print(f"Policy report: {report_path}")
+        print(f"Historical windows: {windows_path}")
+        return 0
 
     parser.error(f"Unknown command: {args.command}")
     return 2

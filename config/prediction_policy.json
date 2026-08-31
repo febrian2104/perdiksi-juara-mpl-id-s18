@@ -1,0 +1,76 @@
+{
+  "policy_version": "1.0",
+  "prediction_target": {
+    "unit": "team_season",
+    "label": "champion",
+    "output": "Probabilitas juara untuk setiap tim aktif pada satu snapshot",
+    "probability_constraint": "Probabilitas semua tim dalam satu snapshot harus berjumlah 1"
+  },
+  "modeling_scope": {
+    "primary_seasons": [4, 17],
+    "context_only_seasons": [1, 3],
+    "first_recommended_backtest_target_season": 8,
+    "season_18_training_seasons": [4, 17],
+    "reason": "Season 4 adalah awal era franchise; Season 1-3 tidak dicampur ke model utama"
+  },
+  "preseason": {
+    "prediction_id_format": "S{season:02}_PRE",
+    "run_time": "Setelah peserta dan roster resmi tersedia, sebelum pertandingan pertama dimulai",
+    "historical_cutoff_rule": "Satu hari sebelum tanggal pertandingan regular season pertama",
+    "allowed_information": [
+      "Hasil pertandingan dan Elo hanya dari musim sebelum target",
+      "Performa rolling franchise/organisasi sampai musim sebelumnya",
+      "Roster target hanya jika mempunyai announced_at atau valid_from <= cutoff",
+      "Pengalaman pemain yang dihitung hanya dari pertandingan sebelum cutoff"
+    ],
+    "forbidden_information": [
+      "Hasil, draft, klasemen, statistik, atau penghargaan dari musim target",
+      "champion dan final_rank musim target",
+      "Roster semusim penuh tanpa bukti waktu ketersediaan"
+    ]
+  },
+  "weekly": {
+    "prediction_id_format": "S{season:02}_W{week:02}",
+    "run_time": "Setelah seluruh pertandingan regular season pada minggu W selesai dan hasil final",
+    "historical_cutoff_rule": "Tanggal completion paling akhir dari seluruh match regular season dengan week <= W",
+    "cadence": "Satu snapshot setelah setiap minggu regular season selesai",
+    "allowed_information": [
+      "Semua fitur pramusim yang valid pada cutoff",
+      "Hasil match, skor game, Elo, dan performa kumulatif regular season sampai minggu W",
+      "Strength of schedule yang hanya menggunakan match sampai minggu W",
+      "Draft/detail game hanya untuk game selesai dan hanya pada eksperimen coverage-terkontrol"
+    ],
+    "forbidden_information": [
+      "Pertandingan pada minggu setelah W",
+      "Seluruh hasil playoff dan label akhir musim",
+      "Statistik full-season atau snapshot yang diterbitkan setelah cutoff",
+      "Perubahan roster yang tanggal efektifnya melewati cutoff"
+    ],
+    "playoff_policy": "Tidak termasuk prediksi mingguan; pembaruan playoff nanti dibuat event-driven per match/bracket"
+  },
+  "backtesting": {
+    "method": "Expanding-window walk-forward berdasarkan urutan musim",
+    "training_rule": "Untuk target season S, training hanya boleh menggunakan target dari season < S",
+    "snapshot_alignment": "Bandingkan snapshot dengan jenis dan completed_week yang sama",
+    "random_split_allowed": false,
+    "minimum_history_note": "Backtest utama direkomendasikan mulai Season 8 agar tersedia empat musim franchise untuk training awal"
+  },
+  "current_data_guards": {
+    "matches": "Siap menjadi fitur inti dengan filter completion date dan week",
+    "players": "Belum time-aware; butuh announced_at atau valid_from/valid_to sebelum menjadi fitur as-of",
+    "player_season_stats": "Dikeluarkan dari fitur inti karena parsial dan banyak snapshot pascamusim",
+    "games": "Gunakan score series pada matches sebagai utama; detail game bersifat opsional",
+    "drafts": "Eksperimental karena coverage antar musim tidak konsisten",
+    "championships": "Target/evaluasi saja dan tidak pernah digabung sebagai fitur musim yang sama"
+  },
+  "season_18_delivery": {
+    "preseason": "Satu ranking probabilitas juara sebelum match pertama Season 18",
+    "weekly": "Satu ranking probabilitas setelah setiap minggu regular season Season 18",
+    "required_new_inputs": [
+      "Daftar tim Season 18",
+      "Roster Season 18 beserta announced_at atau valid_from",
+      "Jadwal dan hasil match Season 18 dengan week dan completion date"
+    ]
+  }
+}
+

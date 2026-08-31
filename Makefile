@@ -1,4 +1,4 @@
-.PHONY: setup audit semantic-audit normalize canonicalize test lint format dashboard
+.PHONY: setup audit semantic-audit normalize canonicalize quality-report eda prediction-policy analysis test lint format dashboard
 
 setup:
 	python3 -m venv .venv
@@ -17,6 +17,17 @@ normalize:
 
 canonicalize:
 	.venv/bin/mpl-predictor canonicalize
+
+quality-report:
+	.venv/bin/mpl-predictor quality-report
+
+eda:
+	.venv/bin/mpl-predictor eda
+
+prediction-policy:
+	.venv/bin/mpl-predictor prediction-policy
+
+analysis: quality-report eda prediction-policy
 
 test:
 	.venv/bin/python -m pytest
