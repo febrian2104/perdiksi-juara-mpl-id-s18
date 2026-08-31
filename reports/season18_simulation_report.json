@@ -1,6 +1,6 @@
 {
   "report_version": "1.0",
-  "simulation_version": "1.0",
+  "simulation_version": "2.0",
   "season": 18,
   "as_of": "2026-08-30",
   "iterations": 20000,
@@ -23,15 +23,138 @@
       ]
     },
     "playoffs": {
-      "format": "six_team_double_elimination",
-      "play_ins_best_of": 5,
-      "upper_semifinal_best_of": 5,
-      "lower_semifinal_best_of": 5,
-      "upper_final_best_of": 5,
-      "lower_final_best_of": 7,
-      "grand_final_best_of": 7
+      "format": "six_team_hybrid_elimination",
+      "probability_reference_best_of": 3,
+      "championship_match_id": "grand_final",
+      "bracket": [
+        {
+          "match_id": "play_in_1",
+          "round": "play_ins",
+          "best_of": 5,
+          "team_a": {
+            "source": "seed",
+            "seed": 3
+          },
+          "team_b": {
+            "source": "seed",
+            "seed": 6
+          }
+        },
+        {
+          "match_id": "play_in_2",
+          "round": "play_ins",
+          "best_of": 5,
+          "team_a": {
+            "source": "seed",
+            "seed": 4
+          },
+          "team_b": {
+            "source": "seed",
+            "seed": 5
+          }
+        },
+        {
+          "match_id": "upper_semifinal_1",
+          "round": "upper_semifinal",
+          "best_of": 5,
+          "team_a": {
+            "source": "seed",
+            "seed": 1
+          },
+          "team_b": {
+            "source": "winner",
+            "match_id": "play_in_1"
+          }
+        },
+        {
+          "match_id": "upper_semifinal_2",
+          "round": "upper_semifinal",
+          "best_of": 5,
+          "team_a": {
+            "source": "seed",
+            "seed": 2
+          },
+          "team_b": {
+            "source": "winner",
+            "match_id": "play_in_2"
+          }
+        },
+        {
+          "match_id": "lower_semifinal",
+          "round": "lower_semifinal",
+          "best_of": 5,
+          "team_a": {
+            "source": "loser",
+            "match_id": "upper_semifinal_1"
+          },
+          "team_b": {
+            "source": "loser",
+            "match_id": "upper_semifinal_2"
+          }
+        },
+        {
+          "match_id": "upper_final",
+          "round": "upper_final",
+          "best_of": 5,
+          "team_a": {
+            "source": "winner",
+            "match_id": "upper_semifinal_1"
+          },
+          "team_b": {
+            "source": "winner",
+            "match_id": "upper_semifinal_2"
+          }
+        },
+        {
+          "match_id": "lower_final",
+          "round": "lower_final",
+          "best_of": 7,
+          "team_a": {
+            "source": "loser",
+            "match_id": "upper_final"
+          },
+          "team_b": {
+            "source": "winner",
+            "match_id": "lower_semifinal"
+          }
+        },
+        {
+          "match_id": "grand_final",
+          "round": "grand_final",
+          "best_of": 7,
+          "team_a": {
+            "source": "winner",
+            "match_id": "upper_final"
+          },
+          "team_b": {
+            "source": "winner",
+            "match_id": "lower_final"
+          }
+        }
+      ]
     },
-    "playoff_bracket_basis": "Dikonfigurasi mengikuti struktur delapan seri yang digunakan pada S15-S17."
+    "format_confirmation": {
+      "season": 18,
+      "status": "historical_assumption",
+      "observed_at": "2026-08-31",
+      "basis": "Bracket delapan seri yang konsisten pada data playoff MPL ID Season 15-17.",
+      "requires_review_for_new_season": true
+    },
+    "validated_format_summary": {
+      "season": 18,
+      "format_status": "historical_assumption",
+      "playoff_team_count": 6,
+      "bracket_match_count": 8,
+      "round_counts": {
+        "play_ins": 2,
+        "upper_semifinal": 2,
+        "lower_semifinal": 1,
+        "upper_final": 1,
+        "lower_final": 1,
+        "grand_final": 1
+      },
+      "championship_match_id": "grand_final"
+    }
   },
   "model": {
     "match_model": "match_logistic_calibrated",
@@ -41,6 +164,7 @@
     ],
     "regular_series_score_sweep_probability": 0.5727272727272728,
     "remaining_match_probabilities": "Frozen pada state as-of; tidak dilatih ulang per iterasi.",
+    "playoff_series_probability": "Probabilitas seri referensi dikonversi menjadi peluang per game, lalu dihitung ulang sesuai best-of setiap match bracket.",
     "roster_usage": "Roster bertanggal terintegrasi, tetapi bukan kolom fitur model match final v1."
   },
   "validation": {
@@ -49,12 +173,13 @@
       {
         "check_id": "champion_probabilities_sum_to_one",
         "status": "pass",
-        "value": 1.0
+        "value": 0.9999999999999999
       },
       {
-        "check_id": "playoff_probabilities_sum_to_six",
+        "check_id": "playoff_probabilities_sum_to_configured_team_count",
         "status": "pass",
-        "value": 5.999999999999999
+        "value": 5.999999999999999,
+        "expected": 6
       },
       {
         "check_id": "each_seed_probabilities_sum_to_one",
@@ -174,8 +299,8 @@
       "expected_regular_rank": 3.2682,
       "regular_first_probability": 0.1166,
       "playoff_probability": 0.9785,
-      "grand_final_probability": 0.52925,
-      "champion_probability": 0.32145,
+      "grand_final_probability": 0.58445,
+      "champion_probability": 0.3795,
       "seed_1_probability": 0.1166,
       "seed_2_probability": 0.2203,
       "seed_3_probability": 0.2442,
@@ -195,8 +320,8 @@
       "expected_regular_rank": 1.91855,
       "regular_first_probability": 0.5184,
       "playoff_probability": 0.9982,
-      "grand_final_probability": 0.51395,
-      "champion_probability": 0.2661,
+      "grand_final_probability": 0.52935,
+      "champion_probability": 0.2695,
       "seed_1_probability": 0.5184,
       "seed_2_probability": 0.22775,
       "seed_3_probability": 0.13195,
@@ -216,8 +341,8 @@
       "expected_regular_rank": 2.66655,
       "regular_first_probability": 0.24045,
       "playoff_probability": 0.99155,
-      "grand_final_probability": 0.3884,
-      "champion_probability": 0.1827,
+      "grand_final_probability": 0.38645,
+      "champion_probability": 0.16835,
       "seed_1_probability": 0.24045,
       "seed_2_probability": 0.27485,
       "seed_3_probability": 0.2178,
@@ -237,8 +362,8 @@
       "expected_regular_rank": 3.51675,
       "regular_first_probability": 0.09065,
       "playoff_probability": 0.9698,
-      "grand_final_probability": 0.31425,
-      "champion_probability": 0.1405,
+      "grand_final_probability": 0.3055,
+      "champion_probability": 0.1276,
       "seed_1_probability": 0.09065,
       "seed_2_probability": 0.18755,
       "seed_3_probability": 0.22855,
@@ -258,8 +383,8 @@
       "expected_regular_rank": 4.673,
       "regular_first_probability": 0.02875,
       "playoff_probability": 0.88755,
-      "grand_final_probability": 0.13385,
-      "champion_probability": 0.0494,
+      "grand_final_probability": 0.10785,
+      "champion_probability": 0.0325,
       "seed_1_probability": 0.02875,
       "seed_2_probability": 0.0706,
       "seed_3_probability": 0.12535,
@@ -279,8 +404,8 @@
       "expected_regular_rank": 6.07005,
       "regular_first_probability": 0.00415,
       "playoff_probability": 0.62695,
-      "grand_final_probability": 0.08005,
-      "champion_probability": 0.0288,
+      "grand_final_probability": 0.0619,
+      "champion_probability": 0.01805,
       "seed_1_probability": 0.00415,
       "seed_2_probability": 0.01375,
       "seed_3_probability": 0.0363,
@@ -300,8 +425,8 @@
       "expected_regular_rank": 7.42065,
       "regular_first_probability": 0.0003,
       "playoff_probability": 0.2135,
-      "grand_final_probability": 0.01985,
-      "champion_probability": 0.0061,
+      "grand_final_probability": 0.0132,
+      "champion_probability": 0.0027,
       "seed_1_probability": 0.0003,
       "seed_2_probability": 0.00155,
       "seed_3_probability": 0.00495,
@@ -321,8 +446,8 @@
       "expected_regular_rank": 7.0904,
       "regular_first_probability": 0.0007,
       "playoff_probability": 0.2877,
-      "grand_final_probability": 0.01655,
-      "champion_probability": 0.004,
+      "grand_final_probability": 0.00925,
+      "champion_probability": 0.00145,
       "seed_1_probability": 0.0007,
       "seed_2_probability": 0.0036,
       "seed_3_probability": 0.01075,
@@ -342,8 +467,8 @@
       "expected_regular_rank": 8.37585,
       "regular_first_probability": 0.0,
       "playoff_probability": 0.04625,
-      "grand_final_probability": 0.00385,
-      "champion_probability": 0.00095,
+      "grand_final_probability": 0.00205,
+      "champion_probability": 0.00035,
       "seed_1_probability": 0.0,
       "seed_2_probability": 5e-05,
       "seed_3_probability": 0.00015,

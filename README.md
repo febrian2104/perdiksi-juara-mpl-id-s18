@@ -25,6 +25,8 @@ dashboard agar hasil eksperimen dapat direproduksi.
   dengan cutoff leakage-safe untuk bundle deployment saat ini.
 - Explainability global/lokal, dashboard interaktif, dan otomasi pipeline lokal sudah
   tersedia tanpa GitHub Actions.
+- Inti simulasi sudah season-agnostic. Format playoff disimpan sebagai bracket deklaratif,
+  divalidasi sebelum simulasi, dan tidak boleh diwariskan ke season baru tanpa konfirmasi.
 
 ## Menjalankan project
 
@@ -72,6 +74,7 @@ make analysis
 make modeling
 make models
 make season18
+make validate-season-config
 make verify
 make local-pipeline OBSERVED_AT=2026-08-31
 make test
@@ -231,11 +234,18 @@ Snapshot data live 31 Agustus 2026 berisi 9 tim, 59 pemain, 20 staf, dan 72 jadw
 season. Sebanyak 24 hasil sampai Week 3 dikunci sebagai hasil aktual; 48 pertandingan
 tersisa disimulasikan. Simulasi default menjalankan 20.000 iterasi dengan random seed tetap,
 top enam regular season, lalu bracket delapan seri yang mengikuti struktur Season 15-17.
+Status format S18 saat ini `historical_assumption`; config wajib ditinjau lagi setelah
+aturan playoff resmi S18 tersedia.
 
 Probabilitas pertandingan tersisa dibekukan pada state data 31 Agustus 2026. Simulasi
 memperbarui klasemen pada setiap iterasi, tetapi belum memperbarui ulang fitur Elo/form di
 dalam iterasi. Roster S18 sudah terintegrasi secara temporal, namun belum menjadi kolom
 fitur model match final versi 1.
+
+Bracket playoff memakai konfigurasi deklaratif. Probabilitas seri referensi BO3 diubah
+menjadi estimasi peluang per game, kemudian dihitung kembali sesuai BO5 atau BO7. Dengan
+demikian panjang seri sekarang memengaruhi probabilitas juara, tetapi konversi tersebut
+tetap merupakan asumsi model dan bukan probabilitas game yang dilatih secara terpisah.
 
 ## Prediksi pramusim, mingguan, dan explainability
 
@@ -262,6 +272,11 @@ dan Monte Carlo; kontribusi tersebut tidak boleh dibaca sebagai hubungan sebab-a
 
 Dashboard dijalankan dengan `make dashboard`. Panduan update, training ulang, verifikasi,
 dan contoh penjadwalan lokal tersedia di `docs/OPERATIONS.md`.
+
+Untuk season setelah S18, gunakan template `config/season_template.json` dan ikuti
+`docs/ADDING_A_SEASON.md`. Command lama yang mengandung `season18` tetap dipertahankan agar
+deployment saat ini tidak rusak; command generik baru adalah `validate-season-config`,
+`simulate-season`, dan `update-season-predictions`.
 
 Untuk Streamlit Community Cloud, gunakan main file path `streamlit_app.py`. Entry point ini
 menambahkan folder `src` ke import path sebelum memuat dashboard, sehingga package
@@ -308,3 +323,5 @@ menambahkan folder `src` ke import path sebelum memuat dashboard, sehingga packa
 23. Explainability dan dashboard hasil prediksi. **Selesai.**
 24. Otomatisasi lokal untuk data, training, testing, dan dokumentasi. **Selesai tanpa
     GitHub Actions.**
+25. Fondasi lintas season dan format playoff deklaratif. **Selesai; season baru wajib
+    mempunyai config format terkonfirmasi dan adapter data terverifikasi.**

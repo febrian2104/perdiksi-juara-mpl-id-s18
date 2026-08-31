@@ -1,0 +1,24 @@
+{
+  "simulation_version": "2.0",
+  "season": 0,
+  "iterations": 20000,
+  "random_seed": 0,
+  "format_confirmation": {
+    "season": 0,
+    "status": "unconfirmed",
+    "observed_at": null,
+    "basis": "Ganti dengan URL atau catatan sumber resmi format season target.",
+    "requires_review_for_new_season": true
+  },
+  "regular_season": {
+    "format": "replace_after_official_confirmation",
+    "playoff_team_count": 0,
+    "ranking_order": []
+  },
+  "playoffs": {
+    "format": "replace_after_official_confirmation",
+    "probability_reference_best_of": 3,
+    "championship_match_id": "grand_final",
+    "bracket": []
+  }
+}

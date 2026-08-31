@@ -33,7 +33,7 @@
       "completed_match_count": 0,
       "simulated_regular_match_count": 72,
       "leader_team_id": "ONIC",
-      "leader_champion_probability": 0.471,
+      "leader_champion_probability": 0.57275,
       "probability_sum": 1.0
     },
     {
@@ -48,8 +48,8 @@
       "completed_match_count": 8,
       "simulated_regular_match_count": 64,
       "leader_team_id": "ONIC",
-      "leader_champion_probability": 0.53445,
-      "probability_sum": 0.9999999999999999
+      "leader_champion_probability": 0.633,
+      "probability_sum": 1.0
     },
     {
       "snapshot_id": "S18_W02",
@@ -63,8 +63,8 @@
       "completed_match_count": 16,
       "simulated_regular_match_count": 56,
       "leader_team_id": "ONIC",
-      "leader_champion_probability": 0.4355,
-      "probability_sum": 1.0
+      "leader_champion_probability": 0.51505,
+      "probability_sum": 0.9999999999999999
     },
     {
       "snapshot_id": "S18_W03",
@@ -78,8 +78,8 @@
       "completed_match_count": 24,
       "simulated_regular_match_count": 48,
       "leader_team_id": "ONIC",
-      "leader_champion_probability": 0.32145,
-      "probability_sum": 1.0
+      "leader_champion_probability": 0.3795,
+      "probability_sum": 0.9999999999999999
     }
   ]
 }

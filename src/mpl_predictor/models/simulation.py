@@ -12,6 +12,10 @@ from mpl_predictor.features.elo import EloTracker
 from mpl_predictor.features.matches import _difference, _team_state
 from mpl_predictor.features.snapshots import _append_match_history
 from mpl_predictor.models.final import predict_match_probability
+from mpl_predictor.models.tournament import (
+    simulate_playoff_bracket,
+    validate_simulation_config,
+)
 
 STATE_DIFFERENCE_FEATURES = (
     "current_matches",
@@ -33,18 +37,29 @@ STATE_DIFFERENCE_FEATURES = (
 def load_simulation_config(path: Path) -> dict[str, Any]:
     with path.open(encoding="utf-8") as handle:
         config = json.load(handle)
-    required = {
-        "simulation_version",
-        "season",
-        "iterations",
-        "random_seed",
-        "regular_season",
-        "playoffs",
-    }
-    missing = required - set(config)
-    if missing:
-        raise ValueError(f"Simulation config is missing: {', '.join(sorted(missing))}")
+    validate_simulation_config(config)
     return config
+
+
+def _target_season(
+    schedule: pd.DataFrame,
+    teams: pd.DataFrame | None = None,
+    config: dict[str, Any] | None = None,
+) -> int:
+    season_values = pd.to_numeric(schedule["season"], errors="raise").dropna().unique()
+    if len(season_values) != 1:
+        raise ValueError("Live schedule must contain exactly one season.")
+    target_season = int(season_values[0])
+    if teams is not None:
+        team_seasons = pd.to_numeric(teams["season"], errors="raise").dropna().unique()
+        if len(team_seasons) != 1 or int(team_seasons[0]) != target_season:
+            raise ValueError("Live teams and schedule must refer to the same single season.")
+    if config is not None and int(config["season"]) != target_season:
+        raise ValueError(
+            "Simulation config season does not match live data: "
+            f"{config['season']} != {target_season}."
+        )
+    return target_season
 
 
 def _naive_date(value: Any) -> pd.Timestamp:
@@ -55,7 +70,7 @@ def _naive_date(value: Any) -> pd.Timestamp:
 
 
 def _replay_historical_state(
-    tables: dict[str, pd.DataFrame], feature_config: dict[str, Any]
+    tables: dict[str, pd.DataFrame], feature_config: dict[str, Any], target_season: int
 ) -> tuple[EloTracker, dict[str, list[dict[str, Any]]]]:
     elo = feature_config["elo"]
     tracker = EloTracker(
@@ -66,8 +81,10 @@ def _replay_historical_state(
     )
     history: dict[str, list[dict[str, Any]]] = {}
     matches = _match_completion_dates(tables["matches"], tables["games"])
-    matches = matches.loc[matches["season"].ge(4)]
-    teams = tables["teams"].loc[tables["teams"]["season"].ge(4)]
+    matches = matches.loc[matches["season"].ge(4) & matches["season"].lt(target_season)]
+    teams = tables["teams"].loc[
+        tables["teams"]["season"].ge(4) & tables["teams"]["season"].lt(target_season)
+    ]
     for season in sorted(int(value) for value in matches["season"].unique()):
         active_slots = (
             teams.loc[teams["season"].eq(season), "franchise_slot_id"].astype(str).tolist()
@@ -84,12 +101,13 @@ def _replay_historical_state(
 def _match_feature_record(
     slot_a: str,
     slot_b: str,
+    target_season: int,
     tracker: EloTracker,
     history: dict[str, list[dict[str, Any]]],
     scheduled_at: Any | None = None,
 ) -> dict[str, float | None]:
-    state_a = _team_state(slot_a, 18, history)
-    state_b = _team_state(slot_b, 18, history)
+    state_a = _team_state(slot_a, target_season, history)
+    state_b = _team_state(slot_b, target_season, history)
     rating_a = tracker.rating(slot_a)
     rating_b = tracker.rating(slot_b)
     record: dict[str, float | None] = {"elo_rating_diff": rating_a - rating_b}
@@ -115,7 +133,7 @@ def _match_feature_record(
 
 def _live_match(row: Any) -> SimpleNamespace:
     return SimpleNamespace(
-        season=18,
+        season=int(row.season),
         stage="regular_season",
         match_id=str(row.match_id),
         completion_date=_naive_date(row.scheduled_at),
@@ -134,8 +152,9 @@ def build_season18_match_probabilities(
     feature_config: dict[str, Any],
     artifact: dict[str, Any],
 ) -> tuple[pd.DataFrame, EloTracker, dict[str, list[dict[str, Any]]]]:
-    """Replay S4-S17, incorporate published S18 results, and price remaining matches."""
-    tracker, history = _replay_historical_state(tables, feature_config)
+    """Replay prior seasons, incorporate published live results, and price remaining matches."""
+    target_season = _target_season(schedule, teams)
+    tracker, history = _replay_historical_state(tables, feature_config, target_season)
     active_slots = teams["franchise_slot_id"].astype(str).tolist()
     tracker.regress_for_new_season(active_slots)
     records = []
@@ -146,6 +165,7 @@ def build_season18_match_probabilities(
         features = _match_feature_record(
             str(row.team_a_franchise_slot_id),
             str(row.team_b_franchise_slot_id),
+            target_season,
             tracker,
             history,
             row.scheduled_at,
@@ -168,6 +188,7 @@ def build_season18_match_probabilities(
         features = _match_feature_record(
             str(row.team_a_franchise_slot_id),
             str(row.team_b_franchise_slot_id),
+            target_season,
             tracker,
             history,
             row.scheduled_at,
@@ -224,12 +245,29 @@ def _base_standings(schedule: pd.DataFrame, team_ids: list[str]) -> dict[str, np
     return stats
 
 
-def _current_standings(schedule: pd.DataFrame, teams: pd.DataFrame) -> pd.DataFrame:
+def _current_standings(
+    schedule: pd.DataFrame,
+    teams: pd.DataFrame,
+    ranking_rules: list[str] | None = None,
+) -> pd.DataFrame:
     team_ids = teams["team_id"].astype(str).tolist()
     names = teams.set_index("team_id")["team_name"].to_dict()
     stats = _base_standings(schedule, team_ids)
     game_diff = stats["game_wins"] - stats["game_losses"]
-    order = np.lexsort((-stats["game_wins"], -game_diff, -stats["match_wins"]))
+    ranking_rules = ranking_rules or [
+        "match_wins_desc",
+        "game_differential_desc",
+        "game_wins_desc",
+        "random_tiebreak",
+    ]
+    order = _ranking_order(
+        ranking_rules,
+        stats["match_wins"],
+        stats["match_losses"],
+        stats["game_wins"],
+        stats["game_losses"],
+        random_tiebreak=np.arange(len(team_ids), dtype=float),
+    )
     return pd.DataFrame(
         {
             "current_rank": np.arange(1, len(team_ids) + 1),
@@ -247,6 +285,7 @@ def _current_standings(schedule: pd.DataFrame, teams: pd.DataFrame) -> pd.DataFr
 def _pair_probability_matrix(
     team_ids: list[str],
     slot_lookup: dict[str, str],
+    target_season: int,
     tracker: EloTracker,
     history: dict[str, list[dict[str, Any]]],
     artifact: dict[str, Any],
@@ -255,7 +294,11 @@ def _pair_probability_matrix(
     for a in range(len(team_ids)):
         for b in range(a + 1, len(team_ids)):
             features = _match_feature_record(
-                slot_lookup[team_ids[a]], slot_lookup[team_ids[b]], tracker, history
+                slot_lookup[team_ids[a]],
+                slot_lookup[team_ids[b]],
+                target_season,
+                tracker,
+                history,
             )
             probability = predict_match_probability(artifact, features)
             matrix[a, b] = probability
@@ -263,28 +306,30 @@ def _pair_probability_matrix(
     return matrix
 
 
-def _sample_series(
-    a: int, b: int, probabilities: np.ndarray, rng: np.random.Generator
-) -> tuple[int, int]:
-    return (a, b) if rng.random() < probabilities[a, b] else (b, a)
-
-
-def _simulate_playoffs(
-    seeds: np.ndarray, probabilities: np.ndarray, rng: np.random.Generator
-) -> tuple[int, tuple[int, int]]:
-    winner_36, _ = _sample_series(int(seeds[2]), int(seeds[5]), probabilities, rng)
-    winner_45, _ = _sample_series(int(seeds[3]), int(seeds[4]), probabilities, rng)
-    winner_upper_1, loser_upper_1 = _sample_series(int(seeds[0]), winner_36, probabilities, rng)
-    winner_upper_2, loser_upper_2 = _sample_series(int(seeds[1]), winner_45, probabilities, rng)
-    winner_lower_semifinal, _ = _sample_series(loser_upper_1, loser_upper_2, probabilities, rng)
-    winner_upper_final, loser_upper_final = _sample_series(
-        winner_upper_1, winner_upper_2, probabilities, rng
-    )
-    winner_lower_final, _ = _sample_series(
-        loser_upper_final, winner_lower_semifinal, probabilities, rng
-    )
-    champion, _ = _sample_series(winner_upper_final, winner_lower_final, probabilities, rng)
-    return champion, (winner_upper_final, winner_lower_final)
+def _ranking_order(
+    ranking_rules: list[str],
+    match_wins: np.ndarray,
+    match_losses: np.ndarray,
+    game_wins: np.ndarray,
+    game_losses: np.ndarray,
+    rng: np.random.Generator | None = None,
+    random_tiebreak: np.ndarray | None = None,
+) -> np.ndarray:
+    game_differential = game_wins - game_losses
+    values = {
+        "match_wins_desc": -match_wins,
+        "match_losses_asc": match_losses,
+        "game_differential_desc": -game_differential,
+        "game_wins_desc": -game_wins,
+        "random_tiebreak": (
+            random_tiebreak
+            if random_tiebreak is not None
+            else rng.random(len(match_wins))
+            if rng is not None
+            else np.arange(len(match_wins), dtype=float)
+        ),
+    }
+    return np.lexsort(tuple(values[rule] for rule in reversed(ranking_rules)))
 
 
 def simulate_season18(
@@ -297,7 +342,9 @@ def simulate_season18(
     artifact: dict[str, Any],
     config: dict[str, Any],
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
-    """Simulate remaining regular season and the recent six-team playoff bracket."""
+    """Simulate a configured live season and its declarative playoff bracket."""
+    format_summary = validate_simulation_config(config)
+    target_season = _target_season(schedule, teams, config)
     iterations = int(config["iterations"])
     rng = np.random.default_rng(int(config["random_seed"]))
     team_ids = teams["team_id"].astype(str).tolist()
@@ -314,14 +361,22 @@ def simulate_season18(
         )
         for row in remaining.itertuples(index=False)
     ]
-    pair_probabilities = _pair_probability_matrix(team_ids, slot_lookup, tracker, history, artifact)
+    pair_probabilities = _pair_probability_matrix(
+        team_ids, slot_lookup, target_season, tracker, history, artifact
+    )
     sweep_probability = _regular_sweep_probability(tables["matches"])
     team_count = len(team_ids)
     rank_sum = np.zeros(team_count, dtype=np.int64)
     playoff_count = np.zeros(team_count, dtype=np.int64)
     champion_count = np.zeros(team_count, dtype=np.int64)
     grand_final_count = np.zeros(team_count, dtype=np.int64)
-    seed_counts = np.zeros((team_count, 6), dtype=np.int64)
+    playoff_team_count = int(config["regular_season"]["playoff_team_count"])
+    if playoff_team_count > team_count:
+        raise ValueError(
+            f"Configured playoff team count {playoff_team_count} exceeds {team_count} teams."
+        )
+    seed_counts = np.zeros((team_count, playoff_team_count), dtype=np.int64)
+    ranking_rules = list(config["regular_season"]["ranking_order"])
 
     for _ in range(iterations):
         match_wins = base["match_wins"].copy()
@@ -338,25 +393,27 @@ def simulate_season18(
             game_losses[winner] += loser_score
             game_wins[loser] += loser_score
             game_losses[loser] += 2
-        game_diff = game_wins - game_losses
-        random_tiebreak = rng.random(team_count)
-        seeds = np.lexsort((random_tiebreak, -game_wins, -game_diff, -match_wins))
+        seeds = _ranking_order(
+            ranking_rules, match_wins, match_losses, game_wins, game_losses, rng
+        )
         ranks = np.empty(team_count, dtype=np.int16)
         ranks[seeds] = np.arange(1, team_count + 1)
         rank_sum += ranks
-        top_six = seeds[:6]
-        playoff_count[top_six] += 1
-        for seed_index, team in enumerate(top_six):
+        playoff_seeds = seeds[:playoff_team_count]
+        playoff_count[playoff_seeds] += 1
+        for seed_index, team in enumerate(playoff_seeds):
             seed_counts[team, seed_index] += 1
-        champion, finalists = _simulate_playoffs(top_six, pair_probabilities, rng)
+        champion, finalists, _ = simulate_playoff_bracket(
+            playoff_seeds, pair_probabilities, rng, config["playoffs"]
+        )
         champion_count[champion] += 1
         grand_final_count[list(finalists)] += 1
 
     records = []
-    current = _current_standings(schedule, teams).set_index("team_id")
+    current = _current_standings(schedule, teams, ranking_rules).set_index("team_id")
     for index, team_id in enumerate(team_ids):
         record = {
-            "season": 18,
+            "season": target_season,
             "as_of": str(schedule["observed_at"].iloc[0]),
             "team_id": team_id,
             "team_name": team_names[team_id],
@@ -369,7 +426,7 @@ def simulate_season18(
             "grand_final_probability": grand_final_count[index] / iterations,
             "champion_probability": champion_count[index] / iterations,
         }
-        for seed_index in range(6):
+        for seed_index in range(playoff_team_count):
             record[f"seed_{seed_index + 1}_probability"] = (
                 seed_counts[index, seed_index] / iterations
             )
@@ -382,7 +439,10 @@ def simulate_season18(
 
     champion_sum = float(result["champion_probability"].sum())
     playoff_sum = float(result["playoff_probability"].sum())
-    seed_sums = [float(result[f"seed_{index}_probability"].sum()) for index in range(1, 7)]
+    seed_sums = [
+        float(result[f"seed_{index}_probability"].sum())
+        for index in range(1, playoff_team_count + 1)
+    ]
     tolerance = 1e-9
     checks = [
         {
@@ -391,9 +451,12 @@ def simulate_season18(
             "value": champion_sum,
         },
         {
-            "check_id": "playoff_probabilities_sum_to_six",
-            "status": "pass" if abs(playoff_sum - 6.0) < tolerance else "fail",
+            "check_id": "playoff_probabilities_sum_to_configured_team_count",
+            "status": (
+                "pass" if abs(playoff_sum - playoff_team_count) < tolerance else "fail"
+            ),
             "value": playoff_sum,
+            "expected": playoff_team_count,
         },
         {
             "check_id": "each_seed_probabilities_sum_to_one",
@@ -406,7 +469,7 @@ def simulate_season18(
     report = {
         "report_version": "1.0",
         "simulation_version": config["simulation_version"],
-        "season": 18,
+        "season": target_season,
         "as_of": str(schedule["observed_at"].iloc[0]),
         "iterations": iterations,
         "random_seed": int(config["random_seed"]),
@@ -419,9 +482,8 @@ def simulate_season18(
         "format": {
             "regular_season": config["regular_season"],
             "playoffs": config["playoffs"],
-            "playoff_bracket_basis": (
-                "Dikonfigurasi mengikuti struktur delapan seri yang digunakan pada S15-S17."
-            ),
+            "format_confirmation": config["format_confirmation"],
+            "validated_format_summary": format_summary,
         },
         "model": {
             "match_model": artifact["model_name"],
@@ -433,6 +495,10 @@ def simulate_season18(
             "remaining_match_probabilities": (
                 "Frozen pada state as-of; tidak dilatih ulang per iterasi."
             ),
+            "playoff_series_probability": (
+                "Probabilitas seri referensi dikonversi menjadi peluang per game, lalu "
+                "dihitung ulang sesuai best-of setiap match bracket."
+            ),
             "roster_usage": (
                 "Roster bertanggal terintegrasi, tetapi bukan kolom fitur model match final v1."
             ),
@@ -441,10 +507,17 @@ def simulate_season18(
             "blocking_issue_count": sum(item["status"] == "fail" for item in checks),
             "checks": checks,
         },
-        "current_standings": dataframe_records(_current_standings(schedule, teams)),
+        "current_standings": dataframe_records(
+            _current_standings(schedule, teams, ranking_rules)
+        ),
         "predictions": dataframe_records(result),
     }
     return result.reset_index(drop=True), report
+
+
+# Generic aliases for future seasons. Existing S18 names remain API-compatible.
+build_live_match_probabilities = build_season18_match_probabilities
+simulate_live_season = simulate_season18
 
 
 def write_simulation_outputs(

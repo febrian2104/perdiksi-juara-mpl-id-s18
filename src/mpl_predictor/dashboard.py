@@ -319,10 +319,6 @@ def main() -> None:
         index=len(labels) - 1,
         format_func=labels.get,
     )
-    st.sidebar.info(
-        "Roster S18 pertama terverifikasi 31 Agustus 2026 dan tidak digunakan pada "
-        "snapshot dengan cutoff sebelum tanggal tersebut."
-    )
     overview_tab, matches_tab, explanation_tab, data_tab = st.tabs(
         ["Ringkasan", "Pertandingan", "Explainability", "Data & asumsi"]
     )

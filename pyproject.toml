@@ -1,7 +1,7 @@
 [project]
 name = "mpl-champion-predictor"
 version = "0.1.0"
-description = "Prediction pipeline and dashboard for MPL Indonesia Season 18."
+description = "Multi-season prediction pipeline and dashboard for MPL Indonesia."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []

@@ -1,8 +1,15 @@
 {
-  "simulation_version": "1.0",
+  "simulation_version": "2.0",
   "season": 18,
   "iterations": 20000,
   "random_seed": 180831,
+  "format_confirmation": {
+    "season": 18,
+    "status": "historical_assumption",
+    "observed_at": "2026-08-31",
+    "basis": "Bracket delapan seri yang konsisten pada data playoff MPL ID Season 15-17.",
+    "requires_review_for_new_season": true
+  },
   "regular_season": {
     "format": "double_round_robin_best_of_3",
     "playoff_team_count": 6,
@@ -14,12 +21,66 @@
     ]
   },
   "playoffs": {
-    "format": "six_team_double_elimination",
-    "play_ins_best_of": 5,
-    "upper_semifinal_best_of": 5,
-    "lower_semifinal_best_of": 5,
-    "upper_final_best_of": 5,
-    "lower_final_best_of": 7,
-    "grand_final_best_of": 7
+    "format": "six_team_hybrid_elimination",
+    "probability_reference_best_of": 3,
+    "championship_match_id": "grand_final",
+    "bracket": [
+      {
+        "match_id": "play_in_1",
+        "round": "play_ins",
+        "best_of": 5,
+        "team_a": {"source": "seed", "seed": 3},
+        "team_b": {"source": "seed", "seed": 6}
+      },
+      {
+        "match_id": "play_in_2",
+        "round": "play_ins",
+        "best_of": 5,
+        "team_a": {"source": "seed", "seed": 4},
+        "team_b": {"source": "seed", "seed": 5}
+      },
+      {
+        "match_id": "upper_semifinal_1",
+        "round": "upper_semifinal",
+        "best_of": 5,
+        "team_a": {"source": "seed", "seed": 1},
+        "team_b": {"source": "winner", "match_id": "play_in_1"}
+      },
+      {
+        "match_id": "upper_semifinal_2",
+        "round": "upper_semifinal",
+        "best_of": 5,
+        "team_a": {"source": "seed", "seed": 2},
+        "team_b": {"source": "winner", "match_id": "play_in_2"}
+      },
+      {
+        "match_id": "lower_semifinal",
+        "round": "lower_semifinal",
+        "best_of": 5,
+        "team_a": {"source": "loser", "match_id": "upper_semifinal_1"},
+        "team_b": {"source": "loser", "match_id": "upper_semifinal_2"}
+      },
+      {
+        "match_id": "upper_final",
+        "round": "upper_final",
+        "best_of": 5,
+        "team_a": {"source": "winner", "match_id": "upper_semifinal_1"},
+        "team_b": {"source": "winner", "match_id": "upper_semifinal_2"}
+      },
+      {
+        "match_id": "lower_final",
+        "round": "lower_final",
+        "best_of": 7,
+        "team_a": {"source": "loser", "match_id": "upper_final"},
+        "team_b": {"source": "winner", "match_id": "lower_semifinal"}
+      },
+      {
+        "match_id": "grand_final",
+        "round": "grand_final",
+        "best_of": 7,
+        "team_a": {"source": "winner", "match_id": "upper_final"},
+        "team_b": {"source": "winner", "match_id": "lower_final"}
+      }
+    ]
   }
 }

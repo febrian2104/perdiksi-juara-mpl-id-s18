@@ -6,8 +6,8 @@ import pandas as pd
 
 from mpl_predictor.analysis.common import write_json
 from mpl_predictor.models.simulation import (
-    build_season18_match_probabilities,
-    simulate_season18,
+    build_live_match_probabilities,
+    simulate_live_season,
 )
 
 
@@ -26,14 +26,26 @@ def load_season18_tables(directory: Path) -> tuple[pd.DataFrame, pd.DataFrame, p
     return teams, rosters, schedule
 
 
-def build_season18_prediction_windows(
+load_live_season_tables = load_season18_tables
+
+
+def _schedule_season(schedule: pd.DataFrame) -> int:
+    seasons = pd.to_numeric(schedule["season"], errors="raise").dropna().unique()
+    if len(seasons) != 1:
+        raise ValueError("Live schedule must contain exactly one season.")
+    return int(seasons[0])
+
+
+def build_live_prediction_windows(
     schedule: pd.DataFrame, as_of: date | None = None
 ) -> pd.DataFrame:
     """Build a leakage-safe preseason window and every fully completed weekly window."""
+    season = _schedule_season(schedule)
+    snapshot_prefix = f"S{season}"
     first_match = schedule["scheduled_at"].min()
     records = [
         {
-            "snapshot_id": "S18_PRE",
+            "snapshot_id": f"{snapshot_prefix}_PRE",
             "prediction_type": "preseason",
             "completed_week": pd.NA,
             "feature_cutoff_date": (first_match - pd.Timedelta(days=1)).date(),
@@ -52,7 +64,7 @@ def build_season18_prediction_windows(
             break
         records.append(
             {
-                "snapshot_id": f"S18_W{week:02}",
+                "snapshot_id": f"{snapshot_prefix}_W{week:02}",
                 "prediction_type": "weekly",
                 "completed_week": week,
                 "feature_cutoff_date": week_rows["scheduled_at"].max().date(),
@@ -67,7 +79,7 @@ def build_season18_prediction_windows(
             partial_week = int(schedule.loc[available_as_of, "week"].max())
             records.append(
                 {
-                    "snapshot_id": f"S18_D{as_of.strftime('%Y%m%d')}",
+                    "snapshot_id": f"{snapshot_prefix}_D{as_of.strftime('%Y%m%d')}",
                     "prediction_type": "as_of",
                     "completed_week": (
                         int(records[-1]["completed_week"])
@@ -86,8 +98,15 @@ def build_season18_prediction_windows(
     return result
 
 
+def build_season18_prediction_windows(
+    schedule: pd.DataFrame, as_of: date | None = None
+) -> pd.DataFrame:
+    """Backward-compatible wrapper for the current Season 18 pipeline."""
+    return build_live_prediction_windows(schedule, as_of=as_of)
+
+
 def schedule_as_of_window(schedule: pd.DataFrame, window: pd.Series) -> pd.DataFrame:
-    """Hide every result that was unavailable at the requested S18 snapshot."""
+    """Hide every result that was unavailable at the requested live-season snapshot."""
     result = schedule.copy()
     completed_week = window["completed_week"]
     if window["prediction_type"] == "as_of":
@@ -109,7 +128,7 @@ def schedule_as_of_window(schedule: pd.DataFrame, window: pd.Series) -> pd.DataF
     return result
 
 
-def build_season18_prediction_history(
+def build_live_prediction_history(
     tables: dict[str, pd.DataFrame],
     teams: pd.DataFrame,
     rosters: pd.DataFrame,
@@ -120,7 +139,8 @@ def build_season18_prediction_history(
     as_of: date | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any], dict[str, Any]]:
     """Reconstruct preseason and create every currently available weekly prediction."""
-    windows = build_season18_prediction_windows(schedule, as_of=as_of)
+    season = _schedule_season(schedule)
+    windows = build_live_prediction_windows(schedule, as_of=as_of)
     prediction_frames = []
     match_frames = []
     snapshot_summaries = []
@@ -129,10 +149,10 @@ def build_season18_prediction_history(
     for window in windows.to_dict(orient="records"):
         window_series = pd.Series(window)
         snapshot_schedule = schedule_as_of_window(schedule, window_series)
-        probabilities, tracker, history = build_season18_match_probabilities(
+        probabilities, tracker, history = build_live_match_probabilities(
             tables, snapshot_schedule, teams, feature_config, artifact
         )
-        predictions, simulation_report = simulate_season18(
+        predictions, simulation_report = simulate_live_season(
             tables,
             snapshot_schedule,
             teams,
@@ -192,7 +212,7 @@ def build_season18_prediction_history(
     all_matches["snapshot_order"] = all_matches["snapshot_id"].map(snapshot_order)
     report = {
         "report_version": "1.0",
-        "season": 18,
+        "season": season,
         "method": "retrospective_as_of_reconstruction_and_weekly_update",
         "source_data_observed_at": str(schedule["observed_at"].iloc[0]),
         "requested_as_of": as_of.isoformat() if as_of is not None else None,
@@ -215,7 +235,8 @@ def build_season18_prediction_history(
             ),
             "reconstruction_note": (
                 "Daftar peserta dan jadwal berasal dari snapshot resmi yang dikumpulkan "
-                "setelah musim dimulai; seluruh outcome S18 tetap disembunyikan sesuai cutoff."
+                f"setelah musim dimulai; seluruh outcome S{season} tetap disembunyikan "
+                "sesuai cutoff."
             ),
         },
         "validation": {
@@ -229,7 +250,30 @@ def build_season18_prediction_history(
     return all_predictions, all_matches, report, latest_report
 
 
-def write_season18_prediction_history(
+def build_season18_prediction_history(
+    tables: dict[str, pd.DataFrame],
+    teams: pd.DataFrame,
+    rosters: pd.DataFrame,
+    schedule: pd.DataFrame,
+    feature_config: dict[str, Any],
+    artifact: dict[str, Any],
+    simulation_config: dict[str, Any],
+    as_of: date | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any], dict[str, Any]]:
+    """Backward-compatible wrapper for the current Season 18 pipeline."""
+    return build_live_prediction_history(
+        tables,
+        teams,
+        rosters,
+        schedule,
+        feature_config,
+        artifact,
+        simulation_config,
+        as_of=as_of,
+    )
+
+
+def write_live_prediction_history(
     predictions: pd.DataFrame,
     match_probabilities: pd.DataFrame,
     report: dict[str, Any],
@@ -237,15 +281,17 @@ def write_season18_prediction_history(
     prediction_dir: Path,
     report_path: Path,
     latest_report_path: Path,
+    season: int,
 ) -> dict[str, Path]:
     prediction_dir.mkdir(parents=True, exist_ok=True)
+    prefix = f"season{season}"
     outputs = {
-        "history": prediction_dir / "season18_snapshot_predictions.parquet",
-        "preseason": prediction_dir / "season18_preseason_prediction.parquet",
-        "weekly": prediction_dir / "season18_weekly_predictions.parquet",
-        "matches": prediction_dir / "season18_snapshot_match_probabilities.parquet",
-        "latest": prediction_dir / "season18_simulation.parquet",
-        "latest_matches": prediction_dir / "season18_match_probabilities.parquet",
+        "history": prediction_dir / f"{prefix}_snapshot_predictions.parquet",
+        "preseason": prediction_dir / f"{prefix}_preseason_prediction.parquet",
+        "weekly": prediction_dir / f"{prefix}_weekly_predictions.parquet",
+        "matches": prediction_dir / f"{prefix}_snapshot_match_probabilities.parquet",
+        "latest": prediction_dir / f"{prefix}_simulation.parquet",
+        "latest_matches": prediction_dir / f"{prefix}_match_probabilities.parquet",
     }
     predictions.to_parquet(outputs["history"], index=False)
     predictions.loc[predictions["prediction_type"].eq("preseason")].to_parquet(
@@ -265,3 +311,25 @@ def write_season18_prediction_history(
     write_json(report, report_path)
     write_json(latest_report, latest_report_path)
     return outputs
+
+
+def write_season18_prediction_history(
+    predictions: pd.DataFrame,
+    match_probabilities: pd.DataFrame,
+    report: dict[str, Any],
+    latest_report: dict[str, Any],
+    prediction_dir: Path,
+    report_path: Path,
+    latest_report_path: Path,
+) -> dict[str, Path]:
+    """Backward-compatible writer for the current Season 18 deployment bundle."""
+    return write_live_prediction_history(
+        predictions,
+        match_probabilities,
+        report,
+        latest_report,
+        prediction_dir,
+        report_path,
+        latest_report_path,
+        season=18,
+    )

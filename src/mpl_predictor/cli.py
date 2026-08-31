@@ -78,16 +78,18 @@ from mpl_predictor.models.final import (
     write_final_model_outputs,
 )
 from mpl_predictor.models.season18_predictions import (
-    build_season18_prediction_history,
+    build_live_prediction_history,
+    load_live_season_tables,
     load_season18_tables,
-    write_season18_prediction_history,
+    write_live_prediction_history,
 )
 from mpl_predictor.models.simulation import (
-    build_season18_match_probabilities,
+    build_live_match_probabilities,
     load_simulation_config,
-    simulate_season18,
+    simulate_live_season,
     write_simulation_outputs,
 )
+from mpl_predictor.models.tournament import validate_simulation_config
 from mpl_predictor.models.walk_forward import (
     load_model_config,
     walk_forward_champion_predictions,
@@ -235,7 +237,7 @@ def _build_parser() -> argparse.ArgumentParser:
         "simulate-season18", help="Simulate the remaining S18 regular season and playoffs."
     )
     simulation_parser.add_argument("--canonical-dir", type=Path, default=None)
-    simulation_parser.add_argument("--season18-dir", type=Path, default=None)
+    simulation_parser.add_argument("--season18-dir", dest="season_dir", type=Path, default=None)
     simulation_parser.add_argument("--feature-config", type=Path, default=None)
     simulation_parser.add_argument("--model-artifact", type=Path, default=None)
     simulation_parser.add_argument("--config", type=Path, default=None)
@@ -244,12 +246,33 @@ def _build_parser() -> argparse.ArgumentParser:
     simulation_parser.add_argument("--match-output", type=Path, default=None)
     simulation_parser.add_argument("--report", type=Path, default=None)
 
+    validate_format_parser = subparsers.add_parser(
+        "validate-season-config",
+        help="Validate a versioned regular-season and playoff configuration.",
+    )
+    validate_format_parser.add_argument("--config", type=Path, required=True)
+    validate_format_parser.add_argument("--json", action="store_true")
+
+    live_simulation_parser = subparsers.add_parser(
+        "simulate-season",
+        help="Simulate a configured live season from standardized live tables.",
+    )
+    live_simulation_parser.add_argument("--canonical-dir", type=Path, default=None)
+    live_simulation_parser.add_argument("--season-dir", type=Path, default=None)
+    live_simulation_parser.add_argument("--feature-config", type=Path, default=None)
+    live_simulation_parser.add_argument("--model-artifact", type=Path, default=None)
+    live_simulation_parser.add_argument("--config", type=Path, required=True)
+    live_simulation_parser.add_argument("--iterations", type=int, default=None)
+    live_simulation_parser.add_argument("--simulation-output", type=Path, default=None)
+    live_simulation_parser.add_argument("--match-output", type=Path, default=None)
+    live_simulation_parser.add_argument("--report", type=Path, default=None)
+
     update_parser = subparsers.add_parser(
         "update-season18-predictions",
         help="Reconstruct preseason and update every completed S18 weekly snapshot.",
     )
     update_parser.add_argument("--canonical-dir", type=Path, default=None)
-    update_parser.add_argument("--season18-dir", type=Path, default=None)
+    update_parser.add_argument("--season18-dir", dest="season_dir", type=Path, default=None)
     update_parser.add_argument("--feature-config", type=Path, default=None)
     update_parser.add_argument("--model-artifact", type=Path, default=None)
     update_parser.add_argument("--config", type=Path, default=None)
@@ -263,6 +286,21 @@ def _build_parser() -> argparse.ArgumentParser:
     update_parser.add_argument("--prediction-dir", type=Path, default=None)
     update_parser.add_argument("--report", type=Path, default=None)
     update_parser.add_argument("--latest-report", type=Path, default=None)
+
+    live_update_parser = subparsers.add_parser(
+        "update-season-predictions",
+        help="Build preseason and weekly snapshots for a configured live season.",
+    )
+    live_update_parser.add_argument("--canonical-dir", type=Path, default=None)
+    live_update_parser.add_argument("--season-dir", type=Path, default=None)
+    live_update_parser.add_argument("--feature-config", type=Path, default=None)
+    live_update_parser.add_argument("--model-artifact", type=Path, default=None)
+    live_update_parser.add_argument("--config", type=Path, required=True)
+    live_update_parser.add_argument("--iterations", type=int, default=None)
+    live_update_parser.add_argument("--as-of", type=date.fromisoformat, default=None)
+    live_update_parser.add_argument("--prediction-dir", type=Path, default=None)
+    live_update_parser.add_argument("--report", type=Path, default=None)
+    live_update_parser.add_argument("--latest-report", type=Path, default=None)
 
     explain_parser = subparsers.add_parser(
         "explain-season18", help="Generate global, match, and team prediction explanations."
@@ -688,10 +726,28 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Report: {report_path}")
         return 0
 
-    if args.command == "update-season18-predictions":
+    if args.command == "validate-season-config":
+        config_path = args.config.resolve()
+        try:
+            simulation_config = load_simulation_config(config_path)
+            summary = validate_simulation_config(simulation_config)
+        except (OSError, ValueError) as error:
+            print(f"Invalid season configuration: {error}")
+            return 1
+        if args.json:
+            print(json.dumps(summary, indent=2))
+        else:
+            print("MPL season configuration is valid")
+            print(f"Season: {summary['season']}")
+            print(f"Format status: {summary['format_status']}")
+            print(f"Playoff teams: {summary['playoff_team_count']}")
+            print(f"Bracket matches: {summary['bracket_match_count']}")
+            print(f"Championship match: {summary['championship_match_id']}")
+        return 0
+
+    if args.command in {"update-season18-predictions", "update-season-predictions"}:
         paths = get_project_paths()
         canonical_dir = (args.canonical_dir or paths.processed / "canonical").resolve()
-        season18_dir = (args.season18_dir or paths.data / "season18").resolve()
         feature_config_path = (
             args.feature_config or paths.root / "config" / "feature_config.json"
         ).resolve()
@@ -699,21 +755,25 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.model_artifact or paths.artifacts / "final_match_model.joblib"
         ).resolve()
         config_path = (args.config or paths.root / "config" / "simulation_config.json").resolve()
+        simulation_config = load_simulation_config(config_path)
+        season = int(simulation_config["season"])
+        season_dir = (args.season_dir or paths.data / f"season{season}").resolve()
         prediction_dir = (args.prediction_dir or paths.processed / "predictions").resolve()
-        report_path = (args.report or paths.reports / "season18_prediction_updates.json").resolve()
+        report_path = (
+            args.report or paths.reports / f"season{season}_prediction_updates.json"
+        ).resolve()
         latest_report_path = (
-            args.latest_report or paths.reports / "season18_simulation_report.json"
+            args.latest_report or paths.reports / f"season{season}_simulation_report.json"
         ).resolve()
         tables = load_canonical_tables(canonical_dir)
-        teams, rosters, schedule = load_season18_tables(season18_dir)
+        teams, rosters, schedule = load_live_season_tables(season_dir)
         feature_config = load_feature_config(feature_config_path)
         artifact = load_final_match_model(artifact_path)
-        simulation_config = load_simulation_config(config_path)
         if args.iterations is not None:
             if args.iterations <= 0:
                 parser.error("--iterations must be greater than zero")
             simulation_config["iterations"] = args.iterations
-        predictions, match_probabilities, report, latest_report = build_season18_prediction_history(
+        predictions, match_probabilities, report, latest_report = build_live_prediction_history(
             tables,
             teams,
             rosters,
@@ -723,7 +783,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             simulation_config,
             as_of=args.as_of,
         )
-        outputs = write_season18_prediction_history(
+        outputs = write_live_prediction_history(
             predictions,
             match_probabilities,
             report,
@@ -731,12 +791,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             prediction_dir,
             report_path,
             latest_report_path,
+            season=season,
         )
         latest = predictions.loc[
             predictions["snapshot_order"].eq(predictions["snapshot_order"].max())
         ].sort_values("champion_probability", ascending=False)
         leader = latest.iloc[0]
-        print("MPL Season 18 preseason reconstruction and weekly updates")
+        print(f"MPL Season {season} preseason reconstruction and weekly updates")
         print(
             f"Snapshots: {report['snapshot_count']} "
             f"(preseason {report['preseason_snapshot_count']}, "
@@ -793,10 +854,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Report: {report_path}")
         return 0
 
-    if args.command == "simulate-season18":
+    if args.command in {"simulate-season18", "simulate-season"}:
         paths = get_project_paths()
         canonical_dir = (args.canonical_dir or paths.processed / "canonical").resolve()
-        season18_dir = (args.season18_dir or paths.data / "season18").resolve()
         feature_config_path = (
             args.feature_config or paths.root / "config" / "feature_config.json"
         ).resolve()
@@ -804,18 +864,23 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.model_artifact or paths.artifacts / "final_match_model.joblib"
         ).resolve()
         config_path = (args.config or paths.root / "config" / "simulation_config.json").resolve()
+        simulation_config = load_simulation_config(config_path)
+        season = int(simulation_config["season"])
+        season_dir = (args.season_dir or paths.data / f"season{season}").resolve()
         simulation_path = (
             args.simulation_output
-            or paths.processed / "predictions" / "season18_simulation.parquet"
+            or paths.processed / "predictions" / f"season{season}_simulation.parquet"
         ).resolve()
         match_output_path = (
             args.match_output
-            or paths.processed / "predictions" / "season18_match_probabilities.parquet"
+            or paths.processed / "predictions" / f"season{season}_match_probabilities.parquet"
         ).resolve()
-        report_path = (args.report or paths.reports / "season18_simulation_report.json").resolve()
+        report_path = (
+            args.report or paths.reports / f"season{season}_simulation_report.json"
+        ).resolve()
         tables = load_canonical_tables(canonical_dir)
-        teams = pd.read_csv(season18_dir / "teams.csv")
-        schedule = pd.read_csv(season18_dir / "schedule_results.csv")
+        teams = pd.read_csv(season_dir / "teams.csv")
+        schedule = pd.read_csv(season_dir / "schedule_results.csv")
         schedule["scheduled_at"] = pd.to_datetime(schedule["scheduled_at"], utc=True).dt.tz_convert(
             "Asia/Jakarta"
         )
@@ -823,15 +888,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             schedule[column] = pd.to_numeric(schedule[column], errors="coerce").astype("Int64")
         feature_config = load_feature_config(feature_config_path)
         artifact = load_final_match_model(artifact_path)
-        simulation_config = load_simulation_config(config_path)
         if args.iterations is not None:
             if args.iterations <= 0:
                 parser.error("--iterations must be greater than zero")
             simulation_config["iterations"] = args.iterations
-        match_probabilities, tracker, history = build_season18_match_probabilities(
+        match_probabilities, tracker, history = build_live_match_probabilities(
             tables, schedule, teams, feature_config, artifact
         )
-        simulation, report = simulate_season18(
+        simulation, report = simulate_live_season(
             tables,
             schedule,
             teams,
@@ -850,7 +914,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             report_path,
         )
         leader = simulation.iloc[0]
-        print("MPL Indonesia Season 18 Monte Carlo simulation")
+        print(f"MPL Indonesia Season {season} Monte Carlo simulation")
         print(f"Iterations: {report['iterations']}")
         print(
             "Completed / simulated regular matches: "

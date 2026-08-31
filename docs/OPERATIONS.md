@@ -3,6 +3,10 @@
 Project tidak memakai GitHub Actions. Audit, training, pembaruan data, prediksi, test, dan
 validasi dokumentasi dijalankan di komputer lokal melalui `Makefile` atau satu script.
 
+Inti simulasi mendukung season lain melalui konfigurasi, sedangkan sinkronisasi situs dan
+dashboard deployment saat ini tetap khusus Season 18. Panduan menambahkan season tersedia
+di `docs/ADDING_A_SEASON.md`.
+
 ## Persiapan satu kali
 
 ```bash
@@ -48,6 +52,26 @@ Menjalankan semuanya secara berurutan:
 
 ```bash
 ./scripts/run_local_pipeline.sh all 2026-08-31
+```
+
+Memvalidasi format regular season dan playoff aktif:
+
+```bash
+make validate-season-config
+# atau
+mpl-predictor validate-season-config --config config/simulation_config.json
+```
+
+Menjalankan season lain setelah config dan tabel live-nya siap:
+
+```bash
+mpl-predictor simulate-season \
+  --config config/simulation_season19.json \
+  --season-dir data/season19
+
+mpl-predictor update-season-predictions \
+  --config config/simulation_season19.json \
+  --season-dir data/season19
 ```
 
 Jika tanggal tidak diberikan, mode `update` menggunakan tanggal lokal saat command
