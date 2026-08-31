@@ -1,0 +1,5 @@
+season,match_id,game_number,team,action,order,hero,source,scope,total_count,wins,losses,win_rate_pct
+16,S16-AGGREGATE,NULL,ALL_TEAMS,aggregate_pick,NULL,Yi Sun-shin,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_16/Statistics,season_aggregate,120,63,57,52.5
+16,S16-AGGREGATE,NULL,ALL_TEAMS,aggregate_ban,NULL,Yi Sun-shin,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_16/Statistics,season_aggregate,65,NULL,NULL,NULL
+16,S16-AGGREGATE,NULL,ALL_TEAMS,aggregate_pick,NULL,Kalea,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_16/Statistics,season_aggregate,73,40,33,54.79
+16,S16-AGGREGATE,NULL,ALL_TEAMS,aggregate_ban,NULL,Kalea,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_16/Statistics,season_aggregate,82,NULL,NULL,NULL

@@ -1,0 +1,65 @@
+season,stage,week,date,match_id,team_a,team_b,team_a_score,team_b_score,winner,best_of,round,source
+6,Regular Season,1,2020-08-14,S6-RS-001,Geek Fam ID,RRQ Hoshi,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/geek
+6,Regular Season,1,2020-08-14,S6-RS-002,Aerowolf Pro Team,Bigetron Alpha,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/gflx
+6,Regular Season,1,2020-08-15,S6-RS-003,ONIC Esports,Aerowolf Pro Team,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/onic
+6,Regular Season,1,2020-08-15,S6-RS-004,RRQ Hoshi,EVOS Legends,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/rrq
+6,Regular Season,1,2020-08-15,S6-RS-005,Bigetron Alpha,Alter Ego,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/btr
+6,Regular Season,1,2020-08-16,S6-RS-006,EVOS Legends,AURA Fire,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/evos
+6,Regular Season,1,2020-08-16,S6-RS-007,Alter Ego,Geek Fam ID,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/ae
+6,Regular Season,2,2020-08-21,S6-RS-008,Alter Ego,Aerowolf Pro Team,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/ae
+6,Regular Season,2,2020-08-21,S6-RS-009,Bigetron Alpha,AURA Fire,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/btr
+6,Regular Season,2,2020-08-22,S6-RS-010,AURA Fire,ONIC Esports,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/onic
+6,Regular Season,2,2020-08-22,S6-RS-011,Bigetron Alpha,RRQ Hoshi,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/btr
+6,Regular Season,2,2020-08-22,S6-RS-012,Geek Fam ID,EVOS Legends,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/geek
+6,Regular Season,2,2020-08-23,S6-RS-013,ONIC Esports,RRQ Hoshi,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/onic
+6,Regular Season,2,2020-08-23,S6-RS-014,Geek Fam ID,Aerowolf Pro Team,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/geek
+6,Regular Season,3,2020-08-28,S6-RS-015,AURA Fire,Alter Ego,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/ae
+6,Regular Season,3,2020-08-28,S6-RS-016,EVOS Legends,ONIC Esports,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/evos
+6,Regular Season,3,2020-08-29,S6-RS-017,Bigetron Alpha,EVOS Legends,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/btr
+6,Regular Season,3,2020-08-29,S6-RS-018,Aerowolf Pro Team,AURA Fire,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/gflx
+6,Regular Season,3,2020-08-29,S6-RS-019,Alter Ego,RRQ Hoshi,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/ae
+6,Regular Season,3,2020-08-30,S6-RS-020,Geek Fam ID,ONIC Esports,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/geek
+6,Regular Season,3,2020-08-30,S6-RS-021,RRQ Hoshi,Aerowolf Pro Team,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/rrq
+6,Regular Season,4,2020-09-04,S6-RS-022,AURA Fire,Geek Fam ID,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/geek
+6,Regular Season,4,2020-09-04,S6-RS-023,EVOS Legends,Alter Ego,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/evos
+6,Regular Season,4,2020-09-05,S6-RS-024,Geek Fam ID,Bigetron Alpha,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/geek
+6,Regular Season,4,2020-09-05,S6-RS-025,Alter Ego,ONIC Esports,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/ae
+6,Regular Season,4,2020-09-05,S6-RS-026,Aerowolf Pro Team,EVOS Legends,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/gflx
+6,Regular Season,4,2020-09-06,S6-RS-027,AURA Fire,RRQ Hoshi,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/rrq
+6,Regular Season,4,2020-09-06,S6-RS-028,ONIC Esports,Bigetron Alpha,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/onic
+6,Regular Season,5,2020-09-11,S6-RS-029,Bigetron Alpha,Aerowolf Pro Team,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/btr
+6,Regular Season,5,2020-09-11,S6-RS-030,Geek Fam ID,Alter Ego,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/geek
+6,Regular Season,5,2020-09-12,S6-RS-031,ONIC Esports,AURA Fire,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/onic
+6,Regular Season,5,2020-09-12,S6-RS-032,RRQ Hoshi,Geek Fam ID,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/rrq
+6,Regular Season,5,2020-09-12,S6-RS-033,Alter Ego,Bigetron Alpha,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/ae
+6,Regular Season,5,2020-09-13,S6-RS-034,AURA Fire,EVOS Legends,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/evos
+6,Regular Season,5,2020-09-13,S6-RS-035,RRQ Hoshi,ONIC Esports,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/rrq
+6,Regular Season,6,2020-09-18,S6-RS-036,Aerowolf Pro Team,ONIC Esports,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/gflx
+6,Regular Season,6,2020-09-18,S6-RS-037,AURA Fire,Bigetron Alpha,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/btr
+6,Regular Season,6,2020-09-19,S6-RS-038,EVOS Legends,Geek Fam ID,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/evos
+6,Regular Season,6,2020-09-19,S6-RS-039,RRQ Hoshi,AURA Fire,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/rrq
+6,Regular Season,6,2020-09-19,S6-RS-040,ONIC Esports,Alter Ego,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/onic
+6,Regular Season,6,2020-09-20,S6-RS-041,Bigetron Alpha,Geek Fam ID,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/btr
+6,Regular Season,6,2020-09-20,S6-RS-042,EVOS Legends,Aerowolf Pro Team,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/evos
+6,Regular Season,7,2020-09-25,S6-RS-043,Aerowolf Pro Team,Alter Ego,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/gflx
+6,Regular Season,7,2020-09-25,S6-RS-044,Bigetron Alpha,ONIC Esports,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/btr
+6,Regular Season,7,2020-09-26,S6-RS-045,Geek Fam ID,AURA Fire,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/geek
+6,Regular Season,7,2020-09-26,S6-RS-046,Alter Ego,EVOS Legends,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/ae
+6,Regular Season,7,2020-09-26,S6-RS-047,RRQ Hoshi,Bigetron Alpha,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/rrq
+6,Regular Season,7,2020-09-27,S6-RS-048,Aerowolf Pro Team,RRQ Hoshi,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/gflx
+6,Regular Season,7,2020-09-27,S6-RS-049,ONIC Esports,EVOS Legends,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/onic
+6,Regular Season,8,2020-10-02,S6-RS-050,RRQ Hoshi,Alter Ego,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/rrq
+6,Regular Season,8,2020-10-02,S6-RS-051,AURA Fire,Aerowolf Pro Team,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/gflx
+6,Regular Season,8,2020-10-03,S6-RS-052,Alter Ego,AURA Fire,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/ae
+6,Regular Season,8,2020-10-03,S6-RS-053,ONIC Esports,Geek Fam ID,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/onic
+6,Regular Season,8,2020-10-03,S6-RS-054,EVOS Legends,Bigetron Alpha,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/evos
+6,Regular Season,8,2020-10-04,S6-RS-055,Aerowolf Pro Team,Geek Fam ID,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/gflx
+6,Regular Season,8,2020-10-04,S6-RS-056,EVOS Legends,RRQ Hoshi,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Regular_Season | https://id-mpl.com/s6/team/evos
+6,Playoffs,NULL,2020-10-16,S6-PO-001,EVOS Legends,ONIC Esports,1,2,team_b,3,Round 1,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Playoffs | https://id-mpl.com/s6/team/evos
+6,Playoffs,NULL,2020-10-16,S6-PO-002,Bigetron Alpha,Aerowolf Pro Team,2,0,team_a,3,Round 1,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Playoffs | https://id-mpl.com/s6/team/btr
+6,Playoffs,NULL,2020-10-16,S6-PO-003,ONIC Esports,RRQ Hoshi,1,2,team_b,3,Upper Bracket Semifinals,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Playoffs | https://id-mpl.com/s6/team/onic
+6,Playoffs,NULL,2020-10-17,S6-PO-004,Bigetron Alpha,Alter Ego,2,1,team_a,3,Upper Bracket Semifinals,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Playoffs | https://id-mpl.com/s6/team/btr
+6,Playoffs,NULL,2020-10-17,S6-PO-005,ONIC Esports,Alter Ego,1,2,team_b,3,Lower Bracket Semifinal,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Playoffs | https://id-mpl.com/s6/team/onic
+6,Playoffs,NULL,2020-10-17,S6-PO-006,RRQ Hoshi,Bigetron Alpha,2,0,team_a,3,Upper Bracket Final,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Playoffs | https://id-mpl.com/s6/team/rrq
+6,Playoffs,NULL,2020-10-18,S6-PO-007,Alter Ego,Bigetron Alpha,2,0,team_a,3,Lower Bracket Final,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Playoffs | https://id-mpl.com/s6/team/ae
+6,Playoffs,NULL,2020-10-18,S6-PO-008,RRQ Hoshi,Alter Ego,3,2,team_a,5,Grand Final,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_6/Playoffs | https://id-mpl.com/s6/team/rrq

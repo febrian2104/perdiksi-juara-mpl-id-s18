@@ -1,0 +1,56 @@
+season,stage,week,date,match_id,team_a,team_b,team_a_score,team_b_score,winner,best_of,round,source
+2,Regular Season,1,2018-09-07,S2-RS-001,Bigetron Esports,Team Capcorn,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,1,2018-09-07,S2-RS-002,SFI Esports,RRQ.O2,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,1,2018-09-08,S2-RS-003,EVOS Esports,ONIC Esports,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,1,2018-09-08,S2-RS-004,Aerowolf Roxy,Boom JR,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,1,2018-09-08,S2-RS-005,Saints Indo,Louvre Esports,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,1,2018-09-09,S2-RS-006,Boom JR,Bigetron Esports,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,1,2018-09-09,S2-RS-007,Louvre Esports,SFI Esports,2,1,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,1,2018-09-09,S2-RS-008,ONIC Esports,Aerowolf Roxy,2,1,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,2,2018-09-14,S2-RS-009,Aerowolf Roxy,RRQ.O2,2,1,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,2,2018-09-14,S2-RS-010,Team Capcorn,Saints Indo,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,2,2018-09-15,S2-RS-011,Bigetron Esports,ONIC Esports,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,2,2018-09-15,S2-RS-012,RRQ.O2,EVOS Esports,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,2,2018-09-16,S2-RS-013,Saints Indo,SFI Esports,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,2,2018-09-16,S2-RS-014,EVOS Esports,Louvre Esports,2,1,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,2,2018-09-16,S2-RS-015,Team Capcorn,Boom JR,1,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,3,2018-09-28,S2-RS-016,RRQ.O2,Bigetron Esports,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,3,2018-09-28,S2-RS-017,Louvre Esports,Aerowolf Roxy,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,3,2018-09-29,S2-RS-018,Boom JR,Saints Indo,1,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,3,2018-09-29,S2-RS-019,ONIC Esports,Team Capcorn,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,3,2018-09-30,S2-RS-020,SFI Esports,EVOS Esports,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,3,2018-09-30,S2-RS-021,Bigetron Esports,Louvre Esports,1,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,3,2018-09-30,S2-RS-022,RRQ.O2,ONIC Esports,1,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,4,2018-10-05,S2-RS-023,Team Capcorn,RRQ.O2,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,4,2018-10-05,S2-RS-024,SFI Esports,ONIC Esports,2,1,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,4,2018-10-06,S2-RS-025,Bigetron Esports,EVOS Esports,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,4,2018-10-06,S2-RS-026,Boom JR,Louvre Esports,1,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,4,2018-10-06,S2-RS-027,Aerowolf Roxy,SFI Esports,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,4,2018-10-07,S2-RS-028,RRQ.O2,Boom JR,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,4,2018-10-07,S2-RS-029,Saints Indo,EVOS Esports,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,4,2018-10-07,S2-RS-030,Louvre Esports,Team Capcorn,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,5,2018-10-12,S2-RS-031,Saints Indo,Bigetron Esports,1,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,5,2018-10-12,S2-RS-032,Louvre Esports,RRQ.O2,1,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,5,2018-10-13,S2-RS-033,EVOS Esports,Aerowolf Roxy,1,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,5,2018-10-13,S2-RS-034,SFI Esports,Bigetron Esports,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,5,2018-10-14,S2-RS-035,Saints Indo,Aerowolf Roxy,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,5,2018-10-14,S2-RS-036,Boom JR,ONIC Esports,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,5,2018-10-14,S2-RS-037,Team Capcorn,SFI Esports,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,6,2018-10-19,S2-RS-038,EVOS Esports,Team Capcorn,2,1,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,6,2018-10-19,S2-RS-039,RRQ.O2,Saints Indo,2,1,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,6,2018-10-20,S2-RS-040,Aerowolf Roxy,Bigetron Esports,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,6,2018-10-20,S2-RS-041,Louvre Esports,ONIC Esports,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,6,2018-10-20,S2-RS-042,Boom JR,EVOS Esports,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,6,2018-10-21,S2-RS-043,SFI Esports,Boom JR,2,1,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,6,2018-10-21,S2-RS-044,Team Capcorn,Aerowolf Roxy,0,2,team_b,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Regular Season,6,2018-10-21,S2-RS-045,ONIC Esports,Saints Indo,2,0,team_a,3,NULL,https://www.overclockingid.com/hasil-mpl-regular-season-2/
+2,Playoffs,NULL,2018-11-17,S2-PO-001,EVOS Esports,ONIC Esports,2,0,team_a,3,Upper Bracket Semifinals,https://kincir.com/game/mobile-game/rekap-hari-pertama-grand-final-mpl-season-2-97xundo7x7oh/
+2,Playoffs,NULL,2018-11-17,S2-PO-002,Aerowolf Roxy,RRQ.O2,1,2,team_b,3,Upper Bracket Semifinals,https://kincir.com/game/mobile-game/rekap-hari-pertama-grand-final-mpl-season-2-97xundo7x7oh/
+2,Playoffs,NULL,2018-11-17,S2-PO-003,Louvre Esports,SFI Esports,2,0,team_a,3,Lower Bracket Round 1,https://kincir.com/game/mobile-game/rekap-hari-pertama-grand-final-mpl-season-2-97xundo7x7oh/
+2,Playoffs,NULL,2018-11-17,S2-PO-004,Saints Indo,Bigetron Esports,2,0,team_a,3,Lower Bracket Round 1,https://kincir.com/game/mobile-game/rekap-hari-pertama-grand-final-mpl-season-2-97xundo7x7oh/
+2,Playoffs,NULL,2018-11-17,S2-PO-005,Aerowolf Roxy,Louvre Esports,0,2,team_b,3,Lower Bracket Quarterfinals,https://kincir.com/game/mobile-game/rekap-hari-pertama-grand-final-mpl-season-2-97xundo7x7oh/
+2,Playoffs,NULL,2018-11-18,S2-PO-006,Saints Indo,ONIC Esports,1,2,team_b,3,Lower Bracket Quarterfinals,https://kincir.com/game/mobile-game/rekap-hari-2-grand-final-mpl-season-2-8gzryzb4nwkn/
+2,Playoffs,NULL,2018-11-18,S2-PO-007,EVOS Esports,RRQ.O2,1,2,team_b,3,Upper Bracket Final,https://kincir.com/game/mobile-game/rekap-hari-2-grand-final-mpl-season-2-8gzryzb4nwkn/
+2,Playoffs,NULL,2018-11-18,S2-PO-008,Louvre Esports,ONIC Esports,1,2,team_b,3,Lower Bracket Semifinals,https://kincir.com/game/mobile-game/rekap-hari-2-grand-final-mpl-season-2-8gzryzb4nwkn/
+2,Playoffs,NULL,2018-11-18,S2-PO-009,ONIC Esports,EVOS Esports,1,2,team_b,3,Lower Bracket Final,https://kincir.com/game/mobile-game/rekap-hari-2-grand-final-mpl-season-2-8gzryzb4nwkn/
+2,Playoffs,NULL,2018-11-18,S2-PO-010,RRQ.O2,EVOS Esports,3,0,team_a,5,Grand Final,https://kincir.com/game/mobile-game/rekap-hari-2-grand-final-mpl-season-2-8gzryzb4nwkn/

@@ -1,0 +1,5 @@
+season,match_id,game_number,team,action,order,hero,source,scope,total_count,wins,losses,win_rate_pct
+17,S17-AGGREGATE,NULL,ALL_TEAMS,aggregate_pick,NULL,Zhuxin,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_17/Statistics,season_aggregate,130,65,65,50
+17,S17-AGGREGATE,NULL,ALL_TEAMS,aggregate_ban,NULL,Zhuxin,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_17/Statistics,season_aggregate,72,NULL,NULL,NULL
+17,S17-AGGREGATE,NULL,ALL_TEAMS,aggregate_pick,NULL,Claude,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_17/Statistics,season_aggregate,123,74,49,60.16
+17,S17-AGGREGATE,NULL,ALL_TEAMS,aggregate_ban,NULL,Claude,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_17/Statistics,season_aggregate,19,NULL,NULL,NULL

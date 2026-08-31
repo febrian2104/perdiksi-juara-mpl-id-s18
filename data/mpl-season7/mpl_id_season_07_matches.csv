@@ -1,0 +1,65 @@
+season,stage,week,date,match_id,team_a,team_b,team_a_score,team_b_score,winner,best_of,round,source
+7,Regular Season,1,2021-02-26,S7-RS-001,Aerowolf Pro Team,Bigetron Alpha,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/gflx
+7,Regular Season,1,2021-02-26,S7-RS-002,Geek Fam ID,RRQ Hoshi,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/geek
+7,Regular Season,1,2021-02-27,S7-RS-003,ONIC Esports,Aerowolf Pro Team,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/onic
+7,Regular Season,1,2021-02-27,S7-RS-004,Bigetron Alpha,EVOS Legends,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/btr
+7,Regular Season,1,2021-02-27,S7-RS-005,Alter Ego,RRQ Hoshi,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/ae
+7,Regular Season,1,2021-02-28,S7-RS-006,EVOS Legends,AURA Fire,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/evos
+7,Regular Season,1,2021-02-28,S7-RS-007,Alter Ego,Geek Fam ID,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/ae
+7,Regular Season,2,2021-03-05,S7-RS-008,Alter Ego,Aerowolf Pro Team,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/ae
+7,Regular Season,2,2021-03-05,S7-RS-009,AURA Fire,ONIC Esports,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/onic
+7,Regular Season,2,2021-03-06,S7-RS-010,Bigetron Alpha,AURA Fire,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/btr
+7,Regular Season,2,2021-03-06,S7-RS-011,Geek Fam ID,EVOS Legends,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/geek
+7,Regular Season,2,2021-03-06,S7-RS-012,ONIC Esports,RRQ Hoshi,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/onic
+7,Regular Season,2,2021-03-07,S7-RS-013,Bigetron Alpha,RRQ Hoshi,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/btr
+7,Regular Season,2,2021-03-07,S7-RS-014,Geek Fam ID,Aerowolf Pro Team,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/geek
+7,Regular Season,3,2021-03-12,S7-RS-015,AURA Fire,Alter Ego,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/ae
+7,Regular Season,3,2021-03-12,S7-RS-016,EVOS Legends,ONIC Esports,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/evos
+7,Regular Season,3,2021-03-13,S7-RS-017,Aerowolf Pro Team,AURA Fire,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/gflx
+7,Regular Season,3,2021-03-13,S7-RS-018,Bigetron Alpha,Alter Ego,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/btr
+7,Regular Season,3,2021-03-13,S7-RS-019,RRQ Hoshi,EVOS Legends,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/rrq
+7,Regular Season,3,2021-03-14,S7-RS-020,Geek Fam ID,ONIC Esports,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/geek
+7,Regular Season,3,2021-03-14,S7-RS-021,RRQ Hoshi,Aerowolf Pro Team,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/rrq
+7,Regular Season,4,2021-03-19,S7-RS-022,AURA Fire,Geek Fam ID,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/geek
+7,Regular Season,4,2021-03-19,S7-RS-023,ONIC Esports,Bigetron Alpha,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/onic
+7,Regular Season,4,2021-03-20,S7-RS-024,Geek Fam ID,Bigetron Alpha,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/geek
+7,Regular Season,4,2021-03-20,S7-RS-025,AURA Fire,RRQ Hoshi,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/rrq
+7,Regular Season,4,2021-03-20,S7-RS-026,EVOS Legends,Alter Ego,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/evos
+7,Regular Season,4,2021-03-21,S7-RS-027,Aerowolf Pro Team,EVOS Legends,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/gflx
+7,Regular Season,4,2021-03-21,S7-RS-028,Alter Ego,ONIC Esports,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/ae
+7,Regular Season,5,2021-03-26,S7-RS-029,Bigetron Alpha,Aerowolf Pro Team,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/btr
+7,Regular Season,5,2021-03-26,S7-RS-030,Geek Fam ID,Alter Ego,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/geek
+7,Regular Season,5,2021-03-27,S7-RS-031,ONIC Esports,AURA Fire,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/onic
+7,Regular Season,5,2021-03-27,S7-RS-032,RRQ Hoshi,Bigetron Alpha,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/rrq
+7,Regular Season,5,2021-03-27,S7-RS-033,Aerowolf Pro Team,Alter Ego,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/gflx
+7,Regular Season,5,2021-03-28,S7-RS-034,AURA Fire,EVOS Legends,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/evos
+7,Regular Season,5,2021-03-28,S7-RS-035,RRQ Hoshi,ONIC Esports,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/rrq
+7,Regular Season,6,2021-04-02,S7-RS-036,Aerowolf Pro Team,ONIC Esports,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/gflx
+7,Regular Season,6,2021-04-02,S7-RS-037,Alter Ego,EVOS Legends,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/ae
+7,Regular Season,6,2021-04-03,S7-RS-038,RRQ Hoshi,Geek Fam ID,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/rrq
+7,Regular Season,6,2021-04-03,S7-RS-039,AURA Fire,Bigetron Alpha,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/btr
+7,Regular Season,6,2021-04-03,S7-RS-040,EVOS Legends,Aerowolf Pro Team,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/evos
+7,Regular Season,6,2021-04-04,S7-RS-041,Bigetron Alpha,Geek Fam ID,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/btr
+7,Regular Season,6,2021-04-04,S7-RS-042,RRQ Hoshi,AURA Fire,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/rrq
+7,Regular Season,7,2021-04-09,S7-RS-043,Alter Ego,Bigetron Alpha,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/ae
+7,Regular Season,7,2021-04-09,S7-RS-044,Geek Fam ID,AURA Fire,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/geek
+7,Regular Season,7,2021-04-10,S7-RS-045,Bigetron Alpha,ONIC Esports,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/btr
+7,Regular Season,7,2021-04-10,S7-RS-046,EVOS Legends,Geek Fam ID,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/evos
+7,Regular Season,7,2021-04-10,S7-RS-047,RRQ Hoshi,Alter Ego,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/rrq
+7,Regular Season,7,2021-04-11,S7-RS-048,Aerowolf Pro Team,RRQ Hoshi,0,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/gflx
+7,Regular Season,7,2021-04-11,S7-RS-049,ONIC Esports,EVOS Legends,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/onic
+7,Regular Season,8,2021-04-16,S7-RS-050,Alter Ego,AURA Fire,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/ae
+7,Regular Season,8,2021-04-16,S7-RS-051,ONIC Esports,Geek Fam ID,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/onic
+7,Regular Season,8,2021-04-17,S7-RS-052,EVOS Legends,Bigetron Alpha,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/evos
+7,Regular Season,8,2021-04-17,S7-RS-053,AURA Fire,Aerowolf Pro Team,1,2,team_b,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/gflx
+7,Regular Season,8,2021-04-17,S7-RS-054,ONIC Esports,Alter Ego,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/onic
+7,Regular Season,8,2021-04-18,S7-RS-055,Aerowolf Pro Team,Geek Fam ID,2,0,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/gflx
+7,Regular Season,8,2021-04-18,S7-RS-056,EVOS Legends,RRQ Hoshi,2,1,team_a,3,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Regular_Season | https://id-mpl.com/s7/team/evos
+7,Playoffs,NULL,2021-04-30,S7-PO-001,RRQ Hoshi,Aerowolf Pro Team,1,2,team_b,3,Upper Bracket Quarterfinals,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Playoffs | https://id-mpl.com/s7/team/rrq
+7,Playoffs,NULL,2021-04-30,S7-PO-002,Bigetron Alpha,Alter Ego,2,1,team_a,3,Upper Bracket Quarterfinals,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Playoffs | https://id-mpl.com/s7/team/btr
+7,Playoffs,NULL,2021-04-30,S7-PO-003,EVOS Legends,Aerowolf Pro Team,2,1,team_a,3,Upper Bracket Semifinals,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Playoffs | https://id-mpl.com/s7/team/evos
+7,Playoffs,NULL,2021-05-01,S7-PO-004,ONIC Esports,Bigetron Alpha,1,2,team_b,3,Upper Bracket Semifinals,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Playoffs | https://id-mpl.com/s7/team/onic
+7,Playoffs,NULL,2021-05-01,S7-PO-005,Aerowolf Pro Team,ONIC Esports,2,0,team_a,3,Lower Bracket Semifinal,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Playoffs | https://id-mpl.com/s7/team/gflx
+7,Playoffs,NULL,2021-05-01,S7-PO-006,EVOS Legends,Bigetron Alpha,1,2,team_b,3,Upper Bracket Final,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Playoffs | https://id-mpl.com/s7/team/evos
+7,Playoffs,NULL,2021-05-02,S7-PO-007,Aerowolf Pro Team,EVOS Legends,0,2,team_b,3,Lower Bracket Final,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Playoffs | https://id-mpl.com/s7/team/gflx
+7,Playoffs,NULL,2021-05-02,S7-PO-008,Bigetron Alpha,EVOS Legends,2,4,team_b,7,Grand Final,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_7/Playoffs | https://id-mpl.com/s7/team/btr

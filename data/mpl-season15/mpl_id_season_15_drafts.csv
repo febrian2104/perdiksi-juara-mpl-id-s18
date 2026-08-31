@@ -1,0 +1,4 @@
+season,match_id,game_number,team,action,order,hero,source,scope,total_count,wins,losses,win_rate_pct
+15,S15-AGGREGATE,NULL,ALL_TEAMS,aggregate_pick,NULL,Granger,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_15/Statistics,season_aggregate,118,68,50,57.63
+15,S15-AGGREGATE,NULL,ALL_TEAMS,aggregate_pick,NULL,Kalea,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_15/Statistics,season_aggregate,83,43,40,51.81
+15,S15-AGGREGATE,NULL,ALL_TEAMS,aggregate_ban,NULL,Kalea,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_15/Statistics,season_aggregate,68,NULL,NULL,NULL

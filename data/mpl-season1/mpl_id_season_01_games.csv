@@ -1,0 +1,125 @@
+season,match_id,game_number,date,team_a,team_b,winner,duration_minutes,source
+1,S1-RS-001,1,2018-01-13,Louvre Esports,Team NXL,Louvre Esports,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-001,2,2018-01-13,Louvre Esports,Team NXL,Team NXL,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-002,1,2018-01-13,Pandora Esports,Elite 8 Critical Reborn,Elite 8 Critical Reborn,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-002,2,2018-01-13,Pandora Esports,Elite 8 Critical Reborn,Elite 8 Critical Reborn,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-003,1,2018-01-13,RRQ.O2,Bigetron Player Kill,Bigetron Player Kill,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-003,2,2018-01-13,RRQ.O2,Bigetron Player Kill,RRQ.O2,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-004,1,2018-01-14,Pandora Esports,EVOS Esports,EVOS Esports,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-004,2,2018-01-14,Pandora Esports,EVOS Esports,EVOS Esports,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-005,1,2018-01-14,Team Rev Indo,Saints Indo 2,Team Rev Indo,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-005,2,2018-01-14,Team Rev Indo,Saints Indo 2,Team Rev Indo,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-006,1,2018-01-14,Bigetron Player Kill,Domino's Hunters,Bigetron Player Kill,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-006,2,2018-01-14,Bigetron Player Kill,Domino's Hunters,Bigetron Player Kill,NULL,https://www.kaorinusantara.or.id/newsline/104109/lewati-minggu-pertamanya-mobile-legends-professional-league-season-1-semakin-seru
+1,S1-RS-007,1,2018-01-20,RRQ.O2,Domino's Hunters,RRQ.O2,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-007,2,2018-01-20,RRQ.O2,Domino's Hunters,RRQ.O2,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-008,1,2018-01-20,Bigetron Player Kill,Saints Indo 2,Bigetron Player Kill,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-008,2,2018-01-20,Bigetron Player Kill,Saints Indo 2,Bigetron Player Kill,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-009,1,2018-01-20,Team Rev Indo,Pandora Esports,NULL,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-009,2,2018-01-20,Team Rev Indo,Pandora Esports,NULL,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-010,1,2018-01-20,EVOS Esports,Elite 8 Critical Reborn,EVOS Esports,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-010,2,2018-01-20,EVOS Esports,Elite 8 Critical Reborn,EVOS Esports,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-011,1,2018-01-21,Louvre Esports,Bigetron Player Kill,Bigetron Player Kill,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-011,2,2018-01-21,Louvre Esports,Bigetron Player Kill,Bigetron Player Kill,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-012,1,2018-01-21,EVOS Esports,RRQ.O2,RRQ.O2,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-012,2,2018-01-21,EVOS Esports,RRQ.O2,RRQ.O2,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-013,1,2018-01-21,Elite 8 Critical Reborn,Team NXL,Elite 8 Critical Reborn,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-013,2,2018-01-21,Elite 8 Critical Reborn,Team NXL,Elite 8 Critical Reborn,NULL,https://www.kaorinusantara.or.id/newsline/104539/liputan-mobile-legends-professional-league-season-1-minggu-kedua
+1,S1-RS-014,1,2018-01-27,Team NXL,Saints Indo 2,NULL,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-014,2,2018-01-27,Team NXL,Saints Indo 2,NULL,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-015,1,2018-01-27,Bigetron Player Kill,EVOS Esports,NULL,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-015,2,2018-01-27,Bigetron Player Kill,EVOS Esports,NULL,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-016,1,2018-01-27,Domino's Hunters,Louvre Esports,NULL,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-016,2,2018-01-27,Domino's Hunters,Louvre Esports,NULL,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-017,1,2018-01-28,Saints Indo 2,Pandora Esports,NULL,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-017,2,2018-01-28,Saints Indo 2,Pandora Esports,NULL,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-018,1,2018-01-28,Louvre Esports,RRQ.O2,RRQ.O2,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-018,2,2018-01-28,Louvre Esports,RRQ.O2,RRQ.O2,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-019,1,2018-01-28,Team Rev Indo,Elite 8 Critical Reborn,NULL,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-019,2,2018-01-28,Team Rev Indo,Elite 8 Critical Reborn,NULL,NULL,https://www.overclockingid.com/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-020,1,2018-02-03,RRQ.O2,Pandora Esports,RRQ.O2,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-020,2,2018-02-03,RRQ.O2,Pandora Esports,RRQ.O2,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-021,1,2018-02-03,EVOS Esports,Team NXL,EVOS Esports,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-021,2,2018-02-03,EVOS Esports,Team NXL,EVOS Esports,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-022,1,2018-02-03,Elite 8 Critical Reborn,Saints Indo 2,Elite 8 Critical Reborn,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-022,2,2018-02-03,Elite 8 Critical Reborn,Saints Indo 2,Elite 8 Critical Reborn,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-023,1,2018-02-03,Team Rev Indo,Domino's Hunters,Team Rev Indo,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-023,2,2018-02-03,Team Rev Indo,Domino's Hunters,Team Rev Indo,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-024,1,2018-02-04,Pandora Esports,Louvre Esports,Pandora Esports,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-024,2,2018-02-04,Pandora Esports,Louvre Esports,Pandora Esports,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-025,1,2018-02-04,Team Rev Indo,Bigetron Player Kill,NULL,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-025,2,2018-02-04,Team Rev Indo,Bigetron Player Kill,NULL,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-026,1,2018-02-04,Team NXL,Domino's Hunters,Team NXL,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-026,2,2018-02-04,Team NXL,Domino's Hunters,Team NXL,NULL,https://www.gameholic.id/mobile-legends-bang-bang-professional-league-mpl-indonesia-season-1/
+1,S1-RS-027,1,2018-02-24,Domino's Hunters,Pandora Esports,Domino's Hunters,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-027,2,2018-02-24,Domino's Hunters,Pandora Esports,Domino's Hunters,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-028,1,2018-02-24,Elite 8 Critical Reborn,Louvre Esports,NULL,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-028,2,2018-02-24,Elite 8 Critical Reborn,Louvre Esports,NULL,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-029,1,2018-02-24,RRQ.O2,Team NXL,RRQ.O2,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-029,2,2018-02-24,RRQ.O2,Team NXL,Team NXL,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-030,1,2018-02-25,Saints Indo 2,EVOS Esports,EVOS Esports,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-030,2,2018-02-25,Saints Indo 2,EVOS Esports,EVOS Esports,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-031,1,2018-02-25,Team NXL,Bigetron Player Kill,NULL,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-031,2,2018-02-25,Team NXL,Bigetron Player Kill,NULL,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-032,1,2018-02-25,RRQ.O2,Team Rev Indo,RRQ.O2,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-032,2,2018-02-25,RRQ.O2,Team Rev Indo,RRQ.O2,NULL,https://indogamers.com/news/32998/02012018/mobile-legends-bang-bang-professional-league-indonesia-season-1-pekan-kelima
+1,S1-RS-033,1,2018-03-03,Elite 8 Critical Reborn,Bigetron Player Kill,Elite 8 Critical Reborn,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-033,2,2018-03-03,Elite 8 Critical Reborn,Bigetron Player Kill,Elite 8 Critical Reborn,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-034,1,2018-03-03,Pandora Esports,Team NXL,Team NXL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-034,2,2018-03-03,Pandora Esports,Team NXL,Team NXL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-035,1,2018-03-03,EVOS Esports,Louvre Esports,EVOS Esports,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-035,2,2018-03-03,EVOS Esports,Louvre Esports,EVOS Esports,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-036,1,2018-03-03,Saints Indo 2,Domino's Hunters,Saints Indo 2,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-036,2,2018-03-03,Saints Indo 2,Domino's Hunters,Saints Indo 2,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-037,1,2018-03-04,Elite 8 Critical Reborn,RRQ.O2,RRQ.O2,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-037,2,2018-03-04,Elite 8 Critical Reborn,RRQ.O2,RRQ.O2,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-038,1,2018-03-04,EVOS Esports,Team Rev Indo,EVOS Esports,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-038,2,2018-03-04,EVOS Esports,Team Rev Indo,EVOS Esports,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-039,1,2018-03-04,Louvre Esports,Saints Indo 2,Louvre Esports,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-039,2,2018-03-04,Louvre Esports,Saints Indo 2,Louvre Esports,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Regular_Season
+1,S1-RS-040,1,2018-03-10,Louvre Esports,Team Rev Indo,NULL,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-RS-040,2,2018-03-10,Louvre Esports,Team Rev Indo,NULL,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-RS-041,1,2018-03-10,Bigetron Player Kill,Pandora Esports,Bigetron Player Kill,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-RS-041,2,2018-03-10,Bigetron Player Kill,Pandora Esports,Bigetron Player Kill,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-RS-042,1,2018-03-10,EVOS Esports,Domino's Hunters,EVOS Esports,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-RS-042,2,2018-03-10,EVOS Esports,Domino's Hunters,EVOS Esports,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-RS-043,1,2018-03-11,Team NXL,Team Rev Indo,NULL,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-RS-043,2,2018-03-11,Team NXL,Team Rev Indo,NULL,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-RS-044,1,2018-03-11,Elite 8 Critical Reborn,Domino's Hunters,Elite 8 Critical Reborn,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-RS-044,2,2018-03-11,Elite 8 Critical Reborn,Domino's Hunters,Elite 8 Critical Reborn,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-RS-045,1,2018-03-11,RRQ.O2,Saints Indo 2,RRQ.O2,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-RS-045,2,2018-03-11,RRQ.O2,Saints Indo 2,RRQ.O2,NULL,https://news.codashop.com/id/hasil-akhir-mpl-reguler-season-1/
+1,S1-PO-001,1,2018-03-30,Elite 8 Critical Reborn,Team Rev Indo,Team Rev Indo,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-001,2,2018-03-30,Elite 8 Critical Reborn,Team Rev Indo,Team Rev Indo,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-002,1,2018-03-30,Bigetron Player Kill,Team NXL,Team NXL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-002,2,2018-03-30,Bigetron Player Kill,Team NXL,Team NXL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-003,1,2018-03-30,RRQ.O2,Saints Indo 2,RRQ.O2,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-003,2,2018-03-30,RRQ.O2,Saints Indo 2,RRQ.O2,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-004,1,2018-03-30,EVOS Esports,Louvre Esports,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-004,2,2018-03-30,EVOS Esports,Louvre Esports,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-004,3,2018-03-30,EVOS Esports,Louvre Esports,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-005,1,2018-03-31,Team NXL,RRQ.O2,Team NXL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-005,2,2018-03-31,Team NXL,RRQ.O2,Team NXL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-006,1,2018-03-31,Saints Indo 2,Bigetron Player Kill,Bigetron Player Kill,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-006,2,2018-03-31,Saints Indo 2,Bigetron Player Kill,Bigetron Player Kill,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-007,1,2018-03-31,EVOS Esports,Team Rev Indo,EVOS Esports,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-007,2,2018-03-31,EVOS Esports,Team Rev Indo,EVOS Esports,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-008,1,2018-03-31,Louvre Esports,Elite 8 Critical Reborn,Elite 8 Critical Reborn,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-008,2,2018-03-31,Louvre Esports,Elite 8 Critical Reborn,Elite 8 Critical Reborn,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-009,1,2018-03-31,RRQ.O2,Elite 8 Critical Reborn,RRQ.O2,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-009,2,2018-03-31,RRQ.O2,Elite 8 Critical Reborn,RRQ.O2,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-010,1,2018-04-01,EVOS Esports,Team NXL,EVOS Esports,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-010,2,2018-04-01,EVOS Esports,Team NXL,EVOS Esports,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-011,1,2018-04-01,Team Rev Indo,Bigetron Player Kill,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-011,2,2018-04-01,Team Rev Indo,Bigetron Player Kill,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-011,3,2018-04-01,Team Rev Indo,Bigetron Player Kill,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-012,1,2018-04-01,Bigetron Player Kill,RRQ.O2,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-012,2,2018-04-01,Bigetron Player Kill,RRQ.O2,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-012,3,2018-04-01,Bigetron Player Kill,RRQ.O2,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-013,1,2018-04-01,RRQ.O2,Team NXL,Team NXL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-013,2,2018-04-01,RRQ.O2,Team NXL,Team NXL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-014,1,2018-04-01,Team NXL,EVOS Esports,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-014,2,2018-04-01,Team NXL,EVOS Esports,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-014,3,2018-04-01,Team NXL,EVOS Esports,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-014,4,2018-04-01,Team NXL,EVOS Esports,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs
+1,S1-PO-014,5,2018-04-01,Team NXL,EVOS Esports,NULL,NULL,https://liquipedia.net/mobilelegends/MPL/Indonesia/Season_1/Playoffs

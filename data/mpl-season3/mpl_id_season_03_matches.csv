@@ -1,0 +1,77 @@
+season,stage,week,date,match_id,team_a,team_b,team_a_score,team_b_score,winner,best_of,round,source
+3,Regular Season,1,2019-02-16,S3-RS-001,Aerowolf Roxy,The Prime,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-1-1550477100518199487
+3,Regular Season,1,2019-02-16,S3-RS-002,SFI Critical,Star8 Esports,2,1,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-1-1550477100518199487
+3,Regular Season,1,2019-02-16,S3-RS-003,AURA Esports,Louvre Esports,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-1-1550477100518199487
+3,Regular Season,1,2019-02-16,S3-RS-004,PSG.RRQ,Bigetron Esports,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-1-1550477100518199487
+3,Regular Season,1,2019-02-16,S3-RS-005,EVOS Esports,Alter Ego,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-1-1550477100518199487
+3,Regular Season,1,2019-02-17,S3-RS-006,Saints Indo,ONIC Esports,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-1-1550477100518199487
+3,Regular Season,1,2019-02-17,S3-RS-007,Star8 Esports,Aerowolf Roxy,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-1-1550477100518199487
+3,Regular Season,1,2019-02-17,S3-RS-008,The Prime,Saints Indo,2,1,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-1-1550477100518199487
+3,Regular Season,1,2019-02-17,S3-RS-009,ONIC Esports,Alter Ego,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-1-1550477100518199487
+3,Regular Season,1,2019-02-17,S3-RS-010,Louvre Esports,SFI Critical,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-1-1550477100518199487
+3,Regular Season,2,2019-02-23,S3-RS-011,Bigetron Esports,AURA Esports,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-2-1551326689397932761
+3,Regular Season,2,2019-02-23,S3-RS-012,Aerowolf Roxy,Louvre Esports,2,1,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-2-1551326689397932761
+3,Regular Season,2,2019-02-23,S3-RS-013,AURA Esports,EVOS Esports,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-2-1551326689397932761
+3,Regular Season,2,2019-02-23,S3-RS-014,SFI Critical,Bigetron Esports,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-2-1551326689397932761
+3,Regular Season,2,2019-02-23,S3-RS-015,EVOS Esports,PSG.RRQ,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-2-1551326689397932761
+3,Regular Season,2,2019-02-24,S3-RS-016,ONIC Esports,The Prime,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-2-1551326689397932761
+3,Regular Season,2,2019-02-24,S3-RS-017,Saints Indo,Star8 Esports,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-2-1551326689397932761
+3,Regular Season,2,2019-02-24,S3-RS-018,Bigetron Esports,Aerowolf Roxy,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-2-1551326689397932761
+3,Regular Season,2,2019-02-24,S3-RS-019,Louvre Esports,Saints Indo,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-2-1551326689397932761
+3,Regular Season,2,2019-02-24,S3-RS-020,Alter Ego,PSG.RRQ,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-2-1551326689397932761
+3,Regular Season,3,2019-03-02,S3-RS-021,Star8 Esports,ONIC Esports,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-3-1551873983634537294
+3,Regular Season,3,2019-03-02,S3-RS-022,The Prime,Alter Ego,2,1,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-3-1551873983634537294
+3,Regular Season,3,2019-03-02,S3-RS-023,Louvre Esports,ONIC Esports,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-3-1551873983634537294
+3,Regular Season,3,2019-03-02,S3-RS-024,PSG.RRQ,AURA Esports,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-3-1551873983634537294
+3,Regular Season,3,2019-03-02,S3-RS-025,EVOS Esports,SFI Critical,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-3-1551873983634537294
+3,Regular Season,3,2019-03-03,S3-RS-026,Louvre Esports,The Prime,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-3-1551873983634537294
+3,Regular Season,3,2019-03-03,S3-RS-027,SFI Critical,PSG.RRQ,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-3-1551873983634537294
+3,Regular Season,3,2019-03-03,S3-RS-028,The Prime,Star8 Esports,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-3-1551873983634537294
+3,Regular Season,3,2019-03-03,S3-RS-029,Alter Ego,AURA Esports,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-3-1551873983634537294
+3,Regular Season,3,2019-03-03,S3-RS-030,Aerowolf Roxy,EVOS Esports,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-lengkap-pertandingan-mobile-legends-mpl-season-3-pekan-3-1551873983634537294
+3,Regular Season,4,2019-03-09,S3-RS-031,Star8 Esports,Alter Ego,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-4-onic-masih-berjaya-1552303354576810712
+3,Regular Season,4,2019-03-09,S3-RS-032,Bigetron Esports,ONIC Esports,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-4-onic-masih-berjaya-1552303354576810712
+3,Regular Season,4,2019-03-09,S3-RS-033,Saints Indo,SFI Critical,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-4-onic-masih-berjaya-1552303354576810712
+3,Regular Season,4,2019-03-09,S3-RS-034,EVOS Esports,The Prime,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-4-onic-masih-berjaya-1552303354576810712
+3,Regular Season,4,2019-03-09,S3-RS-035,PSG.RRQ,Aerowolf Roxy,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-4-onic-masih-berjaya-1552303354576810712
+3,Regular Season,4,2019-03-10,S3-RS-036,EVOS Esports,ONIC Esports,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-4-onic-masih-berjaya-1552303354576810712
+3,Regular Season,4,2019-03-10,S3-RS-037,Louvre Esports,Star8 Esports,2,1,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-4-onic-masih-berjaya-1552303354576810712
+3,Regular Season,4,2019-03-10,S3-RS-038,Aerowolf Roxy,AURA Esports,2,1,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-4-onic-masih-berjaya-1552303354576810712
+3,Regular Season,4,2019-03-10,S3-RS-039,Saints Indo,Bigetron Esports,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-4-onic-masih-berjaya-1552303354576810712
+3,Regular Season,5,2019-03-16,S3-RS-040,The Prime,Bigetron Esports,2,0,team_a,3,NULL,https://www.esports.id/read/mpl-s3-week-5-onic-esports-betah-di-puncak-klasemen-2422
+3,Regular Season,5,2019-03-16,S3-RS-041,Alter Ego,SFI Critical,0,2,team_b,3,NULL,https://www.esports.id/read/mpl-s3-week-5-onic-esports-betah-di-puncak-klasemen-2422
+3,Regular Season,5,2019-03-16,S3-RS-042,AURA Esports,Saints Indo,2,0,team_a,3,NULL,https://www.esports.id/read/mpl-s3-week-5-onic-esports-betah-di-puncak-klasemen-2422
+3,Regular Season,5,2019-03-16,S3-RS-043,Louvre Esports,Alter Ego,2,1,team_a,3,NULL,https://www.esports.id/read/mpl-s3-week-5-onic-esports-betah-di-puncak-klasemen-2422
+3,Regular Season,5,2019-03-16,S3-RS-044,PSG.RRQ,ONIC Esports,1,2,team_b,3,NULL,https://www.esports.id/read/mpl-s3-week-5-onic-esports-betah-di-puncak-klasemen-2422
+3,Regular Season,5,2019-03-17,S3-RS-045,SFI Critical,Aerowolf Roxy,0,2,team_b,3,NULL,https://www.esports.id/read/mpl-s3-week-5-onic-esports-betah-di-puncak-klasemen-2422
+3,Regular Season,5,2019-03-17,S3-RS-046,Bigetron Esports,Star8 Esports,2,0,team_a,3,NULL,https://www.esports.id/read/mpl-s3-week-5-onic-esports-betah-di-puncak-klasemen-2422
+3,Regular Season,5,2019-03-17,S3-RS-047,EVOS Esports,Saints Indo,2,1,team_a,3,NULL,https://www.esports.id/read/mpl-s3-week-5-onic-esports-betah-di-puncak-klasemen-2422
+3,Regular Season,5,2019-03-17,S3-RS-048,AURA Esports,ONIC Esports,0,2,team_b,3,NULL,https://www.esports.id/read/mpl-s3-week-5-onic-esports-betah-di-puncak-klasemen-2422
+3,Regular Season,6,2019-03-23,S3-RS-049,The Prime,PSG.RRQ,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-6-psg-rrq-sapu-bersih-1553773136602930532
+3,Regular Season,6,2019-03-23,S3-RS-050,Saints Indo,Aerowolf Roxy,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-6-psg-rrq-sapu-bersih-1553773136602930532
+3,Regular Season,6,2019-03-23,S3-RS-051,Louvre Esports,Bigetron Esports,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-6-psg-rrq-sapu-bersih-1553773136602930532
+3,Regular Season,6,2019-03-23,S3-RS-052,EVOS Esports,Star8 Esports,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-6-psg-rrq-sapu-bersih-1553773136602930532
+3,Regular Season,6,2019-03-23,S3-RS-053,AURA Esports,SFI Critical,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-6-psg-rrq-sapu-bersih-1553773136602930532
+3,Regular Season,6,2019-03-24,S3-RS-054,EVOS Esports,Louvre Esports,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-6-psg-rrq-sapu-bersih-1553773136602930532
+3,Regular Season,6,2019-03-24,S3-RS-055,Bigetron Esports,Alter Ego,2,1,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-6-psg-rrq-sapu-bersih-1553773136602930532
+3,Regular Season,6,2019-03-24,S3-RS-056,The Prime,AURA Esports,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-6-psg-rrq-sapu-bersih-1553773136602930532
+3,Regular Season,6,2019-03-24,S3-RS-057,PSG.RRQ,Star8 Esports,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/hasil-pertandingan-mpl-season-3-pekan-6-psg-rrq-sapu-bersih-1553773136602930532
+3,Regular Season,7,2019-04-06,S3-RS-058,Alter Ego,Aerowolf Roxy,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/8-tim-mobile-legends-lolos-ke-playoff-mpl-season-3-1qqzHciF7rN
+3,Regular Season,7,2019-04-06,S3-RS-059,SFI Critical,ONIC Esports,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/8-tim-mobile-legends-lolos-ke-playoff-mpl-season-3-1qqzHciF7rN
+3,Regular Season,7,2019-04-06,S3-RS-060,PSG.RRQ,Saints Indo,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/8-tim-mobile-legends-lolos-ke-playoff-mpl-season-3-1qqzHciF7rN
+3,Regular Season,7,2019-04-06,S3-RS-061,Bigetron Esports,EVOS Esports,1,2,team_b,3,NULL,https://kumparan.com/kumparantech/8-tim-mobile-legends-lolos-ke-playoff-mpl-season-3-1qqzHciF7rN
+3,Regular Season,7,2019-04-06,S3-RS-062,Star8 Esports,AURA Esports,2,1,team_a,3,NULL,https://kumparan.com/kumparantech/8-tim-mobile-legends-lolos-ke-playoff-mpl-season-3-1qqzHciF7rN
+3,Regular Season,7,2019-04-07,S3-RS-063,The Prime,SFI Critical,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/8-tim-mobile-legends-lolos-ke-playoff-mpl-season-3-1qqzHciF7rN
+3,Regular Season,7,2019-04-07,S3-RS-064,ONIC Esports,Aerowolf Roxy,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/8-tim-mobile-legends-lolos-ke-playoff-mpl-season-3-1qqzHciF7rN
+3,Regular Season,7,2019-04-07,S3-RS-065,Alter Ego,Saints Indo,2,0,team_a,3,NULL,https://kumparan.com/kumparantech/8-tim-mobile-legends-lolos-ke-playoff-mpl-season-3-1qqzHciF7rN
+3,Regular Season,7,2019-04-07,S3-RS-066,PSG.RRQ,Louvre Esports,0,2,team_b,3,NULL,https://kumparan.com/kumparantech/8-tim-mobile-legends-lolos-ke-playoff-mpl-season-3-1qqzHciF7rN
+3,Playoffs,NULL,2019-05-03,S3-PO-001,ONIC Esports,Louvre Esports,2,0,team_a,3,Upper Bracket Semifinals,https://www.esports.id/read/rrq-evos-tumbang-onic-bakal-mulus-juara-mpl-season-3-2637
+3,Playoffs,NULL,2019-05-03,S3-PO-002,Aerowolf Roxy,SFI Critical,2,1,team_a,3,Upper Bracket Semifinals,https://www.esports.id/read/rrq-evos-tumbang-onic-bakal-mulus-juara-mpl-season-3-2637
+3,Playoffs,NULL,2019-05-03,S3-PO-003,PSG.RRQ,Bigetron Esports,1,2,team_b,3,Lower Bracket Round 1,https://www.esports.id/read/rrq-evos-tumbang-onic-bakal-mulus-juara-mpl-season-3-2637
+3,Playoffs,NULL,2019-05-03,S3-PO-004,EVOS Esports,Alter Ego,0,2,team_b,3,Lower Bracket Round 1,https://www.esports.id/read/rrq-evos-tumbang-onic-bakal-mulus-juara-mpl-season-3-2637
+3,Playoffs,NULL,2019-05-04,S3-PO-005,SFI Critical,Bigetron Esports,2,1,team_a,3,Lower Bracket Quarterfinals,https://www.esports.id/read/louvre-vs-aerowolf-mencari-penantang-onic-di-final-mpl-s3-2639
+3,Playoffs,NULL,2019-05-04,S3-PO-006,Louvre Esports,Alter Ego,2,1,team_a,3,Lower Bracket Quarterfinals,https://www.esports.id/read/louvre-vs-aerowolf-mencari-penantang-onic-di-final-mpl-s3-2639
+3,Playoffs,NULL,2019-05-04,S3-PO-007,Louvre Esports,SFI Critical,2,1,team_a,3,Lower Bracket Semifinals,https://www.esports.id/read/louvre-vs-aerowolf-mencari-penantang-onic-di-final-mpl-s3-2639
+3,Playoffs,NULL,2019-05-04,S3-PO-008,ONIC Esports,Aerowolf Roxy,2,0,team_a,3,Upper Bracket Final,https://www.esports.id/read/louvre-vs-aerowolf-mencari-penantang-onic-di-final-mpl-s3-2639
+3,Playoffs,NULL,2019-05-05,S3-PO-009,Louvre Esports,Aerowolf Roxy,2,0,team_a,3,Lower Bracket Final,https://kumparan.com/kumparantech/tak-terkalahkan-onic-esports-juara-mpl-season-3-1r1Z8HYl1UA
+3,Playoffs,NULL,2019-05-05,S3-PO-010,ONIC Esports,Louvre Esports,3,0,team_a,5,Grand Final,https://kumparan.com/kumparantech/tak-terkalahkan-onic-esports-juara-mpl-season-3-1r1Z8HYl1UA
