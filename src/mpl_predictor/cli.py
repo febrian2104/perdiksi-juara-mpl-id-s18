@@ -31,6 +31,7 @@ from mpl_predictor.data.season18 import (
     build_season18_report,
     build_season18_teams,
     fetch_official_html,
+    merge_roster_history,
     parse_roster_html,
     parse_schedule_html,
     write_season18_outputs,
@@ -61,11 +62,23 @@ from mpl_predictor.models.evaluation import (
     write_evaluation_figures,
     write_model_outputs,
 )
+from mpl_predictor.models.explainability import (
+    build_explainability_report,
+    build_global_importance,
+    build_match_explanations,
+    build_team_explanations,
+    write_explainability_outputs,
+)
 from mpl_predictor.models.final import (
     build_final_model_report,
     load_final_match_model,
     train_final_match_model,
     write_final_model_outputs,
+)
+from mpl_predictor.models.season18_predictions import (
+    build_season18_prediction_history,
+    load_season18_tables,
+    write_season18_prediction_history,
 )
 from mpl_predictor.models.simulation import (
     build_season18_match_probabilities,
@@ -221,6 +234,29 @@ def _build_parser() -> argparse.ArgumentParser:
     simulation_parser.add_argument("--simulation-output", type=Path, default=None)
     simulation_parser.add_argument("--match-output", type=Path, default=None)
     simulation_parser.add_argument("--report", type=Path, default=None)
+
+    update_parser = subparsers.add_parser(
+        "update-season18-predictions",
+        help="Reconstruct preseason and update every completed S18 weekly snapshot.",
+    )
+    update_parser.add_argument("--canonical-dir", type=Path, default=None)
+    update_parser.add_argument("--season18-dir", type=Path, default=None)
+    update_parser.add_argument("--feature-config", type=Path, default=None)
+    update_parser.add_argument("--model-artifact", type=Path, default=None)
+    update_parser.add_argument("--config", type=Path, default=None)
+    update_parser.add_argument("--iterations", type=int, default=None)
+    update_parser.add_argument("--prediction-dir", type=Path, default=None)
+    update_parser.add_argument("--report", type=Path, default=None)
+    update_parser.add_argument("--latest-report", type=Path, default=None)
+
+    explain_parser = subparsers.add_parser(
+        "explain-season18", help="Generate global, match, and team prediction explanations."
+    )
+    explain_parser.add_argument("--model-artifact", type=Path, default=None)
+    explain_parser.add_argument("--predictions", type=Path, default=None)
+    explain_parser.add_argument("--match-probabilities", type=Path, default=None)
+    explain_parser.add_argument("--prediction-dir", type=Path, default=None)
+    explain_parser.add_argument("--report", type=Path, default=None)
     return parser
 
 
@@ -554,6 +590,10 @@ def main(argv: Sequence[str] | None = None) -> int:
                 parse_roster_html(fetch_official_html(url), team_id, observed_at, player_aliases)
             )
         rosters = pd.concat(roster_frames, ignore_index=True)
+        existing_roster_path = output_dir / "rosters.csv"
+        if existing_roster_path.exists():
+            existing_rosters = pd.read_csv(existing_roster_path)
+            rosters = merge_roster_history(existing_rosters, rosters, observed_at)
         report = build_season18_report(teams, rosters, schedule, observed_at)
         write_season18_outputs(teams, rosters, schedule, report, output_dir, report_path)
         print("MPL Indonesia Season 18 official data integration")
@@ -596,6 +636,108 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
         print(f"Calibration observations: {artifact['calibration_observation_count']}")
         print(f"Artifact: {artifact_path}")
+        print(f"Report: {report_path}")
+        return 0
+
+    if args.command == "update-season18-predictions":
+        paths = get_project_paths()
+        canonical_dir = (args.canonical_dir or paths.processed / "canonical").resolve()
+        season18_dir = (args.season18_dir or paths.data / "season18").resolve()
+        feature_config_path = (
+            args.feature_config or paths.root / "config" / "feature_config.json"
+        ).resolve()
+        artifact_path = (
+            args.model_artifact or paths.artifacts / "final_match_model.joblib"
+        ).resolve()
+        config_path = (args.config or paths.root / "config" / "simulation_config.json").resolve()
+        prediction_dir = (args.prediction_dir or paths.processed / "predictions").resolve()
+        report_path = (args.report or paths.reports / "season18_prediction_updates.json").resolve()
+        latest_report_path = (
+            args.latest_report or paths.reports / "season18_simulation_report.json"
+        ).resolve()
+        tables = load_canonical_tables(canonical_dir)
+        teams, rosters, schedule = load_season18_tables(season18_dir)
+        feature_config = load_feature_config(feature_config_path)
+        artifact = load_final_match_model(artifact_path)
+        simulation_config = load_simulation_config(config_path)
+        if args.iterations is not None:
+            if args.iterations <= 0:
+                parser.error("--iterations must be greater than zero")
+            simulation_config["iterations"] = args.iterations
+        predictions, match_probabilities, report, latest_report = build_season18_prediction_history(
+            tables,
+            teams,
+            rosters,
+            schedule,
+            feature_config,
+            artifact,
+            simulation_config,
+        )
+        outputs = write_season18_prediction_history(
+            predictions,
+            match_probabilities,
+            report,
+            latest_report,
+            prediction_dir,
+            report_path,
+            latest_report_path,
+        )
+        latest = predictions.loc[
+            predictions["snapshot_order"].eq(predictions["snapshot_order"].max())
+        ].sort_values("champion_probability", ascending=False)
+        leader = latest.iloc[0]
+        print("MPL Season 18 preseason reconstruction and weekly updates")
+        print(
+            f"Snapshots: {report['snapshot_count']} "
+            f"(preseason {report['preseason_snapshot_count']}, "
+            f"weekly {report['weekly_snapshot_count']})"
+        )
+        print(f"Latest completed week: {report['latest_completed_week']}")
+        print(f"Latest leader: {leader['team_name']} ({leader['champion_probability']:.2%})")
+        print(f"Invalid probability sums: {report['validation']['invalid_probability_sum_count']}")
+        print(f"Prediction history: {outputs['history']}")
+        print(f"Report: {report_path}")
+        return int(report["validation"]["invalid_probability_sum_count"] > 0)
+
+    if args.command == "explain-season18":
+        paths = get_project_paths()
+        artifact_path = (
+            args.model_artifact or paths.artifacts / "final_match_model.joblib"
+        ).resolve()
+        prediction_dir = (args.prediction_dir or paths.processed / "predictions").resolve()
+        predictions_path = (
+            args.predictions or prediction_dir / "season18_snapshot_predictions.parquet"
+        ).resolve()
+        match_path = (
+            args.match_probabilities
+            or prediction_dir / "season18_snapshot_match_probabilities.parquet"
+        ).resolve()
+        report_path = (args.report or paths.reports / "explainability_report.json").resolve()
+        artifact = load_final_match_model(artifact_path)
+        predictions = pd.read_parquet(predictions_path)
+        match_probabilities = pd.read_parquet(match_path)
+        global_importance = build_global_importance(artifact)
+        match_explanations = build_match_explanations(artifact, match_probabilities)
+        team_explanations = build_team_explanations(predictions, match_probabilities)
+        report = build_explainability_report(
+            artifact,
+            global_importance,
+            match_explanations,
+            team_explanations,
+        )
+        outputs = write_explainability_outputs(
+            global_importance,
+            match_explanations,
+            team_explanations,
+            report,
+            prediction_dir,
+            report_path,
+        )
+        print("MPL Season 18 model explainability")
+        print(f"Global transformed features: {len(global_importance)}")
+        print(f"Explained upcoming matches: {match_explanations['match_id'].nunique()}")
+        print(f"Explained teams: {len(team_explanations)}")
+        print(f"Match explanations: {outputs['matches']}")
         print(f"Report: {report_path}")
         return 0
 

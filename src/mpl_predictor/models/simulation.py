@@ -154,6 +154,7 @@ def build_season18_match_probabilities(
         records.append(
             {
                 **row._asdict(),
+                **features,
                 "team_a_win_probability": probability,
                 "probability_basis": "historical_pre_match_state",
             }
@@ -174,6 +175,7 @@ def build_season18_match_probabilities(
         records.append(
             {
                 **row._asdict(),
+                **features,
                 "team_a_win_probability": predict_match_probability(artifact, features),
                 "probability_basis": "current_as_of_state",
             }

@@ -276,6 +276,44 @@ def parse_roster_html(
     return pd.DataFrame.from_records(records)
 
 
+def merge_roster_history(
+    existing: pd.DataFrame, current: pd.DataFrame, observed_at: date
+) -> pd.DataFrame:
+    """Preserve first-seen dates and close members removed from the official roster page."""
+    if existing.empty:
+        return current
+    key_columns = ["team_id", "player_id"]
+    existing = existing.copy()
+    for column in ("valid_from", "valid_to", "observed_at"):
+        existing[column] = pd.to_datetime(existing[column], errors="coerce").dt.date
+    existing_lookup = {
+        tuple(getattr(row, column) for column in key_columns): row._asdict()
+        for row in existing.itertuples(index=False)
+    }
+    current_keys = set()
+    records = []
+    for row in current.itertuples(index=False):
+        record = row._asdict()
+        key = tuple(record[column] for column in key_columns)
+        current_keys.add(key)
+        previous = existing_lookup.get(key)
+        if previous is not None and pd.notna(previous["valid_from"]):
+            record["valid_from"] = min(previous["valid_from"], record["valid_from"])
+        records.append(record)
+    for key, previous in existing_lookup.items():
+        if key in current_keys:
+            continue
+        record = previous.copy()
+        if pd.isna(record["valid_to"]):
+            record["valid_to"] = observed_at
+        records.append(record)
+    return (
+        pd.DataFrame.from_records(records)
+        .sort_values(["team_id", "member_type", "player_id"])
+        .reset_index(drop=True)
+    )
+
+
 def validate_season18_data(
     teams: pd.DataFrame,
     rosters: pd.DataFrame,
@@ -339,6 +377,7 @@ def build_season18_report(
 ) -> dict[str, Any]:
     checks = validate_season18_data(teams, rosters, schedule, observed_at)
     completed = schedule["status"].eq("completed")
+    active_roster = rosters.loc[rosters["valid_to"].isna()]
     return {
         "report_version": "1.0",
         "season": 18,
@@ -351,9 +390,10 @@ def build_season18_report(
         },
         "scope": {
             "team_count": len(teams),
-            "roster_member_count": len(rosters),
-            "player_count": int(rosters["member_type"].eq("player").sum()),
-            "staff_count": int(rosters["member_type"].eq("staff").sum()),
+            "roster_member_count": len(active_roster),
+            "roster_history_row_count": len(rosters),
+            "player_count": int(active_roster["member_type"].eq("player").sum()),
+            "staff_count": int(active_roster["member_type"].eq("staff").sum()),
             "scheduled_match_count": len(schedule),
             "completed_match_count": int(completed.sum()),
             "remaining_match_count": int((~completed).sum()),

@@ -1,4 +1,6 @@
-.PHONY: setup audit semantic-audit normalize canonicalize quality-report eda prediction-policy analysis build-features baseline modeling build-match-features backtest models sync-season18 train-final simulate-season18 season18 test lint format dashboard
+.PHONY: setup audit semantic-audit normalize canonicalize quality-report eda prediction-policy analysis build-features baseline modeling build-match-features backtest models sync-season18 train-final simulate-season18 update-predictions explain-season18 update-season18 season18 verify docs-check local-train local-update local-pipeline test lint format dashboard
+
+OBSERVED_AT ?=
 
 setup:
 	python3 -m venv .venv
@@ -46,7 +48,7 @@ backtest:
 models: modeling build-match-features backtest
 
 sync-season18:
-	.venv/bin/mpl-predictor sync-season18
+	.venv/bin/mpl-predictor sync-season18 $(if $(OBSERVED_AT),--observed-at $(OBSERVED_AT),)
 
 train-final:
 	.venv/bin/mpl-predictor train-final
@@ -54,7 +56,30 @@ train-final:
 simulate-season18:
 	.venv/bin/mpl-predictor simulate-season18
 
-season18: sync-season18 train-final simulate-season18
+update-predictions:
+	.venv/bin/mpl-predictor update-season18-predictions
+
+explain-season18:
+	.venv/bin/mpl-predictor explain-season18
+
+update-season18: sync-season18 train-final update-predictions explain-season18
+
+season18: update-season18
+
+docs-check:
+	test -s README.md
+	test -s docs/OPERATIONS.md
+
+verify: audit semantic-audit lint test docs-check
+
+local-train:
+	./scripts/run_local_pipeline.sh train
+
+local-update:
+	./scripts/run_local_pipeline.sh update $(if $(OBSERVED_AT),$(OBSERVED_AT),)
+
+local-pipeline:
+	./scripts/run_local_pipeline.sh all $(if $(OBSERVED_AT),$(OBSERVED_AT),)
 
 test:
 	.venv/bin/python -m pytest

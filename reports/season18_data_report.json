@@ -19,6 +19,7 @@
   "scope": {
     "team_count": 9,
     "roster_member_count": 79,
+    "roster_history_row_count": 79,
     "player_count": 59,
     "staff_count": 20,
     "scheduled_match_count": 72,

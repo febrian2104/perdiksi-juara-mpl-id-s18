@@ -57,7 +57,7 @@
   },
   "current_data_guards": {
     "matches": "Siap menjadi fitur inti dengan filter completion date dan week",
-    "players": "Belum time-aware; butuh announced_at atau valid_from/valid_to sebelum menjadi fitur as-of",
+    "players": "Roster historis S4-S17 belum time-aware; roster live S18 memakai valid_from/valid_to konservatif",
     "player_season_stats": "Dikeluarkan dari fitur inti karena parsial dan banyak snapshot pascamusim",
     "games": "Gunakan score series pada matches sebagai utama; detail game bersifat opsional",
     "drafts": "Eksperimental karena coverage antar musim tidak konsisten",
@@ -66,6 +66,7 @@
   "season_18_delivery": {
     "preseason": "Satu ranking probabilitas juara sebelum match pertama Season 18",
     "weekly": "Satu ranking probabilitas setelah setiap minggu regular season Season 18",
+    "implementation": "Dedicated live pipeline melalui update-season18-predictions; tidak digabung ke canonical historical dataset yang belum final",
     "required_new_inputs": [
       "Daftar tim Season 18",
       "Roster Season 18 beserta announced_at atau valid_from",
@@ -73,4 +74,3 @@
     ]
   }
 }
-

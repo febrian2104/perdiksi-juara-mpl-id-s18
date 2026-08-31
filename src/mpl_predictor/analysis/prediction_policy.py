@@ -139,12 +139,13 @@ def build_prediction_policy_report(policy: dict[str, Any], windows: pd.DataFrame
             "by_season": dataframe_records(per_season),
         },
         "season_18_status": {
-            "windows_generated": False,
-            "reason": "Jadwal dan hasil Season 18 belum berada pada canonical dataset.",
-            "next_action": (
-                "Tambahkan input Season 18, canonicalize, lalu buat snapshot dengan policy "
-                "yang sama."
+            "canonical_historical_windows_generated": False,
+            "live_pipeline_available": True,
+            "reason": (
+                "Season 18 masih berjalan dan sengaja disimpan sebagai live dataset terpisah "
+                "dari canonical dataset musim final."
             ),
+            "command": "mpl-predictor update-season18-predictions",
         },
     }
 

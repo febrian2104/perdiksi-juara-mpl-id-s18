@@ -21,6 +21,10 @@ dashboard agar hasil eksperimen dapat direproduksi.
 - Tim, roster bertanggal, jadwal, dan hasil resmi Season 18 sudah diintegrasikan dengan
   snapshot 31 Agustus 2026.
 - Simulasi Monte Carlo regular season dan playoff Season 18 sudah tersedia.
+- Rekonstruksi pramusim dan snapshot mingguan Week 1-3 sudah tersedia dengan cutoff
+  leakage-safe.
+- Explainability global/lokal, dashboard interaktif, dan otomasi pipeline lokal sudah
+  tersedia tanpa GitHub Actions.
 
 ## Menjalankan project
 
@@ -50,7 +54,8 @@ mpl-predictor build-match-features
 mpl-predictor backtest
 mpl-predictor sync-season18 --observed-at 2026-08-31
 mpl-predictor train-final
-mpl-predictor simulate-season18
+mpl-predictor update-season18-predictions
+mpl-predictor explain-season18
 python -m pytest
 ruff check .
 streamlit run src/mpl_predictor/dashboard.py
@@ -67,6 +72,8 @@ make analysis
 make modeling
 make models
 make season18
+make verify
+make local-pipeline OBSERVED_AT=2026-08-31
 make test
 make lint
 make dashboard
@@ -83,7 +90,7 @@ make dashboard
 │   └── processed/
 │       ├── canonical/                   # tabel canonical tim, pemain, dan pertandingan
 │       ├── features/                    # snapshot dan pre-match feature table
-│       └── predictions/                 # baseline dan prediksi walk-forward
+│       └── predictions/                 # baseline, snapshot S18, dan explainability
 ├── artifacts/                           # model, encoder, dan metadata training
 ├── reports/
 │   ├── semantic_audit.json              # temuan audit dan coverage per musim
@@ -99,7 +106,11 @@ make dashboard
 │   ├── final_model_selection.json        # keputusan dan cakupan training final
 │   ├── season18_data_report.json         # sumber, cutoff, dan validasi data live
 │   ├── season18_simulation_report.json   # asumsi dan probabilitas simulasi
+│   ├── season18_prediction_updates.json  # cutoff pramusim dan mingguan S18
+│   ├── explainability_report.json        # metode dan batas interpretasi model
 │   └── figures/                         # visualisasi hasil analisis
+├── docs/OPERATIONS.md                   # panduan training dan update lokal
+├── scripts/run_local_pipeline.sh        # otomasi lokal train/update/verify/all
 ├── src/mpl_predictor/
 │   ├── analysis/                        # kualitas data, EDA, dan timing prediksi
 │   ├── data/                            # discovery, contract, dan audit data
@@ -225,6 +236,28 @@ memperbarui klasemen pada setiap iterasi, tetapi belum memperbarui ulang fitur E
 dalam iterasi. Roster S18 sudah terintegrasi secara temporal, namun belum menjadi kolom
 fitur model match final versi 1.
 
+## Prediksi pramusim, mingguan, dan explainability
+
+Rekonstruksi pramusim memakai cutoff 13 Agustus 2026, daftar peserta/jadwal S18, seluruh
+hasil sampai S17, dan nol hasil S18. Karena roster pertama kali terverifikasi pada 31
+Agustus, rekonstruksi tidak menggunakan roster tersebut. Ini adalah rekonstruksi as-of,
+bukan bukti bahwa file prediksi benar-benar diterbitkan sebelum musim dimulai.
+
+Snapshot yang tersedia:
+
+- `S18_PRE`: 0 hasil tersedia, 72 regular-season match disimulasikan;
+- `S18_W01`: 8 hasil tersedia dan 64 match disimulasikan;
+- `S18_W02`: 16 hasil tersedia dan 56 match disimulasikan;
+- `S18_W03`: 24 hasil tersedia dan 48 match disimulasikan.
+
+Semua snapshot memakai 20.000 iterasi dan probabilitas juaranya berjumlah 1. Explainability
+global menggunakan besaran koefisien logistic terstandardisasi. Explainability match
+menampilkan kontribusi terhadap raw forward logit sebelum side-symmetry, kalibrasi Platt,
+dan Monte Carlo; kontribusi tersebut tidak boleh dibaca sebagai hubungan sebab-akibat.
+
+Dashboard dijalankan dengan `make dashboard`. Panduan update, training ulang, verifikasi,
+dan contoh penjadwalan lokal tersedia di `docs/OPERATIONS.md`.
+
 ## Prinsip pengembangan
 
 1. Raw CSV tidak diedit langsung.
@@ -259,8 +292,10 @@ fitur model match final versi 1.
 19. Integrasi tim, roster bertanggal, jadwal, dan hasil Season 18. **Selesai untuk snapshot
     31 Agustus 2026.**
 20. Simulasi regular season dan playoff untuk probabilitas juara. **Selesai.**
-21. Rekonstruksi prediksi pramusim Season 18. **Opsional; memerlukan bukti timestamp roster
-    sebelum pertandingan pertama agar bebas leakage.**
-22. Pembaruan prediksi mingguan Season 18. **Pipeline siap; dijalankan setelah setiap week.**
-23. Explainability dan dashboard hasil prediksi.
-24. Otomatisasi test, training, pembaruan prediksi, dan dokumentasi.
+21. Rekonstruksi prediksi pramusim Season 18. **Selesai dengan 0 hasil S18 dan tanpa roster
+    yang belum tersedia pada cutoff.**
+22. Pembaruan prediksi mingguan Season 18. **Selesai sampai Week 3; command siap dijalankan
+    ulang setelah setiap week selesai.**
+23. Explainability dan dashboard hasil prediksi. **Selesai.**
+24. Otomatisasi lokal untuk data, training, testing, dan dokumentasi. **Selesai tanpa
+    GitHub Actions.**
