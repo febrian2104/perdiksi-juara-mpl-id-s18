@@ -1,0 +1,316 @@
+{
+  "report_version": "1.0",
+  "baseline_models": {
+    "uniform": "Probabilitas sama besar untuk semua tim aktif.",
+    "elo_strength": "Probabilitas dinormalisasi dari strength 10^(Elo / scale); belum menggunakan model playoff atau kalibrasi."
+  },
+  "configuration": {
+    "evaluation_start_season": 8,
+    "evaluation_end_season": 17,
+    "elo_probability_scale": 400.0
+  },
+  "prediction_row_count": 2182,
+  "evaluated_snapshot_count": 93,
+  "probability_validation": {
+    "group_count": 258,
+    "invalid_sum_group_count": 0,
+    "tolerance": 1e-09
+  },
+  "overall_metrics": [
+    {
+      "baseline_model": "elo_strength",
+      "snapshot_count": 93,
+      "mean_champion_probability": 0.196317,
+      "multiclass_log_loss": 1.681593,
+      "multiclass_brier_score": 0.749912,
+      "mean_champion_rank": 2.010753,
+      "mean_reciprocal_rank": 0.692413,
+      "top_1_accuracy": 0.494624,
+      "top_3_accuracy": 0.860215
+    },
+    {
+      "baseline_model": "uniform",
+      "snapshot_count": 93,
+      "mean_champion_probability": 0.116189,
+      "multiclass_log_loss": 2.154164,
+      "multiclass_brier_score": 0.883811,
+      "mean_champion_rank": 4.817204,
+      "mean_reciprocal_rank": 0.208124,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    }
+  ],
+  "metrics_by_prediction_type": [
+    {
+      "baseline_model": "elo_strength",
+      "prediction_type": "preseason",
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.183317,
+      "multiclass_log_loss": 1.744754,
+      "multiclass_brier_score": 0.770563,
+      "mean_champion_rank": 2.2,
+      "mean_reciprocal_rank": 0.641667,
+      "top_1_accuracy": 0.4,
+      "top_3_accuracy": 0.8
+    },
+    {
+      "baseline_model": "elo_strength",
+      "prediction_type": "weekly",
+      "snapshot_count": 83,
+      "mean_champion_probability": 0.197884,
+      "multiclass_log_loss": 1.673984,
+      "multiclass_brier_score": 0.747424,
+      "mean_champion_rank": 1.987952,
+      "mean_reciprocal_rank": 0.698527,
+      "top_1_accuracy": 0.506024,
+      "top_3_accuracy": 0.86747
+    },
+    {
+      "baseline_model": "uniform",
+      "prediction_type": "preseason",
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.116667,
+      "multiclass_log_loss": 2.150111,
+      "multiclass_brier_score": 0.883333,
+      "mean_champion_rank": 4.8,
+      "mean_reciprocal_rank": 0.208889,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    },
+    {
+      "baseline_model": "uniform",
+      "prediction_type": "weekly",
+      "snapshot_count": 83,
+      "mean_champion_probability": 0.116131,
+      "multiclass_log_loss": 2.154652,
+      "multiclass_brier_score": 0.883869,
+      "mean_champion_rank": 4.819277,
+      "mean_reciprocal_rank": 0.208032,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    }
+  ],
+  "weekly_metrics_by_completed_week": [
+    {
+      "baseline_model": "elo_strength",
+      "completed_week": 1,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.184356,
+      "multiclass_log_loss": 1.749466,
+      "multiclass_brier_score": 0.771484,
+      "mean_champion_rank": 2.6,
+      "mean_reciprocal_rank": 0.619444,
+      "top_1_accuracy": 0.4,
+      "top_3_accuracy": 0.8
+    },
+    {
+      "baseline_model": "elo_strength",
+      "completed_week": 2,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.192136,
+      "multiclass_log_loss": 1.712147,
+      "multiclass_brier_score": 0.758994,
+      "mean_champion_rank": 2.0,
+      "mean_reciprocal_rank": 0.695,
+      "top_1_accuracy": 0.5,
+      "top_3_accuracy": 0.8
+    },
+    {
+      "baseline_model": "elo_strength",
+      "completed_week": 3,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.189789,
+      "multiclass_log_loss": 1.718345,
+      "multiclass_brier_score": 0.761929,
+      "mean_champion_rank": 1.9,
+      "mean_reciprocal_rank": 0.67,
+      "top_1_accuracy": 0.4,
+      "top_3_accuracy": 0.9
+    },
+    {
+      "baseline_model": "elo_strength",
+      "completed_week": 4,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.197081,
+      "multiclass_log_loss": 1.681755,
+      "multiclass_brier_score": 0.748764,
+      "mean_champion_rank": 2.1,
+      "mean_reciprocal_rank": 0.636667,
+      "top_1_accuracy": 0.4,
+      "top_3_accuracy": 0.9
+    },
+    {
+      "baseline_model": "elo_strength",
+      "completed_week": 5,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.201244,
+      "multiclass_log_loss": 1.654357,
+      "multiclass_brier_score": 0.740497,
+      "mean_champion_rank": 2.0,
+      "mean_reciprocal_rank": 0.728333,
+      "top_1_accuracy": 0.6,
+      "top_3_accuracy": 0.8
+    },
+    {
+      "baseline_model": "elo_strength",
+      "completed_week": 6,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.211387,
+      "multiclass_log_loss": 1.603129,
+      "multiclass_brier_score": 0.723534,
+      "mean_champion_rank": 1.8,
+      "mean_reciprocal_rank": 0.753333,
+      "top_1_accuracy": 0.6,
+      "top_3_accuracy": 0.9
+    },
+    {
+      "baseline_model": "elo_strength",
+      "completed_week": 7,
+      "snapshot_count": 9,
+      "mean_champion_probability": 0.205375,
+      "multiclass_log_loss": 1.629217,
+      "multiclass_brier_score": 0.733889,
+      "mean_champion_rank": 1.888889,
+      "mean_reciprocal_rank": 0.725926,
+      "top_1_accuracy": 0.555556,
+      "top_3_accuracy": 0.888889
+    },
+    {
+      "baseline_model": "elo_strength",
+      "completed_week": 8,
+      "snapshot_count": 9,
+      "mean_champion_probability": 0.21187,
+      "multiclass_log_loss": 1.597265,
+      "multiclass_brier_score": 0.723244,
+      "mean_champion_rank": 1.555556,
+      "mean_reciprocal_rank": 0.796296,
+      "top_1_accuracy": 0.666667,
+      "top_3_accuracy": 1.0
+    },
+    {
+      "baseline_model": "elo_strength",
+      "completed_week": 9,
+      "snapshot_count": 5,
+      "mean_champion_probability": 0.181841,
+      "multiclass_log_loss": 1.742063,
+      "multiclass_brier_score": 0.773999,
+      "mean_champion_rank": 2.0,
+      "mean_reciprocal_rank": 0.65,
+      "top_1_accuracy": 0.4,
+      "top_3_accuracy": 0.8
+    },
+    {
+      "baseline_model": "uniform",
+      "completed_week": 1,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.116667,
+      "multiclass_log_loss": 2.150111,
+      "multiclass_brier_score": 0.883333,
+      "mean_champion_rank": 4.8,
+      "mean_reciprocal_rank": 0.208889,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    },
+    {
+      "baseline_model": "uniform",
+      "completed_week": 2,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.116667,
+      "multiclass_log_loss": 2.150111,
+      "multiclass_brier_score": 0.883333,
+      "mean_champion_rank": 4.8,
+      "mean_reciprocal_rank": 0.208889,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    },
+    {
+      "baseline_model": "uniform",
+      "completed_week": 3,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.116667,
+      "multiclass_log_loss": 2.150111,
+      "multiclass_brier_score": 0.883333,
+      "mean_champion_rank": 4.8,
+      "mean_reciprocal_rank": 0.208889,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    },
+    {
+      "baseline_model": "uniform",
+      "completed_week": 4,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.116667,
+      "multiclass_log_loss": 2.150111,
+      "multiclass_brier_score": 0.883333,
+      "mean_champion_rank": 4.8,
+      "mean_reciprocal_rank": 0.208889,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    },
+    {
+      "baseline_model": "uniform",
+      "completed_week": 5,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.116667,
+      "multiclass_log_loss": 2.150111,
+      "multiclass_brier_score": 0.883333,
+      "mean_champion_rank": 4.8,
+      "mean_reciprocal_rank": 0.208889,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    },
+    {
+      "baseline_model": "uniform",
+      "completed_week": 6,
+      "snapshot_count": 10,
+      "mean_champion_probability": 0.116667,
+      "multiclass_log_loss": 2.150111,
+      "multiclass_brier_score": 0.883333,
+      "mean_champion_rank": 4.8,
+      "mean_reciprocal_rank": 0.208889,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    },
+    {
+      "baseline_model": "uniform",
+      "completed_week": 7,
+      "snapshot_count": 9,
+      "mean_champion_probability": 0.115741,
+      "multiclass_log_loss": 2.157964,
+      "multiclass_brier_score": 0.884259,
+      "mean_champion_rank": 4.833333,
+      "mean_reciprocal_rank": 0.207407,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    },
+    {
+      "baseline_model": "uniform",
+      "completed_week": 8,
+      "snapshot_count": 9,
+      "mean_champion_probability": 0.115741,
+      "multiclass_log_loss": 2.157964,
+      "multiclass_brier_score": 0.884259,
+      "mean_champion_rank": 4.833333,
+      "mean_reciprocal_rank": 0.207407,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    },
+    {
+      "baseline_model": "uniform",
+      "completed_week": 9,
+      "snapshot_count": 5,
+      "mean_champion_probability": 0.111111,
+      "multiclass_log_loss": 2.197225,
+      "multiclass_brier_score": 0.888889,
+      "mean_champion_rank": 5.0,
+      "mean_reciprocal_rank": 0.2,
+      "top_1_accuracy": 0.0,
+      "top_3_accuracy": 0.0
+    }
+  ],
+  "elo_vs_uniform": {
+    "log_loss_improvement_pct": 21.9376,
+    "brier_improvement_pct": 15.1502
+  },
+  "interpretation_guard": "Baseline hanya menjadi pembanding. Hasil ini belum merupakan prediksi final Season 18 dan belum melalui kalibrasi atau simulasi bracket."
+}

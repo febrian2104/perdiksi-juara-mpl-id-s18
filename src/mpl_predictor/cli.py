@@ -3,6 +3,8 @@ import json
 from collections.abc import Sequence
 from pathlib import Path
 
+import pandas as pd
+
 from mpl_predictor.analysis.common import load_canonical_tables
 from mpl_predictor.analysis.eda import build_eda_report, write_eda_figures, write_eda_report
 from mpl_predictor.analysis.prediction_policy import (
@@ -27,6 +29,17 @@ from mpl_predictor.data.semantic_audit import (
     SemanticAuditReport,
     audit_semantics,
     write_semantic_report,
+)
+from mpl_predictor.features.snapshots import (
+    build_feature_report,
+    build_snapshot_features,
+    load_feature_config,
+    write_snapshot_outputs,
+)
+from mpl_predictor.models.baseline import (
+    build_baseline_predictions,
+    build_baseline_report,
+    write_baseline_outputs,
 )
 
 
@@ -98,6 +111,23 @@ def _build_parser() -> argparse.ArgumentParser:
     prediction_parser.add_argument("--policy", type=Path, default=None)
     prediction_parser.add_argument("--output", type=Path, default=None)
     prediction_parser.add_argument("--windows-output", type=Path, default=None)
+
+    feature_parser = subparsers.add_parser(
+        "build-features", help="Build leakage-safe team features for every historical snapshot."
+    )
+    feature_parser.add_argument("--canonical-dir", type=Path, default=None)
+    feature_parser.add_argument("--policy", type=Path, default=None)
+    feature_parser.add_argument("--config", type=Path, default=None)
+    feature_parser.add_argument("--output", type=Path, default=None)
+    feature_parser.add_argument("--report", type=Path, default=None)
+
+    baseline_parser = subparsers.add_parser(
+        "baseline", help="Generate and evaluate uniform and Elo champion baselines."
+    )
+    baseline_parser.add_argument("--features", type=Path, default=None)
+    baseline_parser.add_argument("--config", type=Path, default=None)
+    baseline_parser.add_argument("--output", type=Path, default=None)
+    baseline_parser.add_argument("--report", type=Path, default=None)
     return parser
 
 
@@ -267,6 +297,63 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Policy report: {report_path}")
         print(f"Historical windows: {windows_path}")
         return 0
+
+    if args.command == "build-features":
+        paths = get_project_paths()
+        canonical_dir = (args.canonical_dir or paths.processed / "canonical").resolve()
+        policy_path = (args.policy or paths.root / "config" / "prediction_policy.json").resolve()
+        config_path = (args.config or paths.root / "config" / "feature_config.json").resolve()
+        output_path = (
+            args.output or paths.processed / "features" / "team_snapshot_features.parquet"
+        ).resolve()
+        report_path = (args.report or paths.reports / "feature_engineering_report.json").resolve()
+        tables = load_canonical_tables(canonical_dir)
+        policy = load_prediction_policy(policy_path)
+        feature_config = load_feature_config(config_path)
+        windows = build_prediction_windows(tables, policy)
+        features, roster_metadata = build_snapshot_features(tables, windows, feature_config)
+        report = build_feature_report(features, windows, roster_metadata)
+        write_snapshot_outputs(features, report, output_path, report_path)
+        print("MPL snapshot feature engineering")
+        print(f"Snapshots: {report['snapshot_count']}")
+        print(f"Team-snapshot rows: {report['feature_row_count']}")
+        print(
+            "Enabled / defined feature columns: "
+            f"{report['enabled_feature_column_count']} / {report['feature_column_count']}"
+        )
+        print(
+            f"Current roster temporal enabled: {roster_metadata['current_roster_features_enabled']}"
+        )
+        print(f"Blocking issues: {report['blocking_issue_count']}")
+        print(f"Features: {output_path}")
+        print(f"Report: {report_path}")
+        return int(report["blocking_issue_count"] > 0)
+
+    if args.command == "baseline":
+        paths = get_project_paths()
+        feature_path = (
+            args.features or paths.processed / "features" / "team_snapshot_features.parquet"
+        ).resolve()
+        config_path = (args.config or paths.root / "config" / "feature_config.json").resolve()
+        output_path = (
+            args.output or paths.processed / "predictions" / "baseline_predictions.parquet"
+        ).resolve()
+        report_path = (args.report or paths.reports / "baseline_report.json").resolve()
+        features = pd.read_parquet(feature_path)
+        feature_config = load_feature_config(config_path)
+        predictions = build_baseline_predictions(features, feature_config)
+        report = build_baseline_report(predictions, feature_config)
+        write_baseline_outputs(predictions, report, output_path, report_path)
+        print("MPL probability and Elo baselines")
+        print(f"Prediction rows: {report['prediction_row_count']}")
+        print(f"Evaluated snapshots: {report['evaluated_snapshot_count']}")
+        print(
+            "Invalid probability sums: "
+            f"{report['probability_validation']['invalid_sum_group_count']}"
+        )
+        print(f"Predictions: {output_path}")
+        print(f"Report: {report_path}")
+        return int(report["probability_validation"]["invalid_sum_group_count"] > 0)
 
     parser.error(f"Unknown command: {args.command}")
     return 2

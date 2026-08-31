@@ -1,0 +1,379 @@
+{
+  "report_version": "1.0",
+  "feature_version": "1.0",
+  "snapshot_count": 129,
+  "feature_row_count": 1091,
+  "feature_column_count": 42,
+  "enabled_feature_column_count": 36,
+  "season_min": 4,
+  "season_max": 17,
+  "blocking_issue_count": 0,
+  "checks": [
+    {
+      "check_id": "expected_feature_rows",
+      "status": "pass",
+      "count": 0
+    },
+    {
+      "check_id": "unique_snapshot_team",
+      "status": "pass",
+      "count": 0
+    },
+    {
+      "check_id": "one_champion_per_historical_snapshot",
+      "status": "pass",
+      "count": 0
+    },
+    {
+      "check_id": "preseason_has_no_current_results",
+      "status": "pass",
+      "count": 0
+    },
+    {
+      "check_id": "latest_source_date_not_after_cutoff",
+      "status": "pass",
+      "count": 0
+    },
+    {
+      "check_id": "snapshot_match_counts_reconcile",
+      "status": "pass",
+      "count": 0
+    }
+  ],
+  "feature_groups": {
+    "elo": [
+      "elo_rating",
+      "elo_rank",
+      "elo_change_since_preseason",
+      "elo_expected_vs_league_average"
+    ],
+    "prior_season_performance": [
+      "prior_season_regular_matches",
+      "prior_season_regular_match_win_rate",
+      "prior_season_regular_game_win_rate",
+      "prior_season_regular_game_diff_per_match",
+      "prior_season_playoff_matches",
+      "prior_season_playoff_match_win_rate",
+      "prior_season_sos_opponent_match_win_rate",
+      "prior_season_sos_adjusted_match_win_rate"
+    ],
+    "rolling_history": [
+      "prior_3_season_matches",
+      "prior_3_season_match_win_rate",
+      "prior_3_season_game_win_rate",
+      "prior_3_season_game_diff_per_match",
+      "prior_3_season_sos_elo_avg"
+    ],
+    "current_performance": [
+      "current_regular_matches",
+      "current_regular_wins",
+      "current_regular_losses",
+      "current_regular_draws",
+      "current_regular_match_win_rate",
+      "current_regular_game_win_rate",
+      "current_regular_game_differential",
+      "current_regular_game_diff_per_match",
+      "current_last_3_match_score",
+      "current_last_5_match_score"
+    ],
+    "strength_of_schedule": [
+      "current_sos_opponent_elo_avg",
+      "current_sos_opponent_match_win_rate",
+      "current_sos_adjusted_match_win_rate"
+    ],
+    "lagged_roster": [
+      "lagged_roster_available",
+      "lagged_roster_size",
+      "lagged_roster_role_coverage",
+      "lagged_roster_returning_count",
+      "lagged_roster_continuity",
+      "lagged_roster_avg_experience_seasons"
+    ],
+    "current_roster_temporal": [
+      "current_roster_temporal_available",
+      "current_roster_size_asof",
+      "current_roster_role_coverage_asof",
+      "current_roster_retained_count_asof",
+      "current_roster_retained_share_asof",
+      "current_roster_avg_experience_seasons_asof"
+    ]
+  },
+  "disabled_feature_groups": [
+    "current_roster_temporal"
+  ],
+  "enabled_feature_columns": [
+    "elo_rating",
+    "elo_rank",
+    "elo_change_since_preseason",
+    "elo_expected_vs_league_average",
+    "prior_season_regular_matches",
+    "prior_season_regular_match_win_rate",
+    "prior_season_regular_game_win_rate",
+    "prior_season_regular_game_diff_per_match",
+    "prior_season_playoff_matches",
+    "prior_season_playoff_match_win_rate",
+    "prior_season_sos_opponent_match_win_rate",
+    "prior_season_sos_adjusted_match_win_rate",
+    "prior_3_season_matches",
+    "prior_3_season_match_win_rate",
+    "prior_3_season_game_win_rate",
+    "prior_3_season_game_diff_per_match",
+    "prior_3_season_sos_elo_avg",
+    "current_regular_matches",
+    "current_regular_wins",
+    "current_regular_losses",
+    "current_regular_draws",
+    "current_regular_match_win_rate",
+    "current_regular_game_win_rate",
+    "current_regular_game_differential",
+    "current_regular_game_diff_per_match",
+    "current_last_3_match_score",
+    "current_last_5_match_score",
+    "current_sos_opponent_elo_avg",
+    "current_sos_opponent_match_win_rate",
+    "current_sos_adjusted_match_win_rate",
+    "lagged_roster_available",
+    "lagged_roster_size",
+    "lagged_roster_role_coverage",
+    "lagged_roster_returning_count",
+    "lagged_roster_continuity",
+    "lagged_roster_avg_experience_seasons"
+  ],
+  "identifier_columns": [
+    "feature_version",
+    "snapshot_id",
+    "season",
+    "prediction_type",
+    "completed_week",
+    "feature_cutoff_date",
+    "team_id",
+    "team_name",
+    "organization_id",
+    "franchise_slot_id"
+  ],
+  "target_columns": [
+    "target_available",
+    "champion"
+  ],
+  "roster": {
+    "temporal_start_column": null,
+    "temporal_end_column": null,
+    "current_roster_features_enabled": false,
+    "excluded_identity_review_rows": 32,
+    "lagged_roster_entity_count": 118,
+    "lagged_feature_row_coverage": 0.925756,
+    "current_temporal_feature_row_coverage": 0.0
+  },
+  "feature_missingness": [
+    {
+      "feature": "current_roster_avg_experience_seasons_asof",
+      "missing_count": 1091,
+      "missing_pct": 100.0
+    },
+    {
+      "feature": "current_roster_retained_count_asof",
+      "missing_count": 1091,
+      "missing_pct": 100.0
+    },
+    {
+      "feature": "current_roster_retained_share_asof",
+      "missing_count": 1091,
+      "missing_pct": 100.0
+    },
+    {
+      "feature": "current_roster_role_coverage_asof",
+      "missing_count": 1091,
+      "missing_pct": 100.0
+    },
+    {
+      "feature": "current_roster_size_asof",
+      "missing_count": 1091,
+      "missing_pct": 100.0
+    },
+    {
+      "feature": "prior_season_playoff_match_win_rate",
+      "missing_count": 371,
+      "missing_pct": 34.01
+    },
+    {
+      "feature": "lagged_roster_continuity",
+      "missing_count": 163,
+      "missing_pct": 14.94
+    },
+    {
+      "feature": "lagged_roster_returning_count",
+      "missing_count": 163,
+      "missing_pct": 14.94
+    },
+    {
+      "feature": "current_last_3_match_score",
+      "missing_count": 119,
+      "missing_pct": 10.91
+    },
+    {
+      "feature": "current_last_5_match_score",
+      "missing_count": 119,
+      "missing_pct": 10.91
+    },
+    {
+      "feature": "current_regular_game_diff_per_match",
+      "missing_count": 119,
+      "missing_pct": 10.91
+    },
+    {
+      "feature": "current_regular_game_win_rate",
+      "missing_count": 119,
+      "missing_pct": 10.91
+    },
+    {
+      "feature": "current_regular_match_win_rate",
+      "missing_count": 119,
+      "missing_pct": 10.91
+    },
+    {
+      "feature": "current_sos_adjusted_match_win_rate",
+      "missing_count": 119,
+      "missing_pct": 10.91
+    },
+    {
+      "feature": "current_sos_opponent_elo_avg",
+      "missing_count": 119,
+      "missing_pct": 10.91
+    },
+    {
+      "feature": "current_sos_opponent_match_win_rate",
+      "missing_count": 119,
+      "missing_pct": 10.91
+    },
+    {
+      "feature": "lagged_roster_avg_experience_seasons",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "lagged_roster_role_coverage",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "lagged_roster_size",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "prior_3_season_game_diff_per_match",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "prior_3_season_game_win_rate",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "prior_3_season_match_win_rate",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "prior_3_season_sos_elo_avg",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "prior_season_regular_game_diff_per_match",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "prior_season_regular_game_win_rate",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "prior_season_regular_match_win_rate",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "prior_season_sos_adjusted_match_win_rate",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "prior_season_sos_opponent_match_win_rate",
+      "missing_count": 81,
+      "missing_pct": 7.42
+    },
+    {
+      "feature": "current_regular_draws",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "current_regular_game_differential",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "current_regular_losses",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "current_regular_matches",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "current_regular_wins",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "current_roster_temporal_available",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "elo_change_since_preseason",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "elo_expected_vs_league_average",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "elo_rank",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "elo_rating",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "lagged_roster_available",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "prior_3_season_matches",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "prior_season_playoff_matches",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    {
+      "feature": "prior_season_regular_matches",
+      "missing_count": 0,
+      "missing_pct": 0.0
+    }
+  ]
+}

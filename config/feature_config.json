@@ -1,0 +1,25 @@
+{
+  "feature_version": "1.0",
+  "elo": {
+    "initial_rating": 1500.0,
+    "k_factor": 24.0,
+    "scale": 400.0,
+    "season_carryover": 0.75
+  },
+  "team_performance": {
+    "prior_seasons_window": 3,
+    "form_windows": [3, 5]
+  },
+  "roster": {
+    "start_date_columns": ["valid_from", "announced_at"],
+    "end_date_columns": ["valid_to"],
+    "current_roster_requires_temporal_column": true,
+    "exclude_identity_review_required": true
+  },
+  "baseline": {
+    "evaluation_start_season": 8,
+    "elo_probability_scale": 400.0,
+    "probability_tolerance": 1e-09
+  }
+}
+
