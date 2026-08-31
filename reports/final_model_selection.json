@@ -1,0 +1,134 @@
+{
+  "report_version": "1.0",
+  "model_version": "1.0",
+  "final_system": {
+    "match_probability_model": "match_logistic_calibrated",
+    "champion_probability_method": "monte_carlo_regular_season_and_playoffs",
+    "direct_champion_ranking_benchmark": "elo_strength"
+  },
+  "selection": {
+    "match_model_reason": "Kalibrasi Platt dipilih karena log loss dan ECE walk-forward lebih baik daripada probabilitas logistic mentah.",
+    "selected_match_metrics": {
+      "model_name": "match_logistic_calibrated",
+      "match_count": 736,
+      "log_loss": 0.632517,
+      "brier_score": 0.220528,
+      "roc_auc": 0.700663,
+      "accuracy": 0.661685,
+      "ece": 0.041555,
+      "calibration_intercept": 0.140238,
+      "calibration_slope": 1.051391
+    },
+    "match_candidates": [
+      {
+        "model_name": "match_logistic_calibrated",
+        "match_count": 736,
+        "log_loss": 0.632517,
+        "brier_score": 0.220528,
+        "roc_auc": 0.700663,
+        "accuracy": 0.661685,
+        "ece": 0.041555,
+        "calibration_intercept": 0.140238,
+        "calibration_slope": 1.051391
+      },
+      {
+        "model_name": "match_logistic_raw",
+        "match_count": 736,
+        "log_loss": 0.636386,
+        "brier_score": 0.221109,
+        "roc_auc": 0.701606,
+        "accuracy": 0.661685,
+        "ece": 0.051025,
+        "calibration_intercept": 0.138921,
+        "calibration_slope": 0.750056
+      }
+    ],
+    "direct_champion_reason": "Elo strength tetap menjadi benchmark ranking langsung karena memiliki multiclass log loss terbaik pada backtest champion.",
+    "direct_champion_candidates": [
+      {
+        "model_name": "elo_strength",
+        "snapshot_count": 93,
+        "mean_champion_probability": 0.196317,
+        "multiclass_log_loss": 1.681593,
+        "multiclass_brier_score": 0.749912,
+        "mean_champion_rank": 2.010753,
+        "mean_reciprocal_rank": 0.692413,
+        "top_1_accuracy": 0.494624,
+        "top_3_accuracy": 0.860215
+      },
+      {
+        "model_name": "snapshot_logistic_calibrated",
+        "snapshot_count": 93,
+        "mean_champion_probability": 0.23148,
+        "multiclass_log_loss": 1.732281,
+        "multiclass_brier_score": 0.804225,
+        "mean_champion_rank": 2.354839,
+        "mean_reciprocal_rank": 0.576907,
+        "top_1_accuracy": 0.322581,
+        "top_3_accuracy": 0.83871
+      },
+      {
+        "model_name": "snapshot_logistic_raw",
+        "snapshot_count": 93,
+        "mean_champion_probability": 0.302066,
+        "multiclass_log_loss": 2.261034,
+        "multiclass_brier_score": 0.998058,
+        "mean_champion_rank": 2.354839,
+        "mean_reciprocal_rank": 0.576907,
+        "top_1_accuracy": 0.322581,
+        "top_3_accuracy": 0.83871
+      },
+      {
+        "model_name": "uniform",
+        "snapshot_count": 93,
+        "mean_champion_probability": 0.116189,
+        "multiclass_log_loss": 2.154164,
+        "multiclass_brier_score": 0.883811,
+        "mean_champion_rank": 4.817204,
+        "mean_reciprocal_rank": 0.208124,
+        "top_1_accuracy": 0.0,
+        "top_3_accuracy": 0.0
+      }
+    ]
+  },
+  "training": {
+    "training_season_min": 4,
+    "training_season_max": 17,
+    "training_match_count": 992,
+    "augmented_training_row_count": 1984,
+    "calibration_seasons": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "calibration_observation_count": 1728,
+    "symmetric_training_augmentation": true
+  },
+  "feature_columns": [
+    "elo_rating_diff",
+    "current_matches_diff",
+    "current_match_win_rate_diff",
+    "current_game_win_rate_diff",
+    "current_game_diff_per_match_diff",
+    "current_form_3_diff",
+    "current_form_5_diff",
+    "current_sos_elo_avg_diff",
+    "prior_regular_match_win_rate_diff",
+    "prior_regular_game_win_rate_diff",
+    "prior_regular_game_diff_per_match_diff",
+    "prior_3_season_match_win_rate_diff",
+    "prior_3_season_game_win_rate_diff",
+    "prior_3_season_game_diff_per_match_diff",
+    "rest_days_diff"
+  ],
+  "data_guard": "Hasil S18 tidak digunakan untuk fitting; hasil tersebut hanya memperbarui fitur live sebelum simulasi pertandingan tersisa."
+}

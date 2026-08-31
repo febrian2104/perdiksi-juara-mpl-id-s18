@@ -1,0 +1,25 @@
+{
+  "simulation_version": "1.0",
+  "season": 18,
+  "iterations": 20000,
+  "random_seed": 180831,
+  "regular_season": {
+    "format": "double_round_robin_best_of_3",
+    "playoff_team_count": 6,
+    "ranking_order": [
+      "match_wins_desc",
+      "game_differential_desc",
+      "game_wins_desc",
+      "random_tiebreak"
+    ]
+  },
+  "playoffs": {
+    "format": "six_team_double_elimination",
+    "play_ins_best_of": 5,
+    "upper_semifinal_best_of": 5,
+    "lower_semifinal_best_of": 5,
+    "upper_final_best_of": 5,
+    "lower_final_best_of": 7,
+    "grand_final_best_of": 7
+  }
+}

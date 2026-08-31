@@ -1,0 +1,329 @@
+{
+  "report_version": "1.0",
+  "season": 18,
+  "observed_at": "2026-08-31",
+  "sources": {
+    "schedule_results": "https://id-mpl.com/id/schedule",
+    "rosters": [
+      "https://id-mpl.com/en/team/ae",
+      "https://id-mpl.com/en/team/btr",
+      "https://id-mpl.com/en/team/dewa",
+      "https://id-mpl.com/en/team/evos",
+      "https://id-mpl.com/en/team/geek",
+      "https://id-mpl.com/en/team/navi",
+      "https://id-mpl.com/en/team/onic",
+      "https://id-mpl.com/en/team/rrq",
+      "https://id-mpl.com/en/team/tlid"
+    ]
+  },
+  "scope": {
+    "team_count": 9,
+    "roster_member_count": 79,
+    "player_count": 59,
+    "staff_count": 20,
+    "scheduled_match_count": 72,
+    "completed_match_count": 24,
+    "remaining_match_count": 48,
+    "completed_through_week": 3
+  },
+  "temporal_policy": {
+    "roster_valid_from": "2026-08-31",
+    "basis": "Tanggal verifikasi halaman resmi, bukan tanggal pengumuman roster.",
+    "historical_use_guard": "Roster ini hanya boleh dipakai pada snapshot dengan cutoff >= valid_from."
+  },
+  "blocking_issue_count": 0,
+  "checks": [
+    {
+      "check_id": "nine_expected_teams",
+      "status": "pass",
+      "count": 9
+    },
+    {
+      "check_id": "schedule_team_coverage",
+      "status": "pass",
+      "count": 9
+    },
+    {
+      "check_id": "roster_team_coverage",
+      "status": "pass",
+      "count": 9
+    },
+    {
+      "check_id": "double_round_robin_match_count",
+      "status": "pass",
+      "count": 72
+    },
+    {
+      "check_id": "each_pair_plays_twice",
+      "status": "pass",
+      "count": 36
+    },
+    {
+      "check_id": "each_team_plays_sixteen",
+      "status": "pass",
+      "count": 16
+    },
+    {
+      "check_id": "unique_official_match_ids",
+      "status": "pass",
+      "count": 0
+    },
+    {
+      "check_id": "completed_scores_valid",
+      "status": "pass",
+      "count": 24
+    },
+    {
+      "check_id": "no_future_results",
+      "status": "pass",
+      "count": 0
+    },
+    {
+      "check_id": "unique_team_nickname_rows",
+      "status": "pass",
+      "count": 0
+    }
+  ],
+  "completed_results": [
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-14T08:00:00.000Z",
+      "match_id": "S18-RS-1036",
+      "team_a_id": "EVOS",
+      "team_b_id": "RRQ",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "EVOS"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-14T11:00:00.000Z",
+      "match_id": "S18-RS-1037",
+      "team_a_id": "NAVI",
+      "team_b_id": "AE",
+      "team_a_score": 0,
+      "team_b_score": 2,
+      "winner_team_id": "AE"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-15T07:00:00.000Z",
+      "match_id": "S18-RS-1038",
+      "team_a_id": "TLID",
+      "team_b_id": "GEEK",
+      "team_a_score": 2,
+      "team_b_score": 1,
+      "winner_team_id": "TLID"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-15T10:00:00.000Z",
+      "match_id": "S18-RS-1039",
+      "team_a_id": "DEWA",
+      "team_b_id": "RRQ",
+      "team_a_score": 1,
+      "team_b_score": 2,
+      "winner_team_id": "RRQ"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-15T13:00:00.000Z",
+      "match_id": "S18-RS-1040",
+      "team_a_id": "EVOS",
+      "team_b_id": "NAVI",
+      "team_a_score": 1,
+      "team_b_score": 2,
+      "winner_team_id": "NAVI"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-16T07:00:00.000Z",
+      "match_id": "S18-RS-1041",
+      "team_a_id": "TLID",
+      "team_b_id": "DEWA",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "TLID"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-16T10:00:00.000Z",
+      "match_id": "S18-RS-1042",
+      "team_a_id": "BTR",
+      "team_b_id": "GEEK",
+      "team_a_score": 2,
+      "team_b_score": 1,
+      "winner_team_id": "BTR"
+    },
+    {
+      "week": 1,
+      "scheduled_at": "2026-08-16T13:00:00.000Z",
+      "match_id": "S18-RS-1043",
+      "team_a_id": "AE",
+      "team_b_id": "ONIC",
+      "team_a_score": 0,
+      "team_b_score": 2,
+      "winner_team_id": "ONIC"
+    },
+    {
+      "week": 2,
+      "scheduled_at": "2026-08-21T08:00:00.000Z",
+      "match_id": "S18-RS-1044",
+      "team_a_id": "TLID",
+      "team_b_id": "NAVI",
+      "team_a_score": 0,
+      "team_b_score": 2,
+      "winner_team_id": "NAVI"
+    },
+    {
+      "week": 2,
+      "scheduled_at": "2026-08-21T11:00:00.000Z",
+      "match_id": "S18-RS-1045",
+      "team_a_id": "BTR",
+      "team_b_id": "DEWA",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "BTR"
+    },
+    {
+      "week": 2,
+      "scheduled_at": "2026-08-22T07:00:00.000Z",
+      "match_id": "S18-RS-1046",
+      "team_a_id": "TLID",
+      "team_b_id": "EVOS",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "TLID"
+    },
+    {
+      "week": 2,
+      "scheduled_at": "2026-08-22T10:00:00.000Z",
+      "match_id": "S18-RS-1047",
+      "team_a_id": "NAVI",
+      "team_b_id": "GEEK",
+      "team_a_score": 2,
+      "team_b_score": 1,
+      "winner_team_id": "NAVI"
+    },
+    {
+      "week": 2,
+      "scheduled_at": "2026-08-22T13:00:00.000Z",
+      "match_id": "S18-RS-1048",
+      "team_a_id": "ONIC",
+      "team_b_id": "RRQ",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "ONIC"
+    },
+    {
+      "week": 2,
+      "scheduled_at": "2026-08-23T07:00:00.000Z",
+      "match_id": "S18-RS-1049",
+      "team_a_id": "DEWA",
+      "team_b_id": "AE",
+      "team_a_score": 0,
+      "team_b_score": 2,
+      "winner_team_id": "AE"
+    },
+    {
+      "week": 2,
+      "scheduled_at": "2026-08-23T10:00:00.000Z",
+      "match_id": "S18-RS-1050",
+      "team_a_id": "ONIC",
+      "team_b_id": "BTR",
+      "team_a_score": 1,
+      "team_b_score": 2,
+      "winner_team_id": "BTR"
+    },
+    {
+      "week": 2,
+      "scheduled_at": "2026-08-23T13:00:00.000Z",
+      "match_id": "S18-RS-1051",
+      "team_a_id": "GEEK",
+      "team_b_id": "EVOS",
+      "team_a_score": 0,
+      "team_b_score": 2,
+      "winner_team_id": "EVOS"
+    },
+    {
+      "week": 3,
+      "scheduled_at": "2026-08-28T08:00:00.000Z",
+      "match_id": "S18-RS-1052",
+      "team_a_id": "BTR",
+      "team_b_id": "NAVI",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "BTR"
+    },
+    {
+      "week": 3,
+      "scheduled_at": "2026-08-28T11:00:00.000Z",
+      "match_id": "S18-RS-1053",
+      "team_a_id": "DEWA",
+      "team_b_id": "GEEK",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "DEWA"
+    },
+    {
+      "week": 3,
+      "scheduled_at": "2026-08-29T07:00:00.000Z",
+      "match_id": "S18-RS-1054",
+      "team_a_id": "TLID",
+      "team_b_id": "ONIC",
+      "team_a_score": 2,
+      "team_b_score": 1,
+      "winner_team_id": "TLID"
+    },
+    {
+      "week": 3,
+      "scheduled_at": "2026-08-29T10:00:00.000Z",
+      "match_id": "S18-RS-1055",
+      "team_a_id": "AE",
+      "team_b_id": "EVOS",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "AE"
+    },
+    {
+      "week": 3,
+      "scheduled_at": "2026-08-29T13:00:00.000Z",
+      "match_id": "S18-RS-1056",
+      "team_a_id": "RRQ",
+      "team_b_id": "BTR",
+      "team_a_score": 1,
+      "team_b_score": 2,
+      "winner_team_id": "BTR"
+    },
+    {
+      "week": 3,
+      "scheduled_at": "2026-08-30T07:00:00.000Z",
+      "match_id": "S18-RS-1057",
+      "team_a_id": "NAVI",
+      "team_b_id": "ONIC",
+      "team_a_score": 2,
+      "team_b_score": 0,
+      "winner_team_id": "NAVI"
+    },
+    {
+      "week": 3,
+      "scheduled_at": "2026-08-30T10:00:00.000Z",
+      "match_id": "S18-RS-1058",
+      "team_a_id": "GEEK",
+      "team_b_id": "RRQ",
+      "team_a_score": 0,
+      "team_b_score": 2,
+      "winner_team_id": "RRQ"
+    },
+    {
+      "week": 3,
+      "scheduled_at": "2026-08-30T13:00:00.000Z",
+      "match_id": "S18-RS-1059",
+      "team_a_id": "TLID",
+      "team_b_id": "AE",
+      "team_a_score": 2,
+      "team_b_score": 1,
+      "winner_team_id": "TLID"
+    }
+  ]
+}

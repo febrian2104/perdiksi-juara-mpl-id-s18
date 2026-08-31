@@ -1,4 +1,4 @@
-.PHONY: setup audit semantic-audit normalize canonicalize quality-report eda prediction-policy analysis build-features baseline modeling build-match-features backtest models test lint format dashboard
+.PHONY: setup audit semantic-audit normalize canonicalize quality-report eda prediction-policy analysis build-features baseline modeling build-match-features backtest models sync-season18 train-final simulate-season18 season18 test lint format dashboard
 
 setup:
 	python3 -m venv .venv
@@ -44,6 +44,17 @@ backtest:
 	.venv/bin/mpl-predictor backtest
 
 models: modeling build-match-features backtest
+
+sync-season18:
+	.venv/bin/mpl-predictor sync-season18
+
+train-final:
+	.venv/bin/mpl-predictor train-final
+
+simulate-season18:
+	.venv/bin/mpl-predictor simulate-season18
+
+season18: sync-season18 train-final simulate-season18
 
 test:
 	.venv/bin/python -m pytest

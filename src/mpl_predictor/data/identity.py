@@ -23,6 +23,11 @@ def _player_id(key: str) -> str:
     return f"PLY_{readable}_{digest}"
 
 
+def canonical_player_id(key: str) -> str:
+    """Return the deterministic player ID used by the canonical dataset."""
+    return _player_id(key)
+
+
 def load_team_identity_rules(path: Path) -> pd.DataFrame:
     rules = pd.read_csv(path, dtype=str, keep_default_na=False)
     rules["start_season"] = pd.to_numeric(rules["start_season"], errors="raise").astype(int)

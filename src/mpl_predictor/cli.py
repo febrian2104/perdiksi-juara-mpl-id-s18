@@ -1,6 +1,7 @@
 import argparse
 import json
 from collections.abc import Sequence
+from datetime import date
 from pathlib import Path
 
 import pandas as pd
@@ -25,6 +26,15 @@ from mpl_predictor.data.identity import (
     write_identity_summary,
 )
 from mpl_predictor.data.normalization import normalize_tables, write_normalized_tables
+from mpl_predictor.data.season18 import (
+    TEAM_METADATA,
+    build_season18_report,
+    build_season18_teams,
+    fetch_official_html,
+    parse_roster_html,
+    parse_schedule_html,
+    write_season18_outputs,
+)
 from mpl_predictor.data.semantic_audit import (
     SemanticAuditReport,
     audit_semantics,
@@ -50,6 +60,18 @@ from mpl_predictor.models.evaluation import (
     build_model_evaluation_report,
     write_evaluation_figures,
     write_model_outputs,
+)
+from mpl_predictor.models.final import (
+    build_final_model_report,
+    load_final_match_model,
+    train_final_match_model,
+    write_final_model_outputs,
+)
+from mpl_predictor.models.simulation import (
+    build_season18_match_probabilities,
+    load_simulation_config,
+    simulate_season18,
+    write_simulation_outputs,
 )
 from mpl_predictor.models.walk_forward import (
     load_model_config,
@@ -164,6 +186,41 @@ def _build_parser() -> argparse.ArgumentParser:
     backtest_parser.add_argument("--report", type=Path, default=None)
     backtest_parser.add_argument("--figures-dir", type=Path, default=None)
     backtest_parser.add_argument("--no-figures", action="store_true")
+
+    season18_parser = subparsers.add_parser(
+        "sync-season18", help="Fetch and validate official Season 18 teams, rosters, and schedule."
+    )
+    season18_parser.add_argument(
+        "--observed-at",
+        type=date.fromisoformat,
+        default=None,
+        help="Observation date in YYYY-MM-DD; defaults to today.",
+    )
+    season18_parser.add_argument("--player-aliases", type=Path, default=None)
+    season18_parser.add_argument("--output-dir", type=Path, default=None)
+    season18_parser.add_argument("--report", type=Path, default=None)
+
+    final_parser = subparsers.add_parser(
+        "train-final", help="Select and train the final calibrated match model."
+    )
+    final_parser.add_argument("--match-features", type=Path, default=None)
+    final_parser.add_argument("--config", type=Path, default=None)
+    final_parser.add_argument("--evaluation-report", type=Path, default=None)
+    final_parser.add_argument("--artifact", type=Path, default=None)
+    final_parser.add_argument("--report", type=Path, default=None)
+
+    simulation_parser = subparsers.add_parser(
+        "simulate-season18", help="Simulate the remaining S18 regular season and playoffs."
+    )
+    simulation_parser.add_argument("--canonical-dir", type=Path, default=None)
+    simulation_parser.add_argument("--season18-dir", type=Path, default=None)
+    simulation_parser.add_argument("--feature-config", type=Path, default=None)
+    simulation_parser.add_argument("--model-artifact", type=Path, default=None)
+    simulation_parser.add_argument("--config", type=Path, default=None)
+    simulation_parser.add_argument("--iterations", type=int, default=None)
+    simulation_parser.add_argument("--simulation-output", type=Path, default=None)
+    simulation_parser.add_argument("--match-output", type=Path, default=None)
+    simulation_parser.add_argument("--report", type=Path, default=None)
     return parser
 
 
@@ -476,6 +533,145 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Champion predictions: {champion_output_path}")
         print(f"Report: {report_path}")
         return int(report["probability_validation"]["invalid_probability_sum_count"] > 0)
+
+    if args.command == "sync-season18":
+        paths = get_project_paths()
+        observed_at = args.observed_at or date.today()
+        alias_path = (
+            args.player_aliases or paths.root / "config" / "player_alias_overrides.csv"
+        ).resolve()
+        output_dir = (args.output_dir or paths.data / "season18").resolve()
+        report_path = (args.report or paths.reports / "season18_data_report.json").resolve()
+        player_aliases = load_player_alias_overrides(alias_path)
+        teams = build_season18_teams()
+        schedule = parse_schedule_html(
+            fetch_official_html("https://id-mpl.com/id/schedule"), observed_at
+        )
+        roster_frames = []
+        for team_id, metadata in TEAM_METADATA.items():
+            url = f"https://id-mpl.com/en/team/{metadata['slug']}"
+            roster_frames.append(
+                parse_roster_html(fetch_official_html(url), team_id, observed_at, player_aliases)
+            )
+        rosters = pd.concat(roster_frames, ignore_index=True)
+        report = build_season18_report(teams, rosters, schedule, observed_at)
+        write_season18_outputs(teams, rosters, schedule, report, output_dir, report_path)
+        print("MPL Indonesia Season 18 official data integration")
+        print(f"Observation date: {observed_at.isoformat()}")
+        print(f"Teams / roster members: {len(teams)} / {len(rosters)}")
+        print(
+            "Completed / scheduled matches: "
+            f"{report['scope']['completed_match_count']} / "
+            f"{report['scope']['remaining_match_count']}"
+        )
+        print(f"Blocking issues: {report['blocking_issue_count']}")
+        print(f"Data: {output_dir}")
+        print(f"Report: {report_path}")
+        return int(report["blocking_issue_count"] > 0)
+
+    if args.command == "train-final":
+        paths = get_project_paths()
+        match_path = (
+            args.match_features or paths.processed / "features" / "match_features.parquet"
+        ).resolve()
+        config_path = (args.config or paths.root / "config" / "model_config.json").resolve()
+        evaluation_path = (
+            args.evaluation_report or paths.reports / "model_evaluation_report.json"
+        ).resolve()
+        artifact_path = (args.artifact or paths.artifacts / "final_match_model.joblib").resolve()
+        report_path = (args.report or paths.reports / "final_model_selection.json").resolve()
+        match_features = pd.read_parquet(match_path)
+        model_config = load_model_config(config_path)
+        with evaluation_path.open(encoding="utf-8") as handle:
+            evaluation_report = json.load(handle)
+        artifact = train_final_match_model(match_features, model_config)
+        report = build_final_model_report(artifact, evaluation_report)
+        write_final_model_outputs(artifact, report, artifact_path, report_path)
+        print("MPL final model selection and training")
+        print(f"Selected model: {artifact['model_name']}")
+        print(
+            "Training seasons / matches: "
+            f"S{artifact['training_season_min']}-S{artifact['training_season_max']} / "
+            f"{artifact['training_match_count']}"
+        )
+        print(f"Calibration observations: {artifact['calibration_observation_count']}")
+        print(f"Artifact: {artifact_path}")
+        print(f"Report: {report_path}")
+        return 0
+
+    if args.command == "simulate-season18":
+        paths = get_project_paths()
+        canonical_dir = (args.canonical_dir or paths.processed / "canonical").resolve()
+        season18_dir = (args.season18_dir or paths.data / "season18").resolve()
+        feature_config_path = (
+            args.feature_config or paths.root / "config" / "feature_config.json"
+        ).resolve()
+        artifact_path = (
+            args.model_artifact or paths.artifacts / "final_match_model.joblib"
+        ).resolve()
+        config_path = (args.config or paths.root / "config" / "simulation_config.json").resolve()
+        simulation_path = (
+            args.simulation_output
+            or paths.processed / "predictions" / "season18_simulation.parquet"
+        ).resolve()
+        match_output_path = (
+            args.match_output
+            or paths.processed / "predictions" / "season18_match_probabilities.parquet"
+        ).resolve()
+        report_path = (args.report or paths.reports / "season18_simulation_report.json").resolve()
+        tables = load_canonical_tables(canonical_dir)
+        teams = pd.read_csv(season18_dir / "teams.csv")
+        schedule = pd.read_csv(season18_dir / "schedule_results.csv")
+        schedule["scheduled_at"] = pd.to_datetime(schedule["scheduled_at"], utc=True).dt.tz_convert(
+            "Asia/Jakarta"
+        )
+        for column in ("team_a_score", "team_b_score"):
+            schedule[column] = pd.to_numeric(schedule[column], errors="coerce").astype("Int64")
+        feature_config = load_feature_config(feature_config_path)
+        artifact = load_final_match_model(artifact_path)
+        simulation_config = load_simulation_config(config_path)
+        if args.iterations is not None:
+            if args.iterations <= 0:
+                parser.error("--iterations must be greater than zero")
+            simulation_config["iterations"] = args.iterations
+        match_probabilities, tracker, history = build_season18_match_probabilities(
+            tables, schedule, teams, feature_config, artifact
+        )
+        simulation, report = simulate_season18(
+            tables,
+            schedule,
+            teams,
+            match_probabilities,
+            tracker,
+            history,
+            artifact,
+            simulation_config,
+        )
+        write_simulation_outputs(
+            simulation,
+            match_probabilities,
+            report,
+            simulation_path,
+            match_output_path,
+            report_path,
+        )
+        leader = simulation.iloc[0]
+        print("MPL Indonesia Season 18 Monte Carlo simulation")
+        print(f"Iterations: {report['iterations']}")
+        print(
+            "Completed / simulated regular matches: "
+            f"{report['input_scope']['completed_match_count']} / "
+            f"{report['input_scope']['simulated_regular_match_count']}"
+        )
+        print(
+            f"Highest champion probability: {leader['team_name']} "
+            f"({leader['champion_probability']:.2%})"
+        )
+        print(f"Blocking issues: {report['validation']['blocking_issue_count']}")
+        print(f"Simulation: {simulation_path}")
+        print(f"Match probabilities: {match_output_path}")
+        print(f"Report: {report_path}")
+        return int(report["validation"]["blocking_issue_count"] > 0)
 
     parser.error(f"Unknown command: {args.command}")
     return 2

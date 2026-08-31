@@ -17,8 +17,10 @@ dashboard agar hasil eksperimen dapat direproduksi.
   dan baseline probabilitas sudah tersedia.
 - Model probabilitas kemenangan match, walk-forward backtest pramusim/mingguan, dan
   evaluasi kalibrasi sudah tersedia.
-- Pemilihan model final, simulasi, dan prediksi Season 18 merupakan tahap pengembangan
-  berikutnya.
+- Model final terkalibrasi sudah dilatih ulang pada Season 4-17.
+- Tim, roster bertanggal, jadwal, dan hasil resmi Season 18 sudah diintegrasikan dengan
+  snapshot 31 Agustus 2026.
+- Simulasi Monte Carlo regular season dan playoff Season 18 sudah tersedia.
 
 ## Menjalankan project
 
@@ -46,6 +48,9 @@ mpl-predictor build-features
 mpl-predictor baseline
 mpl-predictor build-match-features
 mpl-predictor backtest
+mpl-predictor sync-season18 --observed-at 2026-08-31
+mpl-predictor train-final
+mpl-predictor simulate-season18
 python -m pytest
 ruff check .
 streamlit run src/mpl_predictor/dashboard.py
@@ -61,6 +66,7 @@ make canonicalize
 make analysis
 make modeling
 make models
+make season18
 make test
 make lint
 make dashboard
@@ -72,6 +78,7 @@ make dashboard
 .
 ├── data/
 │   ├── mpl-season1/ ... mpl-season17/  # CSV historis asli
+│   ├── season18/                         # snapshot live tim, roster, jadwal, dan hasil
 │   ├── interim/normalized/              # tujuh tabel Parquet hasil normalisasi
 │   └── processed/
 │       ├── canonical/                   # tabel canonical tim, pemain, dan pertandingan
@@ -89,6 +96,9 @@ make dashboard
 │   ├── baseline_report.json              # evaluasi baseline uniform dan Elo
 │   ├── match_feature_report.json         # kualitas fitur pre-match
 │   ├── model_evaluation_report.json      # ranking, probabilitas, dan kalibrasi
+│   ├── final_model_selection.json        # keputusan dan cakupan training final
+│   ├── season18_data_report.json         # sumber, cutoff, dan validasi data live
+│   ├── season18_simulation_report.json   # asumsi dan probabilitas simulasi
 │   └── figures/                         # visualisasi hasil analisis
 ├── src/mpl_predictor/
 │   ├── analysis/                        # kualitas data, EDA, dan timing prediksi
@@ -165,9 +175,10 @@ Fitur yang tersedia meliputi:
 - fitur current-roster as-of yang otomatis aktif jika `valid_from` atau `announced_at`
   tersedia.
 
-Canonical roster saat ini belum mempunyai tanggal efektif. Karena itu enam fitur
-current-roster tetap nonaktif dan bernilai missing, bukan dianggap nol. Pipeline temporal
-sudah diuji dan akan mengaktifkannya setelah data bertanggal ditambahkan.
+Canonical roster historis Season 4-17 belum mempunyai tanggal efektif. Karena itu enam
+fitur current-roster pada backtest tetap nonaktif dan bernilai missing, bukan dianggap nol.
+Roster live Season 18 sudah mempunyai `valid_from=2026-08-31`, berdasarkan tanggal pertama
+halaman resmi diverifikasi. Tanggal ini sengaja tidak dimundurkan ke awal musim.
 
 Baseline terdiri dari probabilitas uniform dan probabilitas `elo_strength`. Evaluasi
 chronological Season 8-17 mencakup 93 snapshot. Dibanding uniform, Elo memperbaiki
@@ -194,8 +205,25 @@ memperbaiki log loss model match sekitar 0,61%.
 
 Temperature calibration memperbaiki log loss snapshot logistic dari 2,2610 menjadi
 1,7323 atau sekitar 23,39%. Namun Elo tetap lebih baik dengan log loss 1,6816, mean rank
-juara 2,01, top-1 49,46%, dan top-3 86,02%. Karena itu model logistic belum menggantikan
-Elo sebagai kandidat utama; keputusan final dilakukan bersama hasil simulasi berikutnya.
+juara 2,01, top-1 49,46%, dan top-3 86,02%. Karena itu Elo dipertahankan sebagai benchmark
+ranking langsung, sedangkan sistem final memakai model match terkalibrasi dan simulasi
+struktur kompetisi untuk menghasilkan probabilitas juara.
+
+## Model final dan simulasi Season 18
+
+`train-final` melatih logistic regression pada seluruh 992 pertandingan Season 4-17.
+Kalibrator Platt menggunakan 1.728 observasi prediksi out-of-fold Season 6-17, bukan
+prediksi in-sample. Hasil S18 tidak digunakan untuk fitting model.
+
+Snapshot data live 31 Agustus 2026 berisi 9 tim, 59 pemain, 20 staf, dan 72 jadwal regular
+season. Sebanyak 24 hasil sampai Week 3 dikunci sebagai hasil aktual; 48 pertandingan
+tersisa disimulasikan. Simulasi default menjalankan 20.000 iterasi dengan random seed tetap,
+top enam regular season, lalu bracket delapan seri yang mengikuti struktur Season 15-17.
+
+Probabilitas pertandingan tersisa dibekukan pada state data 31 Agustus 2026. Simulasi
+memperbarui klasemen pada setiap iterasi, tetapi belum memperbarui ulang fitur Elo/form di
+dalam iterasi. Roster S18 sudah terintegrasi secara temporal, namun belum menjadi kolom
+fitur model match final versi 1.
 
 ## Prinsip pengembangan
 
@@ -221,16 +249,18 @@ Elo sebagai kandidat utama; keputusan final dilakukan bersama hasil simulasi ber
 10. Definisi prediksi pramusim/mingguan dan cutoff historis. **Selesai.**
 11. Pembuatan snapshot feature table berdasarkan cutoff. **Selesai.**
 12. Feature engineering performa tim, Elo, dan strength of schedule. **Selesai.**
-13. Fitur roster lagged dan dukungan roster temporal. **Selesai; fitur current-roster
-    menunggu data waktu efektif.**
+13. Fitur roster lagged dan dukungan roster temporal. **Selesai; roster live S18 sudah
+    bertanggal, sedangkan roster historis masih menunggu waktu efektif.**
 14. Baseline probabilitas uniform dan Elo. **Selesai.**
 15. Model probabilitas kemenangan pertandingan. **Selesai.**
 16. Walk-forward backtesting pramusim dan per minggu. **Selesai.**
 17. Evaluasi ranking, probabilitas, dan kalibrasi. **Selesai.**
-18. Pemilihan serta training model final.
-19. Simulasi regular season dan playoff untuk probabilitas juara.
-20. Integrasi tim, roster bertanggal, jadwal, dan hasil Season 18.
-21. Prediksi pramusim Season 18.
-22. Pembaruan prediksi mingguan Season 18.
+18. Pemilihan serta training model final. **Selesai.**
+19. Integrasi tim, roster bertanggal, jadwal, dan hasil Season 18. **Selesai untuk snapshot
+    31 Agustus 2026.**
+20. Simulasi regular season dan playoff untuk probabilitas juara. **Selesai.**
+21. Rekonstruksi prediksi pramusim Season 18. **Opsional; memerlukan bukti timestamp roster
+    sebelum pertandingan pertama agar bebas leakage.**
+22. Pembaruan prediksi mingguan Season 18. **Pipeline siap; dijalankan setelah setiap week.**
 23. Explainability dan dashboard hasil prediksi.
 24. Otomatisasi test, training, pembaruan prediksi, dan dokumentasi.

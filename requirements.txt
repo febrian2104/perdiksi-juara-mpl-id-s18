@@ -1,4 +1,5 @@
 # Runtime dependencies for data processing, modeling, and the dashboard.
+beautifulsoup4==4.15.0
 duckdb==1.5.5
 joblib==1.5.3
 matplotlib==3.11.1
@@ -12,4 +13,3 @@ scikit-learn==1.9.0
 scipy==1.18.1
 seaborn==0.13.2
 streamlit==1.62.0
-
