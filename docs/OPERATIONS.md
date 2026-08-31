@@ -28,13 +28,15 @@ Untuk membuat snapshot retrospektif pada akhir tanggal tertentu tanpa memundurka
 roster, jalankan:
 
 ```bash
-make snapshot-season18 AS_OF=2026-08-21
-make update-predictions AS_OF=2026-08-21
+make snapshot-season18 AS_OF=2026-08-31
+make update-predictions AS_OF=2026-08-31
 make explain-season18
 ```
 
-Snapshot 21 Agustus memakai cutoff akhir hari WIB: 8 hasil Week 1 dan 2 hasil pada hari
-pertama Week 2. Roster yang baru pertama diverifikasi 31 Agustus tidak dimasukkan.
+Snapshot 31 Agustus memakai 24 hasil sampai Week 3 dan menyisakan 48 pertandingan. Roster
+yang pertama diverifikasi 31 Agustus tersedia pada snapshot ini. Snapshot retrospektif
+21 Agustus tetap tersedia di `data/season18/snapshots/2026-08-21` untuk audit cutoff
+parsial Week 2.
 
 Menjalankan lint, seluruh test, dan pemeriksaan file dokumentasi:
 

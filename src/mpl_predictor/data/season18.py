@@ -321,6 +321,28 @@ def build_season18_asof_snapshot(
     cutoff_date: date,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, dict[str, Any]]:
     """Reconstruct an end-of-day S18 snapshot without backdating unavailable roster data."""
+    source_observed_at = str(schedule["observed_at"].iloc[0])
+    source_observed_date = pd.to_datetime(source_observed_at, errors="raise").date()
+    if cutoff_date > source_observed_date:
+        raise ValueError(
+            "Snapshot cutoff cannot be later than the official source observation date: "
+            f"{cutoff_date.isoformat()} > {source_observed_date.isoformat()}."
+        )
+    retrospective = source_observed_date > cutoff_date
+    snapshot_basis = (
+        "retrospective_end_of_day_wib" if retrospective else "official_observation_date"
+    )
+    if retrospective:
+        source_limitation = (
+            "Snapshot direkonstruksi dari halaman resmi yang diamati pada "
+            f"{source_observed_date.isoformat()}, setelah cutoff {cutoff_date.isoformat()}; "
+            "bukan arsip halaman yang ditangkap tepat pada cutoff."
+        )
+    else:
+        source_limitation = (
+            "Halaman resmi diamati pada tanggal cutoff. Waktu pengamatan intrahari tidak "
+            "direkam; snapshot merepresentasikan data yang tersedia saat pengambilan."
+        )
     cutoff_end = pd.Timestamp(cutoff_date, tz="Asia/Jakarta") + pd.Timedelta(days=1)
     snapshot_schedule = schedule.copy()
     scheduled_at = pd.to_datetime(snapshot_schedule["scheduled_at"], utc=True).dt.tz_convert(
@@ -332,7 +354,7 @@ def build_season18_asof_snapshot(
         snapshot_schedule.loc[hidden, column] = pd.NA
     snapshot_schedule.loc[hidden, "status"] = "scheduled"
     snapshot_schedule["observed_at"] = cutoff_date.isoformat()
-    snapshot_schedule["snapshot_basis"] = "retrospective_end_of_day_wib"
+    snapshot_schedule["snapshot_basis"] = snapshot_basis
 
     snapshot_rosters = rosters.copy()
     for column in ("valid_from", "valid_to"):
@@ -353,7 +375,6 @@ def build_season18_asof_snapshot(
             completed_weeks.append(week)
         elif completed_count:
             partial_weeks.append(week)
-    source_observed_at = str(schedule["observed_at"].iloc[0])
     report = {
         "report_version": "1.0",
         "season": 18,
@@ -361,7 +382,7 @@ def build_season18_asof_snapshot(
         "cutoff_date": cutoff_date.isoformat(),
         "cutoff_interpretation": "End of day Asia/Jakarta (WIB).",
         "source_data_observed_at": source_observed_at,
-        "retrospective_reconstruction": True,
+        "retrospective_reconstruction": retrospective,
         "scope": {
             "team_count": len(teams),
             "schedule_match_count": len(snapshot_schedule),
@@ -377,10 +398,7 @@ def build_season18_asof_snapshot(
             "outcome_availability_assumption": (
                 "Skor final pada tanggal pertandingan dianggap tersedia pada akhir hari WIB."
             ),
-            "source_limitation": (
-                "Snapshot direkonstruksi dari halaman resmi yang diamati setelah cutoff, "
-                "bukan arsip halaman yang ditangkap tepat pada 21 Agustus."
-            ),
+            "source_limitation": source_limitation,
         },
         "completed_results": dataframe_records(
             snapshot_schedule.loc[

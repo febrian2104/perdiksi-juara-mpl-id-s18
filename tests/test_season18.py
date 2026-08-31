@@ -151,6 +151,22 @@ def test_august_21_snapshot_has_ten_results_and_no_backdated_roster() -> None:
     assert set(results.loc[results["week"].eq(2), "winner_team_id"]) == {"NAVI", "BTR"}
 
 
+def test_august_31_snapshot_has_week_three_and_verified_roster() -> None:
+    teams, rosters, schedule = _load_season18()
+    cutoff = date(2026, 8, 31)
+    _, snapshot_rosters, snapshot_schedule, report = build_season18_asof_snapshot(
+        teams, rosters, schedule, cutoff
+    )
+
+    assert snapshot_schedule["status"].eq("completed").sum() == 24
+    assert snapshot_schedule["status"].eq("scheduled").sum() == 48
+    assert len(snapshot_rosters) == 79
+    assert report["scope"]["completed_weeks"] == [1, 2, 3]
+    assert report["scope"]["partial_weeks"] == []
+    assert report["retrospective_reconstruction"] is False
+    assert snapshot_schedule["snapshot_basis"].eq("official_observation_date").all()
+
+
 @pytest.fixture(scope="module")
 def final_simulation_inputs():
     teams, _, schedule = _load_season18()
@@ -226,7 +242,8 @@ def test_explainability_and_dashboard_outputs_are_loadable(final_simulation_inpu
     assert set(dashboard_data["predictions"]["snapshot_id"]) == {
         "S18_PRE",
         "S18_W01",
-        "S18_D20260821",
+        "S18_W02",
+        "S18_W03",
     }
     sums = dashboard_data["predictions"].groupby("snapshot_id")["champion_probability"].sum()
     assert sums.sub(1.0).abs().lt(1e-9).all()

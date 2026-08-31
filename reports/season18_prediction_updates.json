@@ -3,7 +3,7 @@
   "season": 18,
   "method": "retrospective_as_of_reconstruction_and_weekly_update",
   "source_data_observed_at": "2026-08-31",
-  "requested_as_of": null,
+  "requested_as_of": "2026-08-31",
   "snapshot_count": 4,
   "preseason_snapshot_count": 1,
   "weekly_snapshot_count": 3,
