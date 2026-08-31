@@ -173,23 +173,37 @@ def _render_matches(data: dict[str, pd.DataFrame], snapshot_id: str) -> None:
         ["scheduled_at", "official_match_id"]
     )
     evaluated = snapshot_matches.loc[
-        snapshot_matches["status"].eq("completed")
-        & snapshot_matches["prediction_correct"].notna()
+        snapshot_matches["status"].eq("completed") & snapshot_matches["prediction_correct"].notna()
     ]
     correct_count = int(evaluated["prediction_correct"].sum())
     accuracy = correct_count / len(evaluated) if len(evaluated) else None
+    base_correct_count = int(evaluated["base_prediction_correct"].sum())
+    base_accuracy = base_correct_count / len(evaluated) if len(evaluated) else None
+    learned_result_count = int(snapshot_matches["online_learning_update_applied"].sum())
+    final_scale = (
+        float(snapshot_matches["online_learning_scale_after_update"].iloc[-1])
+        if not snapshot_matches.empty
+        else 1.0
+    )
 
     st.subheader("Prediksi dan akurasi pertandingan")
     first, second, third, fourth = st.columns(4)
     first.metric("Prediksi dievaluasi", len(evaluated))
     second.metric("Prediksi benar", correct_count)
     third.metric("Akurasi", _percent(accuracy) if accuracy is not None else "-")
-    fourth.metric("Hasil masuk state", len(evaluated))
+    fourth.metric("Hasil dipelajari", learned_result_count)
     st.caption(
         "Status akurasi membandingkan favorit pre-match dengan hasil aktual. Setelah hasil "
-        "tersedia, Elo dan form diperbarui untuk pertandingan berikutnya; koefisien model "
-        "final tidak dilatih ulang setiap week."
+        "tersedia, residual kesalahan melatih kalibrasi online dan hasil memperbarui Elo/form "
+        "untuk pertandingan berikutnya. Hasil pertandingan sendiri tidak pernah masuk ke "
+        "prediksi pre-match-nya."
     )
+    if base_accuracy is not None:
+        st.caption(
+            f"Akurasi base: {_percent(base_accuracy)} · akurasi adaptif: "
+            f"{_percent(accuracy)} · confidence scale terbaru: {final_scale:.3f}. "
+            "Koefisien model utama tetap dilatih ulang secara terpisah dan walk-forward."
+        )
 
     filter_options = ["Semua", "Selesai", "Akan datang"]
     selected_filter = st.radio(
@@ -217,7 +231,7 @@ def _render_matches(data: dict[str, pd.DataFrame], snapshot_id: str) -> None:
     )
     current["learning_label"] = current["result_update_status"].map(
         {
-            "incorporated_after_pre_match_prediction": "✅ Masuk Elo/form",
+            "incorporated_after_pre_match_prediction": "✅ Dipelajari setelah prediksi",
             "awaiting_result": "⏳ Menunggu hasil",
         }
     )
@@ -227,10 +241,12 @@ def _render_matches(data: dict[str, pd.DataFrame], snapshot_id: str) -> None:
             "scheduled_at",
             "team_a_id",
             "team_b_id",
+            "base_team_a_win_probability",
             "team_a_win_probability",
             "predicted_winner_team_id",
             "winner_team_id",
             "accuracy_label",
+            "online_learning_observation_count",
             "learning_label",
         ]
     ].rename(
@@ -239,15 +255,17 @@ def _render_matches(data: dict[str, pd.DataFrame], snapshot_id: str) -> None:
             "scheduled_at": "Jadwal",
             "team_a_id": "Team A",
             "team_b_id": "Team B",
-            "team_a_win_probability": "P(Team A menang)",
-            "predicted_winner_team_id": "Prediksi model",
+            "base_team_a_win_probability": "P awal Team A",
+            "team_a_win_probability": "P adaptif Team A",
+            "predicted_winner_team_id": "Prediksi adaptif",
             "winner_team_id": "Hasil aktual",
             "accuracy_label": "Status akurasi",
+            "online_learning_observation_count": "Hasil terdahulu dipelajari",
             "learning_label": "Pembaruan state",
         }
     )
     st.dataframe(
-        table.style.format({"P(Team A menang)": "{:.2%}"}),
+        table.style.format({"P awal Team A": "{:.2%}", "P adaptif Team A": "{:.2%}"}),
         hide_index=True,
         width="stretch",
     )

@@ -20,8 +20,13 @@ from mpl_predictor.models.explainability import (
     build_match_explanations,
 )
 from mpl_predictor.models.final import predict_match_probability, train_final_match_model
+from mpl_predictor.models.online_learning import (
+    OnlineTemperatureLearner,
+    adapt_probability,
+)
 from mpl_predictor.models.season18_predictions import (
     build_match_accuracy_metrics,
+    build_online_learning_summary,
     build_season18_prediction_windows,
     schedule_as_of_window,
 )
@@ -195,6 +200,7 @@ def test_final_model_is_symmetric_and_s18_results_are_fixed(final_simulation_inp
 
     assert probability == pytest.approx(1.0 - reverse_probability, abs=1e-12)
     assert probabilities["team_a_win_probability"].between(0, 1).all()
+    assert probabilities["base_team_a_win_probability"].between(0, 1).all()
     assert (
         probabilities.loc[probabilities["status"].eq("completed"), "probability_basis"]
         .eq("historical_pre_match_state")
@@ -207,6 +213,22 @@ def test_final_model_is_symmetric_and_s18_results_are_fixed(final_simulation_inp
     )
     completed = probabilities.loc[probabilities["status"].eq("completed")]
     scheduled = probabilities.loc[probabilities["status"].eq("scheduled")]
+    assert completed["online_learning_observation_count"].tolist() == list(range(24))
+    assert scheduled["online_learning_observation_count"].eq(24).all()
+    assert completed["online_learning_update_applied"].all()
+    assert scheduled["online_learning_update_applied"].eq(False).all()
+    assert completed.iloc[0]["team_a_win_probability"] == pytest.approx(
+        completed.iloc[0]["base_team_a_win_probability"]
+    )
+    assert (
+        completed.iloc[1:]["team_a_win_probability"]
+        .ne(completed.iloc[1:]["base_team_a_win_probability"])
+        .any()
+    )
+    actual_team_a_win = completed["winner_team_id"].eq(completed["team_a_id"]).astype(float)
+    assert completed["online_learning_error_signal"].to_numpy() == pytest.approx(
+        (actual_team_a_win - completed["team_a_win_probability"]).to_numpy()
+    )
     expected_correct = completed["predicted_winner_team_id"].eq(completed["winner_team_id"])
     pd.testing.assert_series_equal(
         completed["prediction_correct"].astype(bool),
@@ -214,9 +236,7 @@ def test_final_model_is_symmetric_and_s18_results_are_fixed(final_simulation_inp
         check_names=False,
     )
     assert set(completed["accuracy_status"]) == {"correct", "incorrect"}
-    assert completed["result_update_status"].eq(
-        "incorporated_after_pre_match_prediction"
-    ).all()
+    assert completed["result_update_status"].eq("incorporated_after_pre_match_prediction").all()
     assert scheduled["prediction_correct"].isna().all()
     assert scheduled["accuracy_status"].eq("pending_result").all()
     assert scheduled["result_update_status"].eq("awaiting_result").all()
@@ -228,6 +248,73 @@ def test_final_model_is_symmetric_and_s18_results_are_fixed(final_simulation_inp
     assert accuracy["match_accuracy"] == pytest.approx(expected_correct.mean())
     assert 0 <= accuracy["brier_score"] <= 1
     assert accuracy["log_loss"] > 0
+
+    learning = build_online_learning_summary(probabilities)
+    assert learning["enabled"] is True
+    assert learning["update_count"] == 24
+    assert learning["final_observation_count"] == 24
+    assert 0.5 <= learning["final_confidence_scale"] <= 2.0
+    assert learning["adaptive_prequential_metrics"] == accuracy
+
+
+def test_online_learning_is_symmetric_and_uses_prediction_error() -> None:
+    learner = OnlineTemperatureLearner.from_config(
+        {
+            "enabled": True,
+            "learning_rate": 0.05,
+            "l2_regularization": 0.05,
+            "minimum_scale": 0.5,
+            "maximum_scale": 2.0,
+        }
+    )
+    probability = learner.predict(0.8)
+    initial_scale = learner.scale
+    learner.update(0.8, 0.0)
+
+    assert probability == pytest.approx(0.8)
+    assert learner.observation_count == 1
+    assert learner.scale < initial_scale
+    assert adapt_probability(0.8, learner.scale) == pytest.approx(
+        1.0 - adapt_probability(0.2, learner.scale)
+    )
+
+
+def test_match_outcome_is_learned_only_after_its_own_prediction(
+    final_simulation_inputs,
+) -> None:
+    tables, teams, schedule, artifact, original, _, _ = final_simulation_inputs
+    feature_config = load_feature_config(PROJECT_ROOT / "config" / "feature_config.json")
+    completed = schedule.loc[schedule["status"].eq("completed")].sort_values(
+        ["scheduled_at", "official_match_id"]
+    )
+    changed_match = completed.iloc[-1]
+    changed_schedule = schedule.copy()
+    changed_index = changed_match.name
+    team_a_won = changed_match["winner_team_id"] == changed_match["team_a_id"]
+    changed_schedule.loc[changed_index, "winner_team_id"] = (
+        changed_match["team_b_id"] if team_a_won else changed_match["team_a_id"]
+    )
+    changed_schedule.loc[changed_index, "winner_side"] = "team_b" if team_a_won else "team_a"
+    changed_schedule.loc[changed_index, ["team_a_score", "team_b_score"]] = (
+        [0, 2] if team_a_won else [2, 0]
+    )
+
+    changed, _, _ = build_season18_match_probabilities(
+        tables, changed_schedule, teams, feature_config, artifact
+    )
+    match_id = changed_match["official_match_id"]
+    original_row = original.loc[original["official_match_id"].eq(match_id)].iloc[0]
+    changed_row = changed.loc[changed["official_match_id"].eq(match_id)].iloc[0]
+
+    assert changed_row["base_team_a_win_probability"] == pytest.approx(
+        original_row["base_team_a_win_probability"]
+    )
+    assert changed_row["team_a_win_probability"] == pytest.approx(
+        original_row["team_a_win_probability"]
+    )
+    assert changed_row["online_learning_scale_after_update"] != pytest.approx(
+        original_row["online_learning_scale_after_update"]
+    )
 
 
 def test_season18_simulation_is_reproducible_and_normalized(final_simulation_inputs) -> None:
@@ -264,9 +351,16 @@ def test_explainability_and_dashboard_outputs_are_loadable(final_simulation_inpu
     assert local.groupby("match_id")["contribution_rank"].min().eq(1).all()
     assert missing == []
     assert {
+        "base_team_a_win_probability",
+        "base_prediction_correct",
         "prediction_correct",
         "accuracy_status",
         "result_update_status",
+        "online_learning_observation_count",
+        "online_learning_error_signal",
+        "online_learning_scale",
+        "online_learning_scale_after_update",
+        "online_learning_update_applied",
     }.issubset(dashboard_data["matches"].columns)
     assert set(dashboard_data["predictions"]["snapshot_id"]) == {
         "S18_PRE",

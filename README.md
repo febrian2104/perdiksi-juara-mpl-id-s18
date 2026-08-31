@@ -228,7 +228,20 @@ struktur kompetisi untuk menghasilkan probabilitas juara.
 
 `train-final` melatih logistic regression pada seluruh 992 pertandingan Season 4-17.
 Kalibrator Platt menggunakan 1.728 observasi prediksi out-of-fold Season 6-17, bukan
-prediksi in-sample. Hasil S18 tidak digunakan untuk fitting model.
+prediksi in-sample. Hasil S18 tidak mengubah koefisien logistic utama, tetapi hasil live
+yang sudah tersedia melatih koreksi confidence online yang kecil dan teregularisasi.
+
+Untuk setiap pertandingan S18, pipeline menyimpan probabilitas model dasar, menghitung
+prediksi adaptif, lalu baru membaca hasil aktual. Residual `aktual - probabilitas` digunakan
+untuk memperbarui confidence scale dan hasilnya juga memperbarui Elo, form, rekor, serta
+strength of schedule. Karena urutannya predict-then-update, sebuah hasil tidak dapat
+memengaruhi prediksi pertandingan itu sendiri. Setiap baris menyimpan jumlah hasil terdahulu,
+error signal, scale sebelum/sesudah update, dan status update untuk audit.
+
+Lapisan online juga diuji ulang pada 736 prediksi walk-forward Season 8-17 dengan state
+di-reset pada awal setiap season. Accuracy tetap 66,17%, sedangkan Brier score turun dari
+0,220528 menjadi 0,220427 dan log loss turun dari 0,632517 menjadi 0,632215. Perbaikannya
+kecil, sehingga lapisan ini hanya mengoreksi confidence dan tidak menggantikan model utama.
 
 Snapshot data live 31 Agustus 2026 berisi 9 tim, 59 pemain, 20 staf, dan 72 jadwal regular
 season. Sebanyak 24 hasil sampai Week 3 dikunci sebagai hasil aktual; 48 pertandingan
@@ -272,8 +285,11 @@ dan Monte Carlo; kontribusi tersebut tidak boleh dibaca sebagai hubungan sebab-a
 
 Tab Pertandingan mengevaluasi favorit pre-match terhadap pemenang aktual dengan status
 `Benar`, `Salah`, atau `Belum dimainkan`. Hasil yang sudah selesai dimasukkan setelah
-prediksi pre-match untuk memperbarui Elo dan form pertandingan berikutnya. Koefisien model
-final tidak dilatih ulang setiap week; training ulang penuh tetap menjadi proses terpisah.
+prediksi pre-match untuk melatih kalibrasi online serta memperbarui Elo dan form pertandingan
+berikutnya. Dashboard membandingkan probabilitas dasar dan adaptif, jumlah hasil terdahulu
+yang sudah dipelajari, serta confidence scale terbaru. Koefisien model final tidak dilatih
+ulang setiap week; training ulang penuh tetap menjadi proses terpisah dan harus lolos
+walk-forward backtest.
 
 Dashboard dijalankan dengan `make dashboard`. Panduan update, training ulang, verifikasi,
 dan contoh penjadwalan lokal tersedia di `docs/OPERATIONS.md`.
@@ -330,3 +346,6 @@ menambahkan folder `src` ke import path sebelum memuat dashboard, sehingga packa
     GitHub Actions.**
 25. Fondasi lintas season dan format playoff deklaratif. **Selesai; season baru wajib
     mempunyai config format terkonfirmasi dan adapter data terverifikasi.**
+26. Pembelajaran online dari residual prediksi pertandingan. **Selesai; update berlangsung
+    setelah prediksi, teregularisasi, tercatat per pertandingan, dan tidak memakai hasil
+    masa depan.**

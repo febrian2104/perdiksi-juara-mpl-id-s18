@@ -10,6 +10,14 @@
     "prior_seasons_window": 3,
     "form_windows": [3, 5]
   },
+  "online_learning": {
+    "enabled": true,
+    "method": "regularized_logit_temperature",
+    "learning_rate": 0.05,
+    "l2_regularization": 0.05,
+    "minimum_scale": 0.5,
+    "maximum_scale": 2.0
+  },
   "roster": {
     "start_date_columns": ["valid_from", "announced_at"],
     "end_date_columns": ["valid_to"],
@@ -22,4 +30,3 @@
     "probability_tolerance": 1e-09
   }
 }
-

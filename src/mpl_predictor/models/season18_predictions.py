@@ -129,12 +129,16 @@ def schedule_as_of_window(schedule: pd.DataFrame, window: pd.Series) -> pd.DataF
     return result
 
 
-def build_match_accuracy_metrics(probabilities: pd.DataFrame) -> dict[str, Any]:
+def build_match_accuracy_metrics(
+    probabilities: pd.DataFrame,
+    probability_column: str = "team_a_win_probability",
+    correct_column: str = "prediction_correct",
+) -> dict[str, Any]:
     """Evaluate only completed matches using their leakage-safe pre-match probabilities."""
     evaluated = probabilities.loc[
         probabilities["status"].eq("completed")
         & probabilities["winner_team_id"].notna()
-        & probabilities["prediction_correct"].notna()
+        & probabilities[correct_column].notna()
     ].copy()
     if evaluated.empty:
         return {
@@ -146,8 +150,8 @@ def build_match_accuracy_metrics(probabilities: pd.DataFrame) -> dict[str, Any]:
             "log_loss": None,
         }
     actual_team_a_win = evaluated["winner_team_id"].eq(evaluated["team_a_id"]).astype(float)
-    probability = evaluated["team_a_win_probability"].astype(float).clip(1e-12, 1.0 - 1e-12)
-    correct_count = int(evaluated["prediction_correct"].sum())
+    probability = evaluated[probability_column].astype(float).clip(1e-12, 1.0 - 1e-12)
+    correct_count = int(evaluated[correct_column].sum())
     return {
         "evaluated_match_count": len(evaluated),
         "correct_prediction_count": correct_count,
@@ -160,6 +164,44 @@ def build_match_accuracy_metrics(probabilities: pd.DataFrame) -> dict[str, Any]:
                 + (1.0 - actual_team_a_win) * np.log(1.0 - probability)
             )
         ),
+    }
+
+
+def build_online_learning_summary(probabilities: pd.DataFrame) -> dict[str, Any]:
+    """Compare the frozen base model with past-only adaptive live predictions."""
+    adaptive = build_match_accuracy_metrics(probabilities)
+    base = build_match_accuracy_metrics(
+        probabilities,
+        probability_column="base_team_a_win_probability",
+        correct_column="base_prediction_correct",
+    )
+    ordered = probabilities.sort_values(["scheduled_at", "official_match_id"])
+    update_count = int(probabilities["online_learning_update_applied"].sum())
+    return {
+        "enabled": bool(probabilities["online_learning_method"].ne("disabled").any()),
+        "method": str(probabilities["online_learning_method"].iloc[0]),
+        "update_count": update_count,
+        "final_observation_count": update_count,
+        "final_confidence_scale": float(ordered["online_learning_scale_after_update"].iloc[-1]),
+        "base_prequential_metrics": base,
+        "adaptive_prequential_metrics": adaptive,
+        "adaptive_minus_base": {
+            "accuracy": (
+                adaptive["match_accuracy"] - base["match_accuracy"]
+                if adaptive["match_accuracy"] is not None
+                else None
+            ),
+            "brier_score": (
+                adaptive["brier_score"] - base["brier_score"]
+                if adaptive["brier_score"] is not None
+                else None
+            ),
+            "log_loss": (
+                adaptive["log_loss"] - base["log_loss"]
+                if adaptive["log_loss"] is not None
+                else None
+            ),
+        },
     }
 
 
@@ -198,6 +240,7 @@ def build_live_prediction_history(
             simulation_config,
         )
         accuracy_metrics = build_match_accuracy_metrics(probabilities)
+        online_learning = build_online_learning_summary(probabilities)
         cutoff = pd.Timestamp(window["feature_cutoff_date"])
         roster_available = rosters.loc[
             rosters["member_type"].eq("player")
@@ -236,6 +279,7 @@ def build_live_prediction_history(
                 "leader_champion_probability": float(leader["champion_probability"]),
                 "probability_sum": float(predictions["champion_probability"].sum()),
                 "match_accuracy": accuracy_metrics,
+                "online_learning": online_learning,
             }
         )
         latest_report = simulation_report
@@ -285,8 +329,14 @@ def build_live_prediction_history(
                 "current_match_and_game_record",
                 "recent_form",
                 "strength_of_schedule_state",
+                "regularized_online_confidence_calibration",
             ],
             "update_timing": "Hasil dimasukkan hanya setelah probabilitas pre-match dihitung.",
+            "prediction_error_training": (
+                "Residual aktual-minus-probabilitas memperbarui confidence scale kecil yang "
+                "teregularisasi; prediksi match berikutnya memakai scale terbaru."
+            ),
+            "online_calibration_updated_after_each_result": True,
             "model_coefficients_retrained_each_week": False,
             "full_retraining_policy": (
                 "Dijalankan terpisah setelah data target dinyatakan cukup/final dan tetap "

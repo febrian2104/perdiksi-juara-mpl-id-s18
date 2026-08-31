@@ -22,9 +22,12 @@
       "elo_rating",
       "current_match_and_game_record",
       "recent_form",
-      "strength_of_schedule_state"
+      "strength_of_schedule_state",
+      "regularized_online_confidence_calibration"
     ],
     "update_timing": "Hasil dimasukkan hanya setelah probabilitas pre-match dihitung.",
+    "prediction_error_training": "Residual aktual-minus-probabilitas memperbarui confidence scale kecil yang teregularisasi; prediksi match berikutnya memakai scale terbaru.",
+    "online_calibration_updated_after_each_result": true,
     "model_coefficients_retrained_each_week": false,
     "full_retraining_policy": "Dijalankan terpisah setelah data target dinyatakan cukup/final dan tetap divalidasi secara walk-forward."
   },
@@ -54,6 +57,34 @@
         "match_accuracy": null,
         "brier_score": null,
         "log_loss": null
+      },
+      "online_learning": {
+        "enabled": true,
+        "method": "regularized_logit_temperature",
+        "update_count": 0,
+        "final_observation_count": 0,
+        "final_confidence_scale": 1.0,
+        "base_prequential_metrics": {
+          "evaluated_match_count": 0,
+          "correct_prediction_count": 0,
+          "incorrect_prediction_count": 0,
+          "match_accuracy": null,
+          "brier_score": null,
+          "log_loss": null
+        },
+        "adaptive_prequential_metrics": {
+          "evaluated_match_count": 0,
+          "correct_prediction_count": 0,
+          "incorrect_prediction_count": 0,
+          "match_accuracy": null,
+          "brier_score": null,
+          "log_loss": null
+        },
+        "adaptive_minus_base": {
+          "accuracy": null,
+          "brier_score": null,
+          "log_loss": null
+        }
       }
     },
     {
@@ -68,15 +99,43 @@
       "completed_match_count": 8,
       "simulated_regular_match_count": 64,
       "leader_team_id": "ONIC",
-      "leader_champion_probability": 0.633,
+      "leader_champion_probability": 0.62955,
       "probability_sum": 1.0,
       "match_accuracy": {
         "evaluated_match_count": 8,
         "correct_prediction_count": 6,
         "incorrect_prediction_count": 2,
         "match_accuracy": 0.75,
-        "brier_score": 0.2437335386223214,
-        "log_loss": 0.6814882037201374
+        "brier_score": 0.24446576079793336,
+        "log_loss": 0.6830705458393338
+      },
+      "online_learning": {
+        "enabled": true,
+        "method": "regularized_logit_temperature",
+        "update_count": 8,
+        "final_observation_count": 8,
+        "final_confidence_scale": 0.9920746776521947,
+        "base_prequential_metrics": {
+          "evaluated_match_count": 8,
+          "correct_prediction_count": 6,
+          "incorrect_prediction_count": 2,
+          "match_accuracy": 0.75,
+          "brier_score": 0.2437335386223214,
+          "log_loss": 0.6814882037201374
+        },
+        "adaptive_prequential_metrics": {
+          "evaluated_match_count": 8,
+          "correct_prediction_count": 6,
+          "incorrect_prediction_count": 2,
+          "match_accuracy": 0.75,
+          "brier_score": 0.24446576079793336,
+          "log_loss": 0.6830705458393338
+        },
+        "adaptive_minus_base": {
+          "accuracy": 0.0,
+          "brier_score": 0.000732222175611974,
+          "log_loss": 0.0015823421191963893
+        }
       }
     },
     {
@@ -91,15 +150,43 @@
       "completed_match_count": 16,
       "simulated_regular_match_count": 56,
       "leader_team_id": "ONIC",
-      "leader_champion_probability": 0.51505,
-      "probability_sum": 0.9999999999999999,
+      "leader_champion_probability": 0.5113,
+      "probability_sum": 1.0,
       "match_accuracy": {
         "evaluated_match_count": 16,
         "correct_prediction_count": 12,
         "incorrect_prediction_count": 4,
         "match_accuracy": 0.75,
-        "brier_score": 0.23864797159627457,
-        "log_loss": 0.6683197818726465
+        "brier_score": 0.23930785626397372,
+        "log_loss": 0.6697689283944932
+      },
+      "online_learning": {
+        "enabled": true,
+        "method": "regularized_logit_temperature",
+        "update_count": 16,
+        "final_observation_count": 16,
+        "final_confidence_scale": 0.9897093517567505,
+        "base_prequential_metrics": {
+          "evaluated_match_count": 16,
+          "correct_prediction_count": 12,
+          "incorrect_prediction_count": 4,
+          "match_accuracy": 0.75,
+          "brier_score": 0.23864797159627457,
+          "log_loss": 0.6683197818726465
+        },
+        "adaptive_prequential_metrics": {
+          "evaluated_match_count": 16,
+          "correct_prediction_count": 12,
+          "incorrect_prediction_count": 4,
+          "match_accuracy": 0.75,
+          "brier_score": 0.23930785626397372,
+          "log_loss": 0.6697689283944932
+        },
+        "adaptive_minus_base": {
+          "accuracy": 0.0,
+          "brier_score": 0.0006598846676991454,
+          "log_loss": 0.0014491465218466892
+        }
       }
     },
     {
@@ -114,15 +201,43 @@
       "completed_match_count": 24,
       "simulated_regular_match_count": 48,
       "leader_team_id": "ONIC",
-      "leader_champion_probability": 0.3795,
-      "probability_sum": 0.9999999999999999,
+      "leader_champion_probability": 0.36925,
+      "probability_sum": 1.0000000000000002,
       "match_accuracy": {
         "evaluated_match_count": 24,
         "correct_prediction_count": 15,
         "incorrect_prediction_count": 9,
         "match_accuracy": 0.625,
-        "brier_score": 0.2492792561822613,
-        "log_loss": 0.6898444420625044
+        "brier_score": 0.24964985713385626,
+        "log_loss": 0.6907223556453483
+      },
+      "online_learning": {
+        "enabled": true,
+        "method": "regularized_logit_temperature",
+        "update_count": 24,
+        "final_observation_count": 24,
+        "final_confidence_scale": 0.9582174478227865,
+        "base_prequential_metrics": {
+          "evaluated_match_count": 24,
+          "correct_prediction_count": 15,
+          "incorrect_prediction_count": 9,
+          "match_accuracy": 0.625,
+          "brier_score": 0.2492792561822613,
+          "log_loss": 0.6898444420625044
+        },
+        "adaptive_prequential_metrics": {
+          "evaluated_match_count": 24,
+          "correct_prediction_count": 15,
+          "incorrect_prediction_count": 9,
+          "match_accuracy": 0.625,
+          "brier_score": 0.24964985713385626,
+          "log_loss": 0.6907223556453483
+        },
+        "adaptive_minus_base": {
+          "accuracy": 0.0,
+          "brier_score": 0.0003706009515949682,
+          "log_loss": 0.0008779135828439477
+        }
       }
     }
   ]

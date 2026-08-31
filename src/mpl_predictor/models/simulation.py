@@ -12,6 +12,10 @@ from mpl_predictor.features.elo import EloTracker
 from mpl_predictor.features.matches import _difference, _team_state
 from mpl_predictor.features.snapshots import _append_match_history
 from mpl_predictor.models.final import predict_match_probability
+from mpl_predictor.models.online_learning import (
+    OnlineTemperatureLearner,
+    adapt_probability,
+)
 from mpl_predictor.models.tournament import (
     simulate_playoff_bracket,
     validate_simulation_config,
@@ -157,6 +161,13 @@ def build_season18_match_probabilities(
     tracker, history = _replay_historical_state(tables, feature_config, target_season)
     active_slots = teams["franchise_slot_id"].astype(str).tolist()
     tracker.regress_for_new_season(active_slots)
+    online_config = feature_config.get("online_learning", {})
+    learner = OnlineTemperatureLearner.from_config(online_config)
+    learning_method = (
+        str(online_config.get("method", "regularized_logit_temperature"))
+        if learner.enabled
+        else "disabled"
+    )
     records = []
     completed = schedule.loc[schedule["status"].eq("completed")].sort_values(
         ["scheduled_at", "official_match_id"]
@@ -170,13 +181,26 @@ def build_season18_match_probabilities(
             history,
             row.scheduled_at,
         )
-        probability = predict_match_probability(artifact, features)
+        base_probability = predict_match_probability(artifact, features)
+        probability = learner.predict(base_probability)
+        observations_before = learner.observation_count
+        scale_before = learner.scale
+        actual_team_a_win = float(str(row.winner_team_id) == str(row.team_a_id))
+        error_signal = actual_team_a_win - probability
+        scale_after = learner.update(base_probability, actual_team_a_win)
         records.append(
             {
                 **row._asdict(),
                 **features,
+                "base_team_a_win_probability": base_probability,
                 "team_a_win_probability": probability,
                 "probability_basis": "historical_pre_match_state",
+                "online_learning_method": learning_method,
+                "online_learning_observation_count": observations_before,
+                "online_learning_scale": scale_before,
+                "online_learning_error_signal": error_signal,
+                "online_learning_scale_after_update": scale_after,
+                "online_learning_update_applied": learner.enabled,
             }
         )
         _append_match_history(_live_match(row), tracker, history)
@@ -193,12 +217,20 @@ def build_season18_match_probabilities(
             history,
             row.scheduled_at,
         )
+        base_probability = predict_match_probability(artifact, features)
         records.append(
             {
                 **row._asdict(),
                 **features,
-                "team_a_win_probability": predict_match_probability(artifact, features),
+                "base_team_a_win_probability": base_probability,
+                "team_a_win_probability": learner.predict(base_probability),
                 "probability_basis": "current_as_of_state",
+                "online_learning_method": learning_method,
+                "online_learning_observation_count": learner.observation_count,
+                "online_learning_scale": learner.scale,
+                "online_learning_error_signal": np.nan,
+                "online_learning_scale_after_update": learner.scale,
+                "online_learning_update_applied": False,
             }
         )
     probabilities = pd.DataFrame.from_records(records).sort_values(
@@ -209,14 +241,22 @@ def build_season18_match_probabilities(
         probabilities["team_a_id"],
         probabilities["team_b_id"],
     )
-    evaluated = probabilities["status"].eq("completed") & probabilities[
-        "winner_team_id"
-    ].notna()
+    probabilities["base_predicted_winner_team_id"] = np.where(
+        probabilities["base_team_a_win_probability"].ge(0.5),
+        probabilities["team_a_id"],
+        probabilities["team_b_id"],
+    )
+    evaluated = probabilities["status"].eq("completed") & probabilities["winner_team_id"].notna()
     prediction_correct = pd.Series(pd.NA, index=probabilities.index, dtype="boolean")
-    prediction_correct.loc[evaluated] = probabilities.loc[
-        evaluated, "predicted_winner_team_id"
-    ].eq(probabilities.loc[evaluated, "winner_team_id"])
+    prediction_correct.loc[evaluated] = probabilities.loc[evaluated, "predicted_winner_team_id"].eq(
+        probabilities.loc[evaluated, "winner_team_id"]
+    )
     probabilities["prediction_correct"] = prediction_correct
+    base_prediction_correct = pd.Series(pd.NA, index=probabilities.index, dtype="boolean")
+    base_prediction_correct.loc[evaluated] = probabilities.loc[
+        evaluated, "base_predicted_winner_team_id"
+    ].eq(probabilities.loc[evaluated, "winner_team_id"])
+    probabilities["base_prediction_correct"] = base_prediction_correct
     probabilities["accuracy_status"] = "pending_result"
     probabilities.loc[evaluated & prediction_correct.fillna(False), "accuracy_status"] = "correct"
     probabilities.loc[evaluated & ~prediction_correct.fillna(False), "accuracy_status"] = (
@@ -307,6 +347,7 @@ def _pair_probability_matrix(
     tracker: EloTracker,
     history: dict[str, list[dict[str, Any]]],
     artifact: dict[str, Any],
+    online_learning_scale: float = 1.0,
 ) -> np.ndarray:
     matrix = np.full((len(team_ids), len(team_ids)), 0.5, dtype=float)
     for a in range(len(team_ids)):
@@ -318,7 +359,9 @@ def _pair_probability_matrix(
                 tracker,
                 history,
             )
-            probability = predict_match_probability(artifact, features)
+            probability = adapt_probability(
+                predict_match_probability(artifact, features), online_learning_scale
+            )
             matrix[a, b] = probability
             matrix[b, a] = 1.0 - probability
     return matrix
@@ -379,8 +422,34 @@ def simulate_season18(
         )
         for row in remaining.itertuples(index=False)
     ]
+    completed_probabilities = match_probabilities.loc[match_probabilities["status"].eq("completed")]
+    if not remaining.empty and "online_learning_scale" in remaining:
+        online_learning_scale = float(remaining["online_learning_scale"].iloc[0])
+    elif (
+        not completed_probabilities.empty
+        and "online_learning_scale_after_update" in completed_probabilities
+    ):
+        online_learning_scale = float(
+            completed_probabilities.sort_values(["scheduled_at", "official_match_id"])[
+                "online_learning_scale_after_update"
+            ].iloc[-1]
+        )
+    else:
+        online_learning_scale = 1.0
+    if not remaining.empty and "online_learning_method" in remaining:
+        online_learning_method = str(remaining["online_learning_method"].iloc[0])
+    elif not completed_probabilities.empty and "online_learning_method" in completed_probabilities:
+        online_learning_method = str(completed_probabilities["online_learning_method"].iloc[-1])
+    else:
+        online_learning_method = "disabled"
     pair_probabilities = _pair_probability_matrix(
-        team_ids, slot_lookup, target_season, tracker, history, artifact
+        team_ids,
+        slot_lookup,
+        target_season,
+        tracker,
+        history,
+        artifact,
+        online_learning_scale,
     )
     sweep_probability = _regular_sweep_probability(tables["matches"])
     team_count = len(team_ids)
@@ -411,9 +480,7 @@ def simulate_season18(
             game_losses[winner] += loser_score
             game_wins[loser] += loser_score
             game_losses[loser] += 2
-        seeds = _ranking_order(
-            ranking_rules, match_wins, match_losses, game_wins, game_losses, rng
-        )
+        seeds = _ranking_order(ranking_rules, match_wins, match_losses, game_wins, game_losses, rng)
         ranks = np.empty(team_count, dtype=np.int16)
         ranks[seeds] = np.arange(1, team_count + 1)
         rank_sum += ranks
@@ -470,9 +537,7 @@ def simulate_season18(
         },
         {
             "check_id": "playoff_probabilities_sum_to_configured_team_count",
-            "status": (
-                "pass" if abs(playoff_sum - playoff_team_count) < tolerance else "fail"
-            ),
+            "status": ("pass" if abs(playoff_sum - playoff_team_count) < tolerance else "fail"),
             "value": playoff_sum,
             "expected": playoff_team_count,
         },
@@ -520,14 +585,18 @@ def simulate_season18(
             "roster_usage": (
                 "Roster bertanggal terintegrasi, tetapi bukan kolom fitur model match final v1."
             ),
+            "online_learning": {
+                "method": online_learning_method,
+                "completed_result_count": int(schedule["status"].eq("completed").sum()),
+                "final_confidence_scale": online_learning_scale,
+                "timing": "Setiap outcome digunakan hanya setelah probabilitas pre-match.",
+            },
         },
         "validation": {
             "blocking_issue_count": sum(item["status"] == "fail" for item in checks),
             "checks": checks,
         },
-        "current_standings": dataframe_records(
-            _current_standings(schedule, teams, ranking_rules)
-        ),
+        "current_standings": dataframe_records(_current_standings(schedule, teams, ranking_rules)),
         "predictions": dataframe_records(result),
     }
     return result.reset_index(drop=True), report

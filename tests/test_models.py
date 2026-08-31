@@ -8,6 +8,7 @@ from mpl_predictor.features.matches import build_match_feature_report, build_mat
 from mpl_predictor.features.snapshots import load_feature_config
 from mpl_predictor.models.baseline import build_baseline_predictions
 from mpl_predictor.models.evaluation import build_model_evaluation_report, write_model_outputs
+from mpl_predictor.models.online_learning import backtest_online_learning
 from mpl_predictor.models.walk_forward import (
     load_model_config,
     walk_forward_champion_predictions,
@@ -81,6 +82,13 @@ def test_match_walk_forward_uses_only_past_seasons(walk_forward_outputs) -> None
         for fold in folds
     )
     assert max(fold["max_symmetry_error"] for fold in folds) < 1e-3
+
+    feature_config = load_feature_config(FEATURE_CONFIG_PATH)
+    online_report = backtest_online_learning(predictions, feature_config["online_learning"])
+    assert online_report["protocol"] == "season_reset_prequential_predict_then_update"
+    assert online_report["match_count"] == 736
+    assert online_report["historical_validation_passed"] is True
+    assert online_report["adaptive_metrics"]["log_loss"] < online_report["base_metrics"]["log_loss"]
 
 
 def test_champion_walk_forward_probabilities_and_calibration(walk_forward_outputs) -> None:

@@ -1350,5 +1350,188 @@
       }
     ]
   },
-  "selection_guard": "Hasil ini adalah backtest. Pemilihan model final dan simulasi playoff tetap dilakukan pada tahap berikutnya."
+  "selection_guard": "Hasil ini adalah backtest. Pemilihan model final dan simulasi playoff tetap dilakukan pada tahap berikutnya.",
+  "online_learning_backtest": {
+    "protocol": "season_reset_prequential_predict_then_update",
+    "base_model": "match_logistic_calibrated",
+    "season_min": 8,
+    "season_max": 17,
+    "match_count": 736,
+    "config": {
+      "enabled": true,
+      "method": "regularized_logit_temperature",
+      "learning_rate": 0.05,
+      "l2_regularization": 0.05,
+      "minimum_scale": 0.5,
+      "maximum_scale": 2.0
+    },
+    "base_metrics": {
+      "accuracy": 0.6616847826086957,
+      "brier_score": 0.2205279186409098,
+      "log_loss": 0.6325165211043032
+    },
+    "adaptive_metrics": {
+      "accuracy": 0.6616847826086957,
+      "brier_score": 0.22042693117830495,
+      "log_loss": 0.6322152554078773
+    },
+    "adaptive_minus_base": {
+      "accuracy": 0.0,
+      "brier_score": -0.00010098746260484015,
+      "log_loss": -0.00030126569642596746
+    },
+    "historical_validation_passed": true,
+    "metrics_by_season": [
+      {
+        "season": 8,
+        "match_count": 64,
+        "base": {
+          "accuracy": 0.671875,
+          "brier_score": 0.21582798470631787,
+          "log_loss": 0.6236427978384942
+        },
+        "adaptive": {
+          "accuracy": 0.671875,
+          "brier_score": 0.21678357930360337,
+          "log_loss": 0.6270313880867331
+        },
+        "final_confidence_scale": 0.9901595767041598
+      },
+      {
+        "season": 9,
+        "match_count": 64,
+        "base": {
+          "accuracy": 0.78125,
+          "brier_score": 0.19406043329185532,
+          "log_loss": 0.5771850582865623
+        },
+        "adaptive": {
+          "accuracy": 0.78125,
+          "brier_score": 0.19204599596904726,
+          "log_loss": 0.5728024215449803
+        },
+        "final_confidence_scale": 1.2225966138755826
+      },
+      {
+        "season": 10,
+        "match_count": 64,
+        "base": {
+          "accuracy": 0.59375,
+          "brier_score": 0.24806522220169192,
+          "log_loss": 0.6991378668901314
+        },
+        "adaptive": {
+          "accuracy": 0.59375,
+          "brier_score": 0.24544999539773496,
+          "log_loss": 0.6911850684842493
+        },
+        "final_confidence_scale": 0.7839910311556963
+      },
+      {
+        "season": 11,
+        "match_count": 64,
+        "base": {
+          "accuracy": 0.640625,
+          "brier_score": 0.206443591452699,
+          "log_loss": 0.5999458637067955
+        },
+        "adaptive": {
+          "accuracy": 0.640625,
+          "brier_score": 0.20567493366510167,
+          "log_loss": 0.5972910408015408
+        },
+        "final_confidence_scale": 1.155829968340904
+      },
+      {
+        "season": 12,
+        "match_count": 80,
+        "base": {
+          "accuracy": 0.6875,
+          "brier_score": 0.22015618417773491,
+          "log_loss": 0.632185429472747
+        },
+        "adaptive": {
+          "accuracy": 0.6875,
+          "brier_score": 0.2207810772513053,
+          "log_loss": 0.6342931729519667
+        },
+        "final_confidence_scale": 1.035146775769703
+      },
+      {
+        "season": 13,
+        "match_count": 80,
+        "base": {
+          "accuracy": 0.675,
+          "brier_score": 0.2285977508778178,
+          "log_loss": 0.6523469382153564
+        },
+        "adaptive": {
+          "accuracy": 0.675,
+          "brier_score": 0.22936149172480041,
+          "log_loss": 0.6539786840289097
+        },
+        "final_confidence_scale": 1.0236390228989882
+      },
+      {
+        "season": 14,
+        "match_count": 80,
+        "base": {
+          "accuracy": 0.65,
+          "brier_score": 0.2204505883841239,
+          "log_loss": 0.6310504548255905
+        },
+        "adaptive": {
+          "accuracy": 0.65,
+          "brier_score": 0.2209826701569269,
+          "log_loss": 0.6321697353494299
+        },
+        "final_confidence_scale": 1.0486236296977145
+      },
+      {
+        "season": 15,
+        "match_count": 80,
+        "base": {
+          "accuracy": 0.675,
+          "brier_score": 0.20293987202366415,
+          "log_loss": 0.5914988120476286
+        },
+        "adaptive": {
+          "accuracy": 0.675,
+          "brier_score": 0.20242529823344818,
+          "log_loss": 0.5898785548591123
+        },
+        "final_confidence_scale": 1.1562469046100128
+      },
+      {
+        "season": 16,
+        "match_count": 80,
+        "base": {
+          "accuracy": 0.65,
+          "brier_score": 0.2315561400814754,
+          "log_loss": 0.6543987185299646
+        },
+        "adaptive": {
+          "accuracy": 0.65,
+          "brier_score": 0.2321494462780386,
+          "log_loss": 0.6562258888966719
+        },
+        "final_confidence_scale": 0.9368658542361946
+      },
+      {
+        "season": 17,
+        "match_count": 80,
+        "base": {
+          "accuracy": 0.6,
+          "brier_score": 0.23363853062950257,
+          "log_loss": 0.6577423716907168
+        },
+        "adaptive": {
+          "accuracy": 0.6,
+          "brier_score": 0.2342641797274962,
+          "log_loss": 0.6591863785323765
+        },
+        "final_confidence_scale": 0.930880744798867
+      }
+    ]
+  }
 }

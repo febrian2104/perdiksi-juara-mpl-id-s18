@@ -111,6 +111,23 @@ streamlit_app.py
 `src/mpl_predictor/dashboard.py` juga menambahkan folder `src` ke import path sehingga
 deployment lama tidak gagal ketika belum mengganti konfigurasi main file.
 
+## Pembelajaran dari kesalahan prediksi
+
+Setiap pembaruan mingguan menjalankan evaluasi secara kronologis. Pipeline menghitung
+probabilitas pre-match terlebih dahulu, kemudian hasil aktual memperbarui dua bagian:
+
+- state tim: Elo, rekor match/game, form, dan strength of schedule;
+- kalibrasi online: residual `aktual - probabilitas` memperbarui confidence scale
+  teregularisasi yang digunakan pertandingan berikutnya.
+
+Probabilitas model dasar tetap disimpan agar efek adaptasi dapat dibandingkan secara
+prequential. Parameter utama logistic regression tidak di-fit ulang dari sedikit hasil live;
+training ulang penuh tetap memakai `make train-final`, data historis yang sudah dicanonical,
+dan validasi walk-forward. Konfigurasi adaptasi berada di bagian `online_learning` pada
+`config/feature_config.json`. Command `make backtest` turut memvalidasi lapisan online pada
+fold historis dan menyimpan hasilnya di bagian `online_learning_backtest` dalam
+`reports/model_evaluation_report.json`.
+
 ## Keluaran utama
 
 - `data/season18/`: tim, riwayat roster bertanggal, jadwal, dan hasil resmi.
@@ -118,7 +135,8 @@ deployment lama tidak gagal ketika belum mengganti konfigurasi main file.
 - `data/processed/predictions/season18_snapshot_predictions.parquet`: riwayat pramusim dan
   mingguan.
 - `data/processed/predictions/season18_snapshot_match_probabilities.parquet`: probabilitas
-  match per snapshot, hasil aktual, status akurasi pre-match, dan status pembaruan state.
+  dasar/adaptif per match, hasil aktual, residual prediksi, confidence scale, status akurasi
+  pre-match, dan status pembaruan state.
 - `data/processed/predictions/season18_*explanations.parquet`: explainability dashboard.
 - `reports/season18_prediction_updates.json`: cutoff dan leakage guard tiap snapshot.
 - `reports/explainability_report.json`: metode serta batas interpretasi explainability.

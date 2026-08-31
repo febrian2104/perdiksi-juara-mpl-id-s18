@@ -77,6 +77,7 @@ from mpl_predictor.models.final import (
     train_final_match_model,
     write_final_model_outputs,
 )
+from mpl_predictor.models.online_learning import backtest_online_learning
 from mpl_predictor.models.season18_predictions import (
     build_live_prediction_history,
     load_live_season_tables,
@@ -198,6 +199,7 @@ def _build_parser() -> argparse.ArgumentParser:
     backtest_parser.add_argument("--snapshot-features", type=Path, default=None)
     backtest_parser.add_argument("--baselines", type=Path, default=None)
     backtest_parser.add_argument("--config", type=Path, default=None)
+    backtest_parser.add_argument("--feature-config", type=Path, default=None)
     backtest_parser.add_argument("--match-output", type=Path, default=None)
     backtest_parser.add_argument("--champion-output", type=Path, default=None)
     backtest_parser.add_argument("--report", type=Path, default=None)
@@ -573,6 +575,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.baselines or paths.processed / "predictions" / "baseline_predictions.parquet"
         ).resolve()
         config_path = (args.config or paths.root / "config" / "model_config.json").resolve()
+        feature_config_path = (
+            args.feature_config or paths.root / "config" / "feature_config.json"
+        ).resolve()
         match_output_path = (
             args.match_output
             or paths.processed / "predictions" / "match_walk_forward_predictions.parquet"
@@ -588,6 +593,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         snapshot_features = pd.read_parquet(snapshot_feature_path)
         baseline_predictions = pd.read_parquet(baseline_path)
         model_config = load_model_config(config_path)
+        feature_config = load_feature_config(feature_config_path)
         match_predictions, match_folds = walk_forward_match_predictions(
             match_features, model_config
         )
@@ -600,6 +606,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             match_folds,
             champion_folds,
             model_config,
+        )
+        report["online_learning_backtest"] = backtest_online_learning(
+            match_predictions, feature_config.get("online_learning", {})
         )
         write_model_outputs(
             match_predictions,
