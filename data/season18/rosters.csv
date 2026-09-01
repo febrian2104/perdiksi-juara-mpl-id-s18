@@ -1,80 +1,80 @@
 season,team_id,team_name,organization_id,franchise_slot_id,nickname,player_key_raw,player_key,player_id,role_raw,role,member_type,observed_at,valid_from,valid_to,temporal_basis,source_url
-18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Affan,affan,affan,PLY_AFFAN_1E7BB6DA,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
-18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Alexander,alexander,alexander,PLY_ALEXANDER_9F2A08FD,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
-18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Dalvin,dalvin,dalvin,PLY_DALVIN_50C332DA,Midlane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
-18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Dingarai,dingarai,dingarai,PLY_DINGARAI_2EFBD009,Gold Lane,gold_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
-18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Halim,halim,halim,PLY_HALIM_20AD246E,Midlane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
-18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Ivann,ivann,ivann,PLY_IVANN_E8CA2BB6,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
-18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Nino,nino,nino,PLY_NINO_5C60FE0D,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
-18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Reyy,reyy,reyy,PLY_REYY_B74DF208,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
-18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,STYX,styx,styx,PLY_STYX_4576AA0D,Asst. Coach,assistant_coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
-18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,xepher,xepher,xepher,PLY_XEPHER_B9470B85,Coach,coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
-18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,EMANN,emann,emannn,PLY_EMANNN_FBAE6570,Gold Lane,gold_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
-18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,FINN,finn,finn,PLY_FINN_E0E2087B,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
-18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,MIGUEL,miguel,miguel,PLY_MIGUEL_5EF68465,Gold Lane,gold_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
-18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,MORENOOO,morenooo,morenooo,PLY_MORENOOO_16D8CFB6,Mid Lane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
-18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,NNAEL,nnael,nnael,PLY_NNAEL_9B210BE0,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
-18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,SHOGUN,shogun,shogun,PLY_SHOGUN_083280EA,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
-18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,HER,her,her,PLY_HER_354CBFC8,Analyst,analyst,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
-18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,K DOT,kdot,kdot,PLY_KDOT_D1E1DB47,Coach,coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
-18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,RUBENHOOD,rubenhood,rubenhood,PLY_RUBENHOOD_89F1FBBF,Asst. Coach,assistant_coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
-18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,Hazle,hazle,hazle,PLY_HAZLE_AE7BC599,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
-18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,ITOSHI KESU,itoshikesu,itoshikesu,PLY_ITOSHIKESU_CD38D36D,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
-18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,KAYN,kayn,kayn,PLY_KAYN_89A836F3,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
-18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,MAYBEEE,maybeee,maybeee,PLY_MAYBEEE_3D6079E4,Gold Lane,gold_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
-18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,OCTA,octa,octa,PLY_OCTA_8BD7F200,Mid Lane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
-18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,QINN,qinn,qinn,PLY_QINN_35C9EAEA,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
-18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,RUL GOOD,rulgood,rulgood,PLY_RULGOOD_9042E792,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
-18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,COACH RIGHT,coachright,coachright,PLY_COACHRIGHT_04E12956,Coach,coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
-18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,LAUFEYSON,laufeyson,laufeyson,PLY_LAUFEYSON_68A64DA1,Analyst,analyst,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
-18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,ALBERTTT,alberttt,alberttt,PLY_ALBERTTT_8CA416B3,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
-18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,ERLAN,erlan,erlan,PLY_ERLAN_14452AF9,Gold Lane,gold_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
-18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,MUEZZA,muezza,muezza,PLY_MUEZZA_D0E3502F,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
-18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,RENDYYY,rendyyy,rendyyy,PLY_RENDYYY_B965753A,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
-18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,Ryzaa,ryzaa,ryzaa,PLY_RYZAA_5533A2E9,Mid Lane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
-18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,VELL,vell,vell,PLY_VELL_ED58D5CA,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
-18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,ALDO,aldo,aldo,PLY_ALDO_7722ABA4,Coach,coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
-18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,BRAVO,bravo,bravo,PLY_BRAVO_F144A690,Analyst,analyst,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
-18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,ABOYY,aboyy,aboyy,PLY_ABOYY_DD685360,Mid Lane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
-18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,FEBRIII,febriii,febriii,PLY_FEBRIII_9E5CEBA3,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
-18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,Frenzyy,frenzyy,frenzyy,PLY_FRENZYY_AF8D2461,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
-18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,KENNZYYSKIE,kennzyyskie,kennzyyskie,PLY_KENNZYYSKIE_C1B628F8,Gold Lane,gold_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
-18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,MARCEL,marcel,marcel,PLY_MARCEL_1F7D8737,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
-18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,NAZARA,nazara,nazara,PLY_NAZARA_2D28F7CD,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
-18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,ERPANG,erpang,erpang,PLY_ERPANG_AA7DC1EE,Coach,coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
-18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,VIVY,vivy,vivy,PLY_VIVY_80AF6472,Asst. Coach,assistant_coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
-18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,ANDORYUUU,andoryuuu,andoryuuu,PLY_ANDORYUUU_57DE73D0,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
-18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,APRHO,aprho,aprho,PLY_APRHO_1E8753B8,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
-18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,FEBBB,febbb,febbb,PLY_FEBBB_B19120AF,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
-18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,JIIZEE,jiizee,jiizee,PLY_JIIZEE_396094EB,Mid Lane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
-18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,Joshuaa,joshuaa,joshuaa,PLY_JOSHUAA_91193163,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
-18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,KARSS,karss,karss,PLY_KARSS_A270C985,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
-18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,ZEONN,zeonn,zeonn,PLY_ZEONN_7282E656,Gold Lane,gold_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
-18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,HAN,han,han,PLY_HAN_C10688A2,Analyst,analyst,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
-18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,JACKLEE,jacklee,jacklee,PLY_JACKLEE_BE021B1B,Asst. Coach,assistant_coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
-18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,YNOT,ynot,ynot,PLY_YNOT_AED3AF5D,Coach,coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
-18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,KAIRI,kairi,kairi,PLY_KAIRI_00292A40,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
-18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,KELRA,kelra,kelra,PLY_KELRA_34B3215B,Gold Lane,gold_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
-18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,KIBOY,kiboy,kiboy,PLY_KIBOY_812BAD60,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
-18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,LUTPI,lutpi,lutpi,PLY_LUTPI_97817238,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
-18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,SANZ,sanz,sanz,PLY_SANZ_4DBDD712,Mid Lane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
-18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,SSAMUEL,ssamuel,ssamuel,PLY_SSAMUEL_13DF506B,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
-18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,CW,cw,cw,PLY_CW_57C0C455,Coach,coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
-18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,ARTHUR,arthur,arthur,PLY_ARTHUR_BEFA156F,Gold Lane,gold_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
-18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,CLAYYY,clayyy,clayyy,PLY_CLAYYY_E78CBAAF,Mid Lane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
-18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,DEMONKITE,demonkite,demonkite,PLY_DEMONKITE_D9CE0DAD,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
-18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,HABIL,habil,habil,PLY_HABIL_250133B6,Gold Lane,gold_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
-18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,HAJIRIN,hajirin,hajirin,PLY_HAJIRIN_CA23E06A,Mid Lane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
-18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,JOSHUA,joshua,joshua,PLY_JOSHUA_FC52FABE,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
-18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,SAID,said,said,PLY_SAID_FB46C79B,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
-18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,COACH ADI,coachadi,coachadi,PLY_COACHADI_A733F445,Coach,coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
-18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,COACH KAYLEB,coachkayleb,coachkayleb,PLY_COACHKAYLEB_C01CBD4F,Asst. Coach,assistant_coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
-18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,ANAVER,anaver,anaver,PLY_ANAVER_009BF36C,Mid Lane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
-18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,ARAN,aran,aran,PLY_ARAN_52189CE6,EXP Lane,exp_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
-18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,DRICHEL,drichel,drichel,PLY_DRICHEL_801A413E,Midlane,mid_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
-18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,KEVEN,keven,keven,PLY_KEVEN_31D3E000,Gold Lane,gold_lane,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
-18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,KEVIN,kevin,kevin,PLY_KEVIN_85F5E104,Jungle,jungler,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
-18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,LYONI,lyoni,lyoni,PLY_LYONI_11414EEA,Roam,roamer,player,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
-18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,FACEHUGGER,facehugger,facehugger,PLY_FACEHUGGER_FBBB7F99,Analyst,analyst,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
-18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,HONJAW,honjaw,honjaw,PLY_HONJAW_62655290,Coach,coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
-18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,PAHLEVI,pahlevi,pahlevi,PLY_PAHLEVI_7AE596DB,Asst. Coach,assistant_coach,staff,2026-08-31,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
+18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Affan,affan,affan,PLY_AFFAN_1E7BB6DA,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
+18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Alexander,alexander,alexander,PLY_ALEXANDER_9F2A08FD,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
+18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Dalvin,dalvin,dalvin,PLY_DALVIN_50C332DA,Midlane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
+18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Dingarai,dingarai,dingarai,PLY_DINGARAI_2EFBD009,Gold Lane,gold_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
+18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Halim,halim,halim,PLY_HALIM_20AD246E,Midlane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
+18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Ivann,ivann,ivann,PLY_IVANN_E8CA2BB6,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
+18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Nino,nino,nino,PLY_NINO_5C60FE0D,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
+18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,Reyy,reyy,reyy,PLY_REYY_B74DF208,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
+18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,STYX,styx,styx,PLY_STYX_4576AA0D,Asst. Coach,assistant_coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
+18,AE,Alter Ego Esports,AE,MPLID_SLOT_ALTER_EGO,xepher,xepher,xepher,PLY_XEPHER_B9470B85,Coach,coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/ae
+18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,EMANN,emann,emannn,PLY_EMANNN_FBAE6570,Gold Lane,gold_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
+18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,FINN,finn,finn,PLY_FINN_E0E2087B,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
+18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,MIGUEL,miguel,miguel,PLY_MIGUEL_5EF68465,Gold Lane,gold_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
+18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,MORENOOO,morenooo,morenooo,PLY_MORENOOO_16D8CFB6,Mid Lane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
+18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,NNAEL,nnael,nnael,PLY_NNAEL_9B210BE0,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
+18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,SHOGUN,shogun,shogun,PLY_SHOGUN_083280EA,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
+18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,HER,her,her,PLY_HER_354CBFC8,Analyst,analyst,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
+18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,K DOT,kdot,kdot,PLY_KDOT_D1E1DB47,Coach,coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
+18,BTR,Bigetron by Vitality,BTR,MPLID_SLOT_BIGETRON,RUBENHOOD,rubenhood,rubenhood,PLY_RUBENHOOD_89F1FBBF,Asst. Coach,assistant_coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/btr
+18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,Hazle,hazle,hazle,PLY_HAZLE_AE7BC599,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
+18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,ITOSHI KESU,itoshikesu,itoshikesu,PLY_ITOSHIKESU_CD38D36D,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
+18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,KAYN,kayn,kayn,PLY_KAYN_89A836F3,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
+18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,MAYBEEE,maybeee,maybeee,PLY_MAYBEEE_3D6079E4,Gold Lane,gold_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
+18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,OCTA,octa,octa,PLY_OCTA_8BD7F200,Mid Lane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
+18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,QINN,qinn,qinn,PLY_QINN_35C9EAEA,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
+18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,RUL GOOD,rulgood,rulgood,PLY_RULGOOD_9042E792,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
+18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,COACH RIGHT,coachright,coachright,PLY_COACHRIGHT_04E12956,Coach,coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
+18,DEWA,Dewa United Esports,DEWA,MPLID_SLOT_DEWA,LAUFEYSON,laufeyson,laufeyson,PLY_LAUFEYSON_68A64DA1,Analyst,analyst,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/dewa
+18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,ALBERTTT,alberttt,alberttt,PLY_ALBERTTT_8CA416B3,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
+18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,ERLAN,erlan,erlan,PLY_ERLAN_14452AF9,Gold Lane,gold_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
+18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,MUEZZA,muezza,muezza,PLY_MUEZZA_D0E3502F,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
+18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,RENDYYY,rendyyy,rendyyy,PLY_RENDYYY_B965753A,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
+18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,Ryzaa,ryzaa,ryzaa,PLY_RYZAA_5533A2E9,Mid Lane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
+18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,VELL,vell,vell,PLY_VELL_ED58D5CA,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
+18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,ALDO,aldo,aldo,PLY_ALDO_7722ABA4,Coach,coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
+18,EVOS,EVOS,EVOS,MPLID_SLOT_EVOS,BRAVO,bravo,bravo,PLY_BRAVO_F144A690,Analyst,analyst,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/evos
+18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,ABOYY,aboyy,aboyy,PLY_ABOYY_DD685360,Mid Lane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
+18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,FEBRIII,febriii,febriii,PLY_FEBRIII_9E5CEBA3,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
+18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,Frenzyy,frenzyy,frenzyy,PLY_FRENZYY_AF8D2461,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
+18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,KENNZYYSKIE,kennzyyskie,kennzyyskie,PLY_KENNZYYSKIE_C1B628F8,Gold Lane,gold_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
+18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,MARCEL,marcel,marcel,PLY_MARCEL_1F7D8737,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
+18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,NAZARA,nazara,nazara,PLY_NAZARA_2D28F7CD,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
+18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,ERPANG,erpang,erpang,PLY_ERPANG_AA7DC1EE,Coach,coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
+18,GEEK,Geek Fam,GEEK,MPLID_SLOT_GEEK,VIVY,vivy,vivy,PLY_VIVY_80AF6472,Asst. Coach,assistant_coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/geek
+18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,ANDORYUUU,andoryuuu,andoryuuu,PLY_ANDORYUUU_57DE73D0,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
+18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,APRHO,aprho,aprho,PLY_APRHO_1E8753B8,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
+18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,FEBBB,febbb,febbb,PLY_FEBBB_B19120AF,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
+18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,JIIZEE,jiizee,jiizee,PLY_JIIZEE_396094EB,Mid Lane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
+18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,Joshuaa,joshuaa,joshuaa,PLY_JOSHUAA_91193163,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
+18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,KARSS,karss,karss,PLY_KARSS_A270C985,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
+18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,ZEONN,zeonn,zeonn,PLY_ZEONN_7282E656,Gold Lane,gold_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
+18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,HAN,han,han,PLY_HAN_C10688A2,Analyst,analyst,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
+18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,JACKLEE,jacklee,jacklee,PLY_JACKLEE_BE021B1B,Asst. Coach,assistant_coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
+18,NAVI,NAVI,NAVI,MPLID_SLOT_AEROWOLF_REBELLION_NAVI,YNOT,ynot,ynot,PLY_YNOT_AED3AF5D,Coach,coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/navi
+18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,KAIRI,kairi,kairi,PLY_KAIRI_00292A40,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
+18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,KELRA,kelra,kelra,PLY_KELRA_34B3215B,Gold Lane,gold_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
+18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,KIBOY,kiboy,kiboy,PLY_KIBOY_812BAD60,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
+18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,LUTPI,lutpi,lutpi,PLY_LUTPI_97817238,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
+18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,SANZ,sanz,sanz,PLY_SANZ_4DBDD712,Mid Lane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
+18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,SSAMUEL,ssamuel,ssamuel,PLY_SSAMUEL_13DF506B,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
+18,ONIC,ONIC,ONIC,MPLID_SLOT_ONIC,CW,cw,cw,PLY_CW_57C0C455,Coach,coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/onic
+18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,ARTHUR,arthur,arthur,PLY_ARTHUR_BEFA156F,Gold Lane,gold_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
+18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,CLAYYY,clayyy,clayyy,PLY_CLAYYY_E78CBAAF,Mid Lane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
+18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,DEMONKITE,demonkite,demonkite,PLY_DEMONKITE_D9CE0DAD,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
+18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,HABIL,habil,habil,PLY_HABIL_250133B6,Gold Lane,gold_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
+18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,HAJIRIN,hajirin,hajirin,PLY_HAJIRIN_CA23E06A,Mid Lane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
+18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,JOSHUA,joshua,joshua,PLY_JOSHUA_FC52FABE,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
+18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,SAID,said,said,PLY_SAID_FB46C79B,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
+18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,COACH ADI,coachadi,coachadi,PLY_COACHADI_A733F445,Coach,coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
+18,RRQ,RRQ Hoshi,RRQ,MPLID_SLOT_RRQ,COACH KAYLEB,coachkayleb,coachkayleb,PLY_COACHKAYLEB_C01CBD4F,Asst. Coach,assistant_coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/rrq
+18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,ANAVER,anaver,anaver,PLY_ANAVER_009BF36C,Mid Lane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
+18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,ARAN,aran,aran,PLY_ARAN_52189CE6,EXP Lane,exp_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
+18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,DRICHEL,drichel,drichel,PLY_DRICHEL_801A413E,Midlane,mid_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
+18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,KEVEN,keven,keven,PLY_KEVEN_31D3E000,Gold Lane,gold_lane,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
+18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,KEVIN,kevin,kevin,PLY_KEVIN_85F5E104,Jungle,jungler,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
+18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,LYONI,lyoni,lyoni,PLY_LYONI_11414EEA,Roam,roamer,player,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
+18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,FACEHUGGER,facehugger,facehugger,PLY_FACEHUGGER_FBBB7F99,Analyst,analyst,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
+18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,HONJAW,honjaw,honjaw,PLY_HONJAW_62655290,Coach,coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
+18,TLID,Team Liquid ID,TLID,MPLID_SLOT_AURA_LIQUID,PAHLEVI,pahlevi,pahlevi,PLY_PAHLEVI_7AE596DB,Asst. Coach,assistant_coach,staff,2026-09-01,2026-08-31,,first_verified_on_official_page,https://id-mpl.com/en/team/tlid
