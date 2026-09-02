@@ -28,6 +28,47 @@ dashboard agar hasil eksperimen dapat direproduksi.
 - Inti simulasi sudah season-agnostic. Format playoff disimpan sebagai bracket deklaratif,
   divalidasi sebelum simulasi, dan tidak boleh diwariskan ke season baru tanpa konfirmasi.
 
+## Model yang digunakan
+
+Project memakai beberapa model dengan fungsi yang berbeda. Model produksi tidak diganti
+otomatis hanya karena satu challenger unggul pada satu metrik.
+
+| Model | Fungsi | Status |
+| --- | --- | --- |
+| Logistic Regression + Platt calibration | Probabilitas kemenangan pertandingan | **Model produksi** |
+| Random Forest raw/calibrated | Pembanding hubungan nonlinear | Challenger |
+| XGBoost CPU raw/calibrated | Pembanding gradient-boosted trees | Challenger |
+| Snapshot Logistic Regression + temperature calibration | Prediksi juara langsung per snapshot | Benchmark |
+| Elo strength | Baseline kekuatan dan ranking tim | Baseline |
+| Uniform probability | Baseline peluang sama untuk semua tim | Baseline |
+
+Sistem produksi saat ini memakai `match_logistic_calibrated`. Random Forest dan XGBoost
+hanya digunakan pada walk-forward backtest dan tab `Perbandingan model`; keduanya belum
+digunakan untuk menghasilkan prediksi juara Season 18. Project juga belum menggunakan
+ensemble. Detail konfigurasi model berada di `config/model_config.json`.
+
+## Metode yang digunakan
+
+| Tahap | Metode | Kegunaan |
+| --- | --- | --- |
+| Persiapan data | Audit struktural/semantik, normalisasi, dan canonical identity | Menyatukan tim, organisasi, franchise slot, dan pemain lintas season |
+| Feature engineering | 15 fitur selisih Team A-Team B | Mewakili Elo, win rate, game differential, form, strength of schedule, histori, dan rest days |
+| Missing value | Median imputation dan missing indicator | Menangani fitur historis yang tidak tersedia tanpa menganggapnya nol |
+| Scaling | StandardScaler untuk model logistic | Menyamakan skala fitur sebelum fitting |
+| Symmetry | Training augmentation dan rata-rata prediksi forward/reverse | Mencegah urutan Team A-Team B memengaruhi probabilitas |
+| Kalibrasi match | Platt calibration past-only | Membuat probabilitas kemenangan lebih sesuai frekuensi aktual |
+| Validasi | Expanding-window walk-forward per season | Menguji model hanya menggunakan season yang sudah terjadi |
+| Pembelajaran live | Regularized online logit-temperature learning | Belajar dari residual prediksi setelah hasil pertandingan tersedia |
+| State tim | Elo, form, rekor match/game, dan strength of schedule | Memperbarui kekuatan tim untuk pertandingan berikutnya |
+| Prediksi juara | Monte Carlo 20.000 iterasi | Menyimulasikan regular season, klasemen, playoff, final, dan juara |
+| Playoff | Bracket deklaratif enam tim dan konversi BO3/BO5/BO7 | Mengikuti struktur eliminasi tanpa hard-code khusus satu season |
+
+Metrik utama untuk memilih model adalah log loss dan Brier score karena sistem membutuhkan
+probabilitas yang baik untuk simulasi. Accuracy, ROC-AUC, ECE, dan kestabilan antar-season
+tetap dipakai sebagai guard tambahan. Semua update live mengikuti urutan `predict -> result
+-> update`, sehingga hasil pertandingan tidak dapat memengaruhi prediksi pre-match-nya
+sendiri.
+
 ## Menjalankan project
 
 Project menggunakan Python, virtual environment bawaan Python, dan `pip`.
@@ -41,30 +82,6 @@ python -m pip install --no-deps --editable .
 ```
 
 Sesudah environment terpasang dan aktif:
-
-```bash
-mpl-predictor audit
-mpl-predictor semantic-audit
-mpl-predictor normalize
-mpl-predictor canonicalize
-mpl-predictor quality-report
-mpl-predictor eda
-mpl-predictor prediction-policy
-mpl-predictor build-features
-mpl-predictor baseline
-mpl-predictor build-match-features
-mpl-predictor backtest
-mpl-predictor sync-season18 --observed-at 2026-08-31
-mpl-predictor train-final
-mpl-predictor update-season18-predictions
-mpl-predictor explain-season18
-python -m pytest
-ruff check .
-streamlit run src/mpl_predictor/dashboard.py
-```
-
-Perintah yang sama tersedia melalui `Makefile`:
-
 ```bash
 make audit
 make semantic-audit
@@ -275,57 +292,11 @@ menjadi estimasi peluang per game, kemudian dihitung kembali sesuai BO5 atau BO7
 demikian panjang seri sekarang memengaruhi probabilitas juara, tetapi konversi tersebut
 tetap merupakan asumsi model dan bukan probabilitas game yang dilatih secara terpisah.
 
-## Prediksi pramusim, mingguan, dan explainability
-
-Rekonstruksi pramusim memakai cutoff 13 Agustus 2026, daftar peserta/jadwal S18, seluruh
-hasil sampai S17, dan nol hasil S18. Karena roster pertama kali terverifikasi pada 31
-Agustus, rekonstruksi tidak menggunakan roster tersebut. Ini adalah rekonstruksi as-of,
-bukan bukti bahwa file prediksi benar-benar diterbitkan sebelum musim dimulai.
-
-Snapshot yang tersedia:
-
-- `S18_PRE`: 0 hasil tersedia, 72 regular-season match disimulasikan;
-- `S18_W01`: 8 hasil tersedia dan 64 match disimulasikan;
-- `S18_W02`: 16 hasil tersedia dan 56 match disimulasikan;
-- `S18_W03`: 24 hasil tersedia dan 48 match disimulasikan.
-
-Snapshot sumber resmi terbaru disimpan di `data/season18/snapshots/2026-08-31`. Snapshot
-retrospektif 21 Agustus tetap disimpan untuk audit prediksi parsial Week 2. Roster baru
-tersedia pada snapshot 31 Agustus karena tanggal verifikasi pertamanya adalah 31 Agustus.
-
-Semua snapshot memakai 20.000 iterasi dan probabilitas juaranya berjumlah 1. Explainability
-global menggunakan besaran koefisien logistic terstandardisasi. Explainability match
-menampilkan kontribusi terhadap raw forward logit sebelum side-symmetry, kalibrasi Platt,
-dan Monte Carlo; kontribusi tersebut tidak boleh dibaca sebagai hubungan sebab-akibat.
-
-Tab Pertandingan mengevaluasi favorit pre-match terhadap pemenang aktual dengan status
-`Benar`, `Salah`, atau `Belum dimainkan`. Hasil yang sudah selesai dimasukkan setelah
-prediksi pre-match untuk melatih kalibrasi online serta memperbarui Elo dan form pertandingan
-berikutnya. Dashboard membandingkan probabilitas dasar dan adaptif, jumlah hasil terdahulu
-yang sudah dipelajari, serta confidence scale terbaru. Koefisien model final tidak dilatih
-ulang setiap week; training ulang penuh tetap menjadi proses terpisah dan harus lolos
-walk-forward backtest.
-
-Dashboard dijalankan dengan `make dashboard`. Panduan update, training ulang, verifikasi,
-dan contoh penjadwalan lokal tersedia di `docs/OPERATIONS.md`.
-Tab `Perbandingan model` menampilkan hasil walk-forward Logistic Regression, Random Forest,
-dan XGBoost langsung dari laporan evaluasi yang telah dibuat saat training lokal.
-
-Untuk season setelah S18, gunakan template `config/season_template.json` dan ikuti
-`docs/ADDING_A_SEASON.md`. Command lama yang mengandung `season18` tetap dipertahankan agar
-deployment saat ini tidak rusak; command generik baru adalah `validate-season-config`,
-`simulate-season`, dan `update-season-predictions`.
-
-Untuk Streamlit Community Cloud, gunakan main file path `streamlit_app.py`. Entry point ini
-menambahkan folder `src` ke import path sebelum memuat dashboard, sehingga package
-`mpl_predictor` dapat ditemukan tanpa instalasi editable.
-
 ## Prinsip pengembangan
 
-1. Raw CSV tidak diedit langsung.
-2. Missing value tidak disamakan dengan angka nol.
-3. Season 4-17 menjadi data utama era franchise.
-4. Season 1-3 hanya digunakan untuk konteks historis atau eksperimen dengan bobot khusus.
-5. Semua fitur mempunyai cutoff waktu untuk mencegah data leakage.
-6. Validasi dilakukan berdasarkan urutan musim, bukan random split.
-7. Model sederhana dan terjelaskan menjadi baseline sebelum model kompleks.
+1. Missing value tidak disamakan dengan angka nol.
+2. Season 4-17 menjadi data utama era franchise.
+3. Season 1-3 hanya digunakan untuk konteks historis atau eksperimen dengan bobot khusus.
+4. Semua fitur mempunyai cutoff waktu untuk mencegah data leakage.
+5. Validasi dilakukan berdasarkan urutan musim, bukan random split.
+6. Model sederhana dan terjelaskan menjadi baseline sebelum model kompleks.
