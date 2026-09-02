@@ -622,6 +622,22 @@ def main(argv: Sequence[str] | None = None) -> int:
         print("MPL walk-forward model evaluation")
         print(f"Evaluated matches: {report['evaluation_scope']['match_count']}")
         print(f"Evaluated snapshots: {report['evaluation_scope']['snapshot_count']}")
+        print("Calibrated match-model challengers (lower log loss is better):")
+        for candidate in report["match_model"]["calibrated_challenger_comparison"]:
+            print(
+                f"  {candidate['log_loss_rank']}. {candidate['model_name']}: "
+                f"log_loss={candidate['log_loss']:.6f}, "
+                f"brier={candidate['brier_score']:.6f}, "
+                f"accuracy={candidate['accuracy']:.2%}"
+            )
+        print("Best probability variant per family:")
+        for candidate in report["match_model"]["best_variant_by_family"]:
+            print(
+                f"  {candidate['log_loss_rank']}. {candidate['model_name']}: "
+                f"log_loss={candidate['log_loss']:.6f}, "
+                f"brier={candidate['brier_score']:.6f}, "
+                f"accuracy={candidate['accuracy']:.2%}"
+            )
         print(
             "Invalid champion probability sums: "
             f"{report['probability_validation']['invalid_probability_sum_count']}"

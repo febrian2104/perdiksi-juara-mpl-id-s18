@@ -1,3 +1,4 @@
+import json
 import sys
 from pathlib import Path
 from typing import Any
@@ -24,6 +25,7 @@ def dashboard_file_paths(paths: ProjectPaths) -> dict[str, Path]:
         "match_explanations": prediction_dir / "season18_match_explanations.parquet",
         "team_explanations": prediction_dir / "season18_team_explanations.parquet",
         "rosters": paths.data / "season18" / "rosters.csv",
+        "model_report": paths.reports / "model_evaluation_report.json",
     }
 
 
@@ -32,6 +34,8 @@ def load_dashboard_data(paths: ProjectPaths) -> tuple[dict[str, pd.DataFrame], l
     missing = [path for path in files.values() if not path.exists()]
     if missing:
         return {}, missing
+    with files["model_report"].open(encoding="utf-8") as handle:
+        model_report = json.load(handle)
     frames = {
         "predictions": pd.read_parquet(files["predictions"]),
         "matches": pd.read_parquet(files["matches"]),
@@ -39,6 +43,9 @@ def load_dashboard_data(paths: ProjectPaths) -> tuple[dict[str, pd.DataFrame], l
         "match_explanations": pd.read_parquet(files["match_explanations"]),
         "team_explanations": pd.read_parquet(files["team_explanations"]),
         "rosters": pd.read_csv(files["rosters"]),
+        "model_comparison": pd.DataFrame.from_records(
+            model_report["match_model"]["best_variant_by_family"]
+        ),
     }
     return frames, []
 
@@ -353,6 +360,68 @@ def _render_explainability(data: dict[str, pd.DataFrame]) -> None:
     )
 
 
+def _render_model_comparison(data: dict[str, pd.DataFrame]) -> None:
+    st.subheader("Perbandingan model pertandingan")
+    st.caption(
+        "Semua model diuji pada 736 pertandingan dengan fold walk-forward Season 8-17. "
+        "Nilai log loss, Brier, dan ECE yang lebih rendah lebih baik."
+    )
+    comparison = data["model_comparison"].copy()
+    family_labels = {
+        "logistic": "Logistic Regression",
+        "random_forest": "Random Forest",
+        "xgboost": "XGBoost",
+    }
+    comparison["Model"] = comparison["model_family"].map(family_labels)
+    comparison["Status"] = comparison["model_family"].map(
+        {
+            "logistic": "✅ Model produksi",
+            "random_forest": "🧪 Challenger",
+            "xgboost": "🧪 Challenger",
+        }
+    )
+    comparison["Varian"] = comparison["model_name"].str.removeprefix("match_")
+    chart = px.bar(
+        comparison.sort_values("log_loss", ascending=False),
+        x="log_loss",
+        y="Model",
+        orientation="h",
+        color="Status",
+        text="log_loss",
+        labels={"log_loss": "Log loss walk-forward"},
+    )
+    chart.update_traces(texttemplate="%{text:.6f}", textposition="outside")
+    chart.update_layout(xaxis_rangemode="tozero")
+    st.plotly_chart(chart, width="stretch")
+    table = comparison[
+        ["Model", "Status", "Varian", "log_loss", "brier_score", "accuracy", "ece"]
+    ].rename(
+        columns={
+            "log_loss": "Log loss",
+            "brier_score": "Brier",
+            "accuracy": "Accuracy",
+            "ece": "ECE",
+        }
+    )
+    st.dataframe(
+        table.style.format(
+            {
+                "Log loss": "{:.6f}",
+                "Brier": "{:.6f}",
+                "Accuracy": "{:.2%}",
+                "ECE": "{:.6f}",
+            }
+        ),
+        hide_index=True,
+        width="stretch",
+    )
+    st.info(
+        "Random Forest raw unggul sangat tipis pada log loss dan Brier, tetapi Logistic "
+        "Regression tetap dipakai karena accuracy dan kalibrasinya lebih kuat. Pemilihan "
+        "model final tidak dilakukan otomatis."
+    )
+
+
 def main() -> None:
     st.set_page_config(page_title="MPL S18 Predictor", page_icon="🏆", layout="wide")
     st.title("MPL Indonesia Season 18 Champion Predictor")
@@ -388,13 +457,15 @@ def main() -> None:
         index=len(labels) - 1,
         format_func=labels.get,
     )
-    overview_tab, matches_tab, explanation_tab, data_tab = st.tabs(
-        ["Ringkasan", "Pertandingan", "Explainability", "Data & asumsi"]
+    overview_tab, matches_tab, model_tab, explanation_tab, data_tab = st.tabs(
+        ["Ringkasan", "Pertandingan", "Perbandingan model", "Explainability", "Data & asumsi"]
     )
     with overview_tab:
         _render_overview(data, selected_snapshot)
     with matches_tab:
         _render_matches(data, selected_snapshot)
+    with model_tab:
+        _render_model_comparison(data)
     with explanation_tab:
         _render_explainability(data)
     with data_tab:

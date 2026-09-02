@@ -69,13 +69,23 @@ def test_match_walk_forward_uses_only_past_seasons(walk_forward_outputs) -> None
     predictions = walk_forward_outputs["match_predictions"]
     folds = walk_forward_outputs["match_folds"]
 
-    assert len(predictions) == 1472
+    assert len(predictions) == 4416
     assert predictions["match_id"].nunique() == 736
     assert predictions["team_a_win_probability"].between(0, 1).all()
     assert set(predictions["model_name"]) == {
         "match_logistic_raw",
         "match_logistic_calibrated",
+        "match_random_forest_raw",
+        "match_random_forest_calibrated",
+        "match_xgboost_raw",
+        "match_xgboost_calibrated",
     }
+    assert set(predictions["model_family"]) == {
+        "logistic",
+        "random_forest",
+        "xgboost",
+    }
+    assert len(folds) == 30
     assert all(fold["training_season_max"] < fold["target_season"] for fold in folds)
     assert all(
         all(season < fold["target_season"] for season in fold["calibration_seasons"])
@@ -105,6 +115,22 @@ def test_champion_walk_forward_probabilities_and_calibration(walk_forward_output
     assert report["probability_validation"]["invalid_probability_sum_count"] == 0
     assert all(fold["training_season_max"] < fold["target_season"] for fold in folds)
     assert report["match_model"]["calibration_log_loss_improvement_pct"] > 0
+    comparison = report["match_model"]["calibrated_challenger_comparison"]
+    assert len(comparison) == 3
+    assert {row["model_name"] for row in comparison} == {
+        "match_logistic_calibrated",
+        "match_random_forest_calibrated",
+        "match_xgboost_calibrated",
+    }
+    assert [row["log_loss_rank"] for row in comparison] == [1, 2, 3]
+    best_variants = report["match_model"]["best_variant_by_family"]
+    assert len(best_variants) == 3
+    assert {row["model_family"] for row in best_variants} == {
+        "logistic",
+        "random_forest",
+        "xgboost",
+    }
+    assert [row["log_loss_rank"] for row in best_variants] == [1, 2, 3]
     assert report["champion_snapshot_model"]["calibration_log_loss_improvement_pct"] > 0
 
     overall = {

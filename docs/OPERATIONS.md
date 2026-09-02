@@ -21,6 +21,12 @@ Training ulang seluruh data historis dan model final:
 ./scripts/run_local_pipeline.sh train
 ```
 
+Tahap `backtest` membandingkan Logistic Regression, Random Forest, dan XGBoost dengan fold
+season serta kalibrasi past-only yang sama. XGBoost memakai paket `xgboost-cpu` agar instalasi
+lokal dan Streamlit tidak menarik runtime GPU yang tidak digunakan. Laporan menyimpan semua
+varian raw/calibrated, ranking challenger terkalibrasi, dan varian terbaik setiap keluarga.
+Model produksi tidak berubah otomatis dari hasil perbandingan tersebut.
+
 Mengambil data S18 terbaru, membuat ulang seluruh snapshot pramusim/mingguan, dan
 memperbarui explainability:
 
@@ -99,7 +105,9 @@ make dashboard
 
 Dashboard membaca output Parquet terbaru dan tidak melakukan training atau download data
 ketika halaman dibuka. Jika output belum lengkap, dashboard menampilkan command pembaruan
-yang perlu dijalankan.
+yang perlu dijalankan. Tab `Perbandingan model` membaca
+`reports/model_evaluation_report.json`; jalankan `make backtest` setelah mengubah kandidat
+atau hyperparameter model.
 
 Untuk deployment Streamlit Community Cloud, isi **Main file path** dengan:
 

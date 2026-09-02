@@ -99,8 +99,10 @@ def build_final_model_report(
         },
         "selection": {
             "match_model_reason": (
-                "Kalibrasi Platt dipilih karena log loss dan ECE walk-forward lebih baik "
-                "daripada probabilitas logistic mentah."
+                "Logistic terkalibrasi tetap menjadi model produksi: ia memiliki accuracy "
+                "tertinggi dan ECE yang lebih baik daripada Random Forest raw. Random Forest "
+                "raw unggul sangat tipis pada log loss/Brier, sehingga masih berstatus "
+                "challenger; XGBoost belum mengungguli keduanya."
             ),
             "selected_match_metrics": selected,
             "match_candidates": list(match_metrics.values()),
@@ -124,8 +126,8 @@ def build_final_model_report(
         },
         "feature_columns": artifact["feature_columns"],
         "data_guard": (
-            "Hasil S18 tidak digunakan untuk fitting; hasil tersebut hanya memperbarui "
-            "fitur live sebelum simulasi pertandingan tersisa."
+            "Hasil S18 tidak mengubah koefisien model final; hasil tersebut memperbarui "
+            "fitur live dan kalibrasi online setelah probabilitas pre-match dibuat."
         ),
     }
 

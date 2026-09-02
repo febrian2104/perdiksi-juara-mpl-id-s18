@@ -7,40 +7,84 @@
     "direct_champion_ranking_benchmark": "elo_strength"
   },
   "selection": {
-    "match_model_reason": "Kalibrasi Platt dipilih karena log loss dan ECE walk-forward lebih baik daripada probabilitas logistic mentah.",
+    "match_model_reason": "Logistic terkalibrasi tetap menjadi model produksi: ia memiliki accuracy tertinggi dan ECE yang lebih baik daripada Random Forest raw. Random Forest raw unggul sangat tipis pada log loss/Brier, sehingga masih berstatus challenger; XGBoost belum mengungguli keduanya.",
     "selected_match_metrics": {
       "model_name": "match_logistic_calibrated",
       "match_count": 736,
-      "log_loss": 0.632517,
-      "brier_score": 0.220528,
-      "roc_auc": 0.700663,
+      "log_loss": 0.632518,
+      "brier_score": 0.220529,
+      "roc_auc": 0.700656,
       "accuracy": 0.661685,
-      "ece": 0.041555,
-      "calibration_intercept": 0.140238,
-      "calibration_slope": 1.051391
+      "ece": 0.041553,
+      "calibration_intercept": 0.140226,
+      "calibration_slope": 1.051413
     },
     "match_candidates": [
       {
         "model_name": "match_logistic_calibrated",
         "match_count": 736,
-        "log_loss": 0.632517,
-        "brier_score": 0.220528,
-        "roc_auc": 0.700663,
+        "log_loss": 0.632518,
+        "brier_score": 0.220529,
+        "roc_auc": 0.700656,
         "accuracy": 0.661685,
-        "ece": 0.041555,
-        "calibration_intercept": 0.140238,
-        "calibration_slope": 1.051391
+        "ece": 0.041553,
+        "calibration_intercept": 0.140226,
+        "calibration_slope": 1.051413
       },
       {
         "model_name": "match_logistic_raw",
         "match_count": 736,
-        "log_loss": 0.636386,
-        "brier_score": 0.221109,
-        "roc_auc": 0.701606,
+        "log_loss": 0.636388,
+        "brier_score": 0.22111,
+        "roc_auc": 0.701584,
         "accuracy": 0.661685,
-        "ece": 0.051025,
-        "calibration_intercept": 0.138921,
-        "calibration_slope": 0.750056
+        "ece": 0.051024,
+        "calibration_intercept": 0.138908,
+        "calibration_slope": 0.750038
+      },
+      {
+        "model_name": "match_random_forest_calibrated",
+        "match_count": 736,
+        "log_loss": 0.632543,
+        "brier_score": 0.22033,
+        "roc_auc": 0.69748,
+        "accuracy": 0.650815,
+        "ece": 0.060223,
+        "calibration_intercept": 0.136265,
+        "calibration_slope": 0.870318
+      },
+      {
+        "model_name": "match_random_forest_raw",
+        "match_count": 736,
+        "log_loss": 0.631574,
+        "brier_score": 0.22024,
+        "roc_auc": 0.697495,
+        "accuracy": 0.650815,
+        "ece": 0.053477,
+        "calibration_intercept": 0.136177,
+        "calibration_slope": 0.860538
+      },
+      {
+        "model_name": "match_xgboost_calibrated",
+        "match_count": 736,
+        "log_loss": 0.637397,
+        "brier_score": 0.22321,
+        "roc_auc": 0.687038,
+        "accuracy": 0.639946,
+        "ece": 0.040545,
+        "calibration_intercept": 0.131364,
+        "calibration_slope": 0.921039
+      },
+      {
+        "model_name": "match_xgboost_raw",
+        "match_count": 736,
+        "log_loss": 0.642563,
+        "brier_score": 0.224982,
+        "roc_auc": 0.687684,
+        "accuracy": 0.639946,
+        "ece": 0.06163,
+        "calibration_intercept": 0.129982,
+        "calibration_slope": 0.726595
       }
     ],
     "direct_champion_reason": "Elo strength tetap menjadi benchmark ranking langsung karena memiliki multiclass log loss terbaik pada backtest champion.",
@@ -130,5 +174,5 @@
     "prior_3_season_game_diff_per_match_diff",
     "rest_days_diff"
   ],
-  "data_guard": "Hasil S18 tidak digunakan untuk fitting; hasil tersebut hanya memperbarui fitur live sebelum simulasi pertandingan tersisa."
+  "data_guard": "Hasil S18 tidak mengubah koefisien model final; hasil tersebut memperbarui fitur live dan kalibrasi online setelah probabilitas pre-match dibuat."
 }

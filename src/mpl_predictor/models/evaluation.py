@@ -222,6 +222,47 @@ def _metric_improvement(
     return round(100 * (raw - calibrated) / raw, 4)
 
 
+def _match_challenger_comparison(overall: pd.DataFrame) -> list[dict[str, Any]]:
+    calibrated = overall.loc[overall["model_name"].str.endswith("_calibrated")].copy()
+    calibrated = calibrated.sort_values(
+        ["log_loss", "brier_score", "ece", "model_name"], ignore_index=True
+    )
+    calibrated["log_loss_rank"] = np.arange(1, len(calibrated) + 1)
+    baseline = calibrated.loc[calibrated["model_name"].eq("match_logistic_calibrated")]
+    if baseline.empty:
+        raise ValueError("Calibrated logistic baseline is missing from match predictions.")
+    baseline_row = baseline.iloc[0]
+    calibrated["log_loss_delta_vs_logistic"] = calibrated["log_loss"] - float(
+        baseline_row["log_loss"]
+    )
+    calibrated["brier_delta_vs_logistic"] = calibrated["brier_score"] - float(
+        baseline_row["brier_score"]
+    )
+    return dataframe_records(calibrated)
+
+
+def _best_match_variant_by_family(overall: pd.DataFrame) -> list[dict[str, Any]]:
+    candidates = overall.copy()
+    candidates["model_family"] = (
+        candidates["model_name"]
+        .str.removeprefix("match_")
+        .str.removesuffix("_calibrated")
+        .str.removesuffix("_raw")
+    )
+    best_rows = candidates.loc[candidates.groupby("model_family")["log_loss"].idxmin()].copy()
+    best_rows = best_rows.sort_values(
+        ["log_loss", "brier_score", "ece", "model_name"], ignore_index=True
+    )
+    best_rows["log_loss_rank"] = np.arange(1, len(best_rows) + 1)
+    logistic = best_rows.loc[best_rows["model_family"].eq("logistic")]
+    if logistic.empty:
+        raise ValueError("Logistic model family is missing from match predictions.")
+    baseline = logistic.iloc[0]
+    best_rows["log_loss_delta_vs_logistic"] = best_rows["log_loss"] - float(baseline["log_loss"])
+    best_rows["brier_delta_vs_logistic"] = best_rows["brier_score"] - float(baseline["brier_score"])
+    return dataframe_records(best_rows)
+
+
 def build_model_evaluation_report(
     match_predictions: pd.DataFrame,
     champion_predictions: pd.DataFrame,
@@ -274,8 +315,11 @@ def build_model_evaluation_report(
         },
         "match_model": {
             "features": config["match_model"]["feature_columns"],
+            "candidate_families": config["match_model"]["candidate_families"],
             "overall_metrics": dataframe_records(match_overall),
             "metrics_by_stage": dataframe_records(match_by_stage),
+            "calibrated_challenger_comparison": _match_challenger_comparison(match_overall),
+            "best_variant_by_family": _best_match_variant_by_family(match_overall),
             "calibration_log_loss_improvement_pct": _metric_improvement(
                 match_overall,
                 "match_logistic_raw",

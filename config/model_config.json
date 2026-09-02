@@ -10,6 +10,26 @@
     "max_iter": 3000,
     "solver": "lbfgs"
   },
+  "random_forest": {
+    "n_estimators": 300,
+    "max_depth": 5,
+    "min_samples_leaf": 8,
+    "max_features": "sqrt",
+    "class_weight": "balanced",
+    "n_jobs": -1
+  },
+  "xgboost": {
+    "n_estimators": 200,
+    "max_depth": 3,
+    "learning_rate": 0.03,
+    "min_child_weight": 5.0,
+    "subsample": 0.85,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.1,
+    "reg_lambda": 2.0,
+    "gamma": 0.05,
+    "n_jobs": 1
+  },
   "calibration": {
     "minimum_base_seasons": 2,
     "temperature_min": 0.25,
@@ -17,6 +37,7 @@
   },
   "match_model": {
     "symmetric_training_augmentation": true,
+    "candidate_families": ["logistic", "random_forest", "xgboost"],
     "feature_columns": [
       "elo_rating_diff",
       "current_matches_diff",
@@ -42,4 +63,3 @@
     "season_weighting": "equal_team_season_weight"
   }
 }
-

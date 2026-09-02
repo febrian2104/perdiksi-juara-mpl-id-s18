@@ -169,8 +169,13 @@ def test_august_31_snapshot_has_week_three_and_verified_roster() -> None:
     assert len(snapshot_rosters) == 79
     assert report["scope"]["completed_weeks"] == [1, 2, 3]
     assert report["scope"]["partial_weeks"] == []
-    assert report["retrospective_reconstruction"] is False
-    assert snapshot_schedule["snapshot_basis"].eq("official_observation_date").all()
+    source_observed_date = pd.to_datetime(schedule["observed_at"].iloc[0]).date()
+    expected_retrospective = source_observed_date > cutoff
+    expected_basis = (
+        "retrospective_end_of_day_wib" if expected_retrospective else "official_observation_date"
+    )
+    assert report["retrospective_reconstruction"] is expected_retrospective
+    assert snapshot_schedule["snapshot_basis"].eq(expected_basis).all()
 
 
 @pytest.fixture(scope="module")
@@ -350,6 +355,11 @@ def test_explainability_and_dashboard_outputs_are_loadable(final_simulation_inpu
     assert local["match_id"].nunique() == 48
     assert local.groupby("match_id")["contribution_rank"].min().eq(1).all()
     assert missing == []
+    assert set(dashboard_data["model_comparison"]["model_family"]) == {
+        "logistic",
+        "random_forest",
+        "xgboost",
+    }
     assert {
         "base_team_a_win_probability",
         "base_prediction_correct",

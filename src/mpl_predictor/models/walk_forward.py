@@ -5,10 +5,12 @@ from typing import Any
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize_scalar
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+from xgboost import XGBClassifier
 
 from mpl_predictor.features.snapshots import model_feature_columns
 
@@ -20,6 +22,8 @@ def load_model_config(path: Path) -> dict[str, Any]:
         "model_version",
         "evaluation",
         "logistic_regression",
+        "random_forest",
+        "xgboost",
         "calibration",
         "match_model",
         "champion_model",
@@ -57,6 +61,59 @@ def _pipeline(config: dict[str, Any], class_weight: str | None = None) -> Pipeli
     )
 
 
+def _match_pipeline(config: dict[str, Any], family: str) -> Pipeline:
+    imputer = SimpleImputer(strategy="median", add_indicator=True, keep_empty_features=True)
+    if family == "logistic":
+        return _pipeline(config)
+    if family == "random_forest":
+        values = config["random_forest"]
+        return Pipeline(
+            [
+                ("imputer", imputer),
+                (
+                    "model",
+                    RandomForestClassifier(
+                        n_estimators=int(values["n_estimators"]),
+                        max_depth=int(values["max_depth"]),
+                        min_samples_leaf=int(values["min_samples_leaf"]),
+                        max_features=str(values["max_features"]),
+                        class_weight=str(values["class_weight"]),
+                        n_jobs=int(values["n_jobs"]),
+                        random_state=42,
+                    ),
+                ),
+            ]
+        )
+    if family == "xgboost":
+        values = config["xgboost"]
+        return Pipeline(
+            [
+                ("imputer", imputer),
+                (
+                    "model",
+                    XGBClassifier(
+                        objective="binary:logistic",
+                        eval_metric="logloss",
+                        tree_method="hist",
+                        n_estimators=int(values["n_estimators"]),
+                        max_depth=int(values["max_depth"]),
+                        learning_rate=float(values["learning_rate"]),
+                        min_child_weight=float(values["min_child_weight"]),
+                        subsample=float(values["subsample"]),
+                        colsample_bytree=float(values["colsample_bytree"]),
+                        reg_alpha=float(values["reg_alpha"]),
+                        reg_lambda=float(values["reg_lambda"]),
+                        gamma=float(values["gamma"]),
+                        n_jobs=int(values["n_jobs"]),
+                        random_state=42,
+                        verbosity=0,
+                    ),
+                ),
+            ]
+        )
+    raise ValueError(f"Unsupported match model family: {family!r}.")
+
+
 def _numeric(frame: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
     return frame[columns].apply(pd.to_numeric, errors="coerce").astype(float)
 
@@ -92,12 +149,27 @@ def _augment_match_training(
     )
 
 
+def _symmetric_match_probabilities(model: Pipeline, features: pd.DataFrame) -> np.ndarray:
+    forward = model.predict_proba(features)[:, 1]
+    reverse = model.predict_proba(-features)[:, 1]
+    return np.clip(0.5 * (forward + (1.0 - reverse)), 1e-6, 1.0 - 1e-6)
+
+
+def _symmetric_platt_probabilities(
+    calibrator: LogisticRegression | None, probabilities: np.ndarray
+) -> np.ndarray:
+    forward = _apply_platt(calibrator, probabilities)
+    reverse = _apply_platt(calibrator, 1.0 - probabilities)
+    return np.clip(0.5 * (forward + (1.0 - reverse)), 1e-6, 1.0 - 1e-6)
+
+
 def walk_forward_match_predictions(
     match_features: pd.DataFrame,
     config: dict[str, Any],
 ) -> tuple[pd.DataFrame, list[dict[str, Any]]]:
-    """Backtest raw and past-only Platt-calibrated match probabilities by target season."""
+    """Compare leakage-safe, calibrated match models with season walk-forward folds."""
     columns = list(config["match_model"]["feature_columns"])
+    families = list(config["match_model"]["candidate_families"])
     start_season = int(config["evaluation"]["start_season"])
     minimum_base = int(config["calibration"]["minimum_base_seasons"])
     first_season = int(match_features["season"].min())
@@ -109,36 +181,6 @@ def walk_forward_match_predictions(
         test = match_features.loc[match_features["season"].eq(target_season)]
         if train.empty or test.empty:
             continue
-
-        calibration_probabilities = []
-        calibration_labels = []
-        calibration_seasons = []
-        for validation_season in range(first_season + minimum_base, target_season):
-            inner_train = match_features.loc[match_features["season"].lt(validation_season)]
-            inner_validation = match_features.loc[match_features["season"].eq(validation_season)]
-            if inner_train.empty or inner_validation.empty:
-                continue
-            model = _pipeline(config)
-            train_x, train_y = _augment_match_training(inner_train, columns)
-            model.fit(train_x, train_y)
-            probabilities = model.predict_proba(_numeric(inner_validation, columns))[:, 1]
-            calibration_probabilities.extend(probabilities)
-            calibration_probabilities.extend(1.0 - probabilities)
-            calibration_labels.extend(inner_validation["team_a_win"].astype(int))
-            calibration_labels.extend(1 - inner_validation["team_a_win"].astype(int))
-            calibration_seasons.append(validation_season)
-
-        calibrator = _fit_platt(
-            np.asarray(calibration_probabilities), np.asarray(calibration_labels)
-        )
-        final_model = _pipeline(config)
-        train_x, train_y = _augment_match_training(train, columns)
-        final_model.fit(train_x, train_y)
-        test_x = _numeric(test, columns)
-        raw_probabilities = final_model.predict_proba(test_x)[:, 1]
-        calibrated_probabilities = _apply_platt(calibrator, raw_probabilities)
-        inverse_probabilities = final_model.predict_proba(-test_x)[:, 1]
-        symmetry_error = np.abs(raw_probabilities + inverse_probabilities - 1.0)
 
         base_columns = [
             "season",
@@ -152,37 +194,76 @@ def walk_forward_match_predictions(
             "team_b_franchise_slot_id",
             "team_a_win",
         ]
-        for model_name, probabilities in (
-            ("match_logistic_raw", raw_probabilities),
-            ("match_logistic_calibrated", calibrated_probabilities),
-        ):
-            prediction = test[base_columns].copy()
-            prediction["model_name"] = model_name
-            prediction["team_a_win_probability"] = probabilities
-            prediction["predicted_team_a_win"] = probabilities >= 0.5
-            prediction["training_season_min"] = int(train["season"].min())
-            prediction["training_season_max"] = int(train["season"].max())
-            outputs.append(prediction)
+        for family in families:
+            calibration_probabilities = []
+            calibration_labels = []
+            calibration_seasons = []
+            for validation_season in range(first_season + minimum_base, target_season):
+                inner_train = match_features.loc[match_features["season"].lt(validation_season)]
+                inner_validation = match_features.loc[
+                    match_features["season"].eq(validation_season)
+                ]
+                if inner_train.empty or inner_validation.empty:
+                    continue
+                model = _match_pipeline(config, family)
+                train_x, train_y = _augment_match_training(inner_train, columns)
+                model.fit(train_x, train_y)
+                probabilities = _symmetric_match_probabilities(
+                    model, _numeric(inner_validation, columns)
+                )
+                calibration_probabilities.extend(probabilities)
+                calibration_probabilities.extend(1.0 - probabilities)
+                calibration_labels.extend(inner_validation["team_a_win"].astype(int))
+                calibration_labels.extend(1 - inner_validation["team_a_win"].astype(int))
+                calibration_seasons.append(validation_season)
 
-        folds.append(
-            {
-                "target_season": target_season,
-                "training_season_min": int(train["season"].min()),
-                "training_season_max": int(train["season"].max()),
-                "training_match_count": len(train),
-                "test_match_count": len(test),
-                "calibration_seasons": calibration_seasons,
-                "calibration_observation_count": len(calibration_labels),
-                "mean_symmetry_error": round(float(symmetry_error.mean()), 10),
-                "max_symmetry_error": round(float(symmetry_error.max()), 10),
-            }
-        )
+            calibrator = _fit_platt(
+                np.asarray(calibration_probabilities), np.asarray(calibration_labels)
+            )
+            final_model = _match_pipeline(config, family)
+            train_x, train_y = _augment_match_training(train, columns)
+            final_model.fit(train_x, train_y)
+            test_x = _numeric(test, columns)
+            raw_probabilities = _symmetric_match_probabilities(final_model, test_x)
+            calibrated_probabilities = _symmetric_platt_probabilities(calibrator, raw_probabilities)
+            reverse_probabilities = _symmetric_match_probabilities(final_model, -test_x)
+            symmetry_error = np.abs(raw_probabilities + reverse_probabilities - 1.0)
+
+            for suffix, probabilities in (
+                ("raw", raw_probabilities),
+                ("calibrated", calibrated_probabilities),
+            ):
+                prediction = test[base_columns].copy()
+                prediction["model_name"] = f"match_{family}_{suffix}"
+                prediction["model_family"] = family
+                prediction["calibrated"] = suffix == "calibrated"
+                prediction["team_a_win_probability"] = probabilities
+                prediction["predicted_team_a_win"] = probabilities >= 0.5
+                prediction["training_season_min"] = int(train["season"].min())
+                prediction["training_season_max"] = int(train["season"].max())
+                outputs.append(prediction)
+
+            folds.append(
+                {
+                    "target_season": target_season,
+                    "model_family": family,
+                    "training_season_min": int(train["season"].min()),
+                    "training_season_max": int(train["season"].max()),
+                    "training_match_count": len(train),
+                    "test_match_count": len(test),
+                    "calibration_seasons": calibration_seasons,
+                    "calibration_observation_count": len(calibration_labels),
+                    "mean_symmetry_error": round(float(symmetry_error.mean()), 10),
+                    "max_symmetry_error": round(float(symmetry_error.max()), 10),
+                }
+            )
 
     result = pd.concat(outputs, ignore_index=True)
     result["season"] = result["season"].astype("Int64")
     result["week"] = result["week"].astype("Int64")
     result["team_a_win"] = result["team_a_win"].astype("Int64")
     result["predicted_team_a_win"] = result["predicted_team_a_win"].astype("boolean")
+    result["calibrated"] = result["calibrated"].astype("boolean")
     return result.sort_values(["season", "match_id", "model_name"]).reset_index(drop=True), folds
 
 

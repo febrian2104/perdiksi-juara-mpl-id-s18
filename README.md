@@ -202,9 +202,11 @@ bukan prediksi final Season 18.
 
 ## Model dan walk-forward backtest
 
-Model match memakai logistic regression pada 15 fitur selisih team A–team B. Training
-ditambah dengan orientasi pertandingan terbalik agar prediksi hampir simetris dan tidak
-bergantung pada urutan nama tim. Feature table mencakup 992 match Season 4-17.
+Model final tetap memakai logistic regression pada 15 fitur selisih team A–team B.
+Random Forest dan XGBoost CPU ditambahkan sebagai challenger nonlinear dalam backtest,
+bukan langsung menggantikan model final. Semua keluarga model dilatih dengan orientasi
+pertandingan terbalik dan probabilitas forward/reverse dirata-ratakan agar prediksi simetris.
+Feature table mencakup 992 match Season 4-17.
 
 Backtest menggunakan outer fold per musim. Untuk target Season S:
 
@@ -217,6 +219,19 @@ Backtest menggunakan outer fold per musim. Untuk target Season S:
 Pada 736 match evaluasi Season 8-17, model match terkalibrasi mencapai log loss 0,6325,
 Brier score 0,2205, ROC-AUC 0,7007, accuracy 66,17%, dan ECE 0,0416. Kalibrasi Platt
 memperbaiki log loss model match sekitar 0,61%.
+
+Perbandingan challenger dengan konfigurasi konservatif menghasilkan:
+
+| Keluarga | Varian terbaik | Log loss | Brier | Accuracy | ECE |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Random Forest | raw symmetric | 0,631574 | 0,220240 | 65,08% | 0,053477 |
+| Logistic Regression | Platt calibrated | 0,632518 | 0,220529 | 66,17% | 0,041553 |
+| XGBoost | Platt calibrated | 0,637397 | 0,223210 | 63,99% | 0,040545 |
+
+Random Forest unggul sangat tipis pada log loss dan Brier, tetapi accuracy serta ECE-nya
+lebih buruk. Logistic Regression karena itu tetap menjadi model produksi sampai challenger
+menunjukkan peningkatan yang lebih konsisten antar-season. Hasil lengkap tersedia pada
+`reports/model_evaluation_report.json`; pemilihan model tidak dilakukan otomatis.
 
 Temperature calibration memperbaiki log loss snapshot logistic dari 2,2610 menjadi
 1,7323 atau sekitar 23,39%. Namun Elo tetap lebih baik dengan log loss 1,6816, mean rank
@@ -293,6 +308,8 @@ walk-forward backtest.
 
 Dashboard dijalankan dengan `make dashboard`. Panduan update, training ulang, verifikasi,
 dan contoh penjadwalan lokal tersedia di `docs/OPERATIONS.md`.
+Tab `Perbandingan model` menampilkan hasil walk-forward Logistic Regression, Random Forest,
+dan XGBoost langsung dari laporan evaluasi yang telah dibuat saat training lokal.
 
 Untuk season setelah S18, gunakan template `config/season_template.json` dan ikuti
 `docs/ADDING_A_SEASON.md`. Command lama yang mengandung `season18` tetap dipertahankan agar
